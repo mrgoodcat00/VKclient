@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\classes-b3094f28c4215bff39a2e2d2d216f0e9def301e3.jar" />
+    </item>
+    <item
+        jar="C:\Users\Goodcat\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.4\695b63d702f505b9b916e02272e3b6381bade7f\gson-2.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0695b63d702f505b9b916e02272e3b6381bade7f">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\gson-2.4-8f3e675a134ce4d83f5342c2b53e78e62f4cf8a9.jar" />
+    </item>
+    <item
+        jar="C:\Users\Goodcat\.gradle\caches\modules-2\files-2.1\com.nostra13.universalimageloader\universal-image-loader\1.9.4\dd9eeb557650c4ad7394df23f0f5cf27a7cfc697\universal-image-loader-1.9.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="dd9eeb557650c4ad7394df23f0f5cf27a7cfc697">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.4-6e6637bc26f4aab3db011b66ec27f48c9edef110.jar" />
+    </item>
+    <item
+        jar="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\classes-6223c7276f02641b9c6e4efab8bab167ac120000.jar" />
+    </item>
+    <item
+        jar="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\libs\internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-3b5c9ca3239828583d2e6beabe85b1859baff131.jar" />
+    </item>
+    <item
+        jar="D:\Java\Idea\androidSDK\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-3f362f134f96dee07cce34be06527c777316dac3.jar" />
+    </item>
+    <item
+        jar="C:\Users\Goodcat\.gradle\caches\modules-2\files-2.1\joda-time\joda-time\2.9\db8dd9d75280b1d1d9587ed0d39b4108d0e655e9\joda-time-2.9-no-tzdb.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="db8dd9d75280b1d1d9587ed0d39b4108d0e655e9">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\joda-time-2.9-no-tzdb-5271fc54ded20bf7b1d2040ff0097e1035169468.jar" />
+    </item>
+    <item
+        jar="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\exploded-aar\net.danlew\android.joda\2.9.0\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="dc6c5f4bb34315c98476469344d481c8e3ca90ad">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\classes-b09e76ece3476d10c30bc86e94ec010135c208fd.jar" />
+    </item>
+
+</items>

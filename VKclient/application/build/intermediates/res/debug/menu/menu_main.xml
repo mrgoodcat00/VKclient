@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".MainActivity">
+    <item android:id="@+id/action_settings"
+          android:title="@string/action_settings"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+      <item android:id="@+id/get_messages"
+            android:title="@string/get_messages"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+      <item android:id="@+id/action_get_news_feed"
+            android:title="@string/action_get_news_feed"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+      <item android:id="@+id/exit"
+            android:title="@string/exit"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
+
+</menu>
+<!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/src/main/res/menu/menu_main.xml -->

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="50dp"
+                  android:orientation="horizontal"
+                  android:id="@+id/main_top_header"
+                  android:background="#45668e" android:baselineAligned="false" android:gravity="center_vertical"
+                  android:paddingLeft="0dp" android:paddingRight="0dp">
+
+        <Button android:layout_width="30dp"
+                android:id="@+id/main_header_back_button"
+                android:layout_height="30dp"
+                android:background="@drawable/back_button_background" android:layout_marginRight="10dp"
+                android:layout_marginLeft="5dp" android:enabled="true" android:clickable="false"/>
+
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                   android:src="@drawable/vk_logo" android:contentDescription="@string/vk_logo"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/photo_albums"
+                android:id="@+id/albums_header_page_title" android:textSize="17sp" android:layout_marginLeft="15dp"
+                android:textColor="#fff"/>
+
+    </LinearLayout>
+
+
+    <ListView android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/album_photo_list_albums"
+              android:padding="10dp"
+              android:background="#e5e5e5" android:dividerHeight="0dp" android:divider="#000c0c18"/>
+
+
+
+
+</LinearLayout><!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/src/main/res/layout/activity_photos.xml -->

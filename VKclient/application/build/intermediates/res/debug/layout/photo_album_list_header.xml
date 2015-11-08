@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
+                android:layout_height="120dp" android:id="@+id/photos_in_album_header_wrapper"
+                android:clickable="false">
+<ImageView android:layout_width="fill_parent" android:layout_height="120dp" android:src="@drawable/user_logo"
+           android:scaleType="centerCrop" android:layout_alignWithParentIfMissing="false"
+           android:layout_alignParentRight="false" android:layout_alignParentBottom="false"
+           android:layout_alignParentLeft="false" android:layout_centerInParent="true"/>
+<TextView android:layout_width="fill_parent" android:id="@+id/photos_in_album_albumTitle"
+          android:layout_height="wrap_content" android:text="Album Title"
+          android:textColor="#fff"
+          android:layout_alignParentLeft="false"
+          android:layout_alignParentBottom="false" android:layout_alignWithParentIfMissing="false"
+          android:layout_centerVertical="true" android:textSize="20dp"/>
+
+
+<TextView android:layout_width="fill_parent" android:id="@+id/photos_in_album_photosQuantity"
+          android:layout_height="wrap_content" android:text="126 photo"
+          android:layout_alignParentBottom="true" android:textColor="#fff"
+          android:textSize="15dp" android:layout_alignWithParentIfMissing="false"
+          android:gravity="bottom|fill_vertical" android:layout_marginBottom="25dp"/>
+
+</RelativeLayout><!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/src/main/res/layout/photo_album_list_header.xml -->

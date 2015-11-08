@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">VK client</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="back_button_resource">KOKO</string>
+    <string name="мл_дщпщ">vk logo</string>
+    <string name="Profile">Профиль</string>
+    <string name="vk_logo">vk_logo</string>
+    <string name="main_user_logo">main_user_logo</string>
+    <string name="marlin_manson">Marlin Manson</string>
+    <string name="user_name">Marlin Manson</string>
+    <string name="main_header_user_friends_quantity">sdsf</string>
+    <string name="user_logo">user_logo</string>
+    <string name="usedr_name">Nazar Goodcat</string>
+    <string name="user_posted_time">one year ago</string>
+    <string name="post_image">post_image</string>
+    <string name="comments_icon">comments_icon</string>
+    <string name="bottom_repost_icon">bottom_repost_icon</string>
+    <string name="likes_icon">likes_icon</string>
+    <string name="get_messages">Messages</string>
+    <string name="action_get_news_feed">News</string>
+    <string name="exit">Quit VKontakte</string>
+    <string name="messages">Messages</string>
+    <string name="sender_logo">sender_logo</string>
+    <string name="music">My Music</string>
+    <string name="photo_albums">Photo Albums</string>
+</resources>

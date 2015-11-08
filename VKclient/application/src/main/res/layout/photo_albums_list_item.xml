@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" android:background="#e3e4e6"
+              android:layout_marginBottom="15dp" android:layout_marginTop="15dp" android:padding="10dp">
+
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical" android:background="#fff" android:paddingBottom="10dp">
+        <LinearLayout android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:id="@+id/albums_list_item_images_wrapper"
+                      android:background="#fff"
+                      android:paddingLeft="0dp"
+                      android:paddingRight="0dp" android:layout_marginBottom="10dp">
+
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView1" android:src="@drawable/user_logo" android:layout_weight="1"
+                    android:adjustViewBounds="true" android:scaleType="centerCrop"/>
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView2" android:src="@drawable/user_logo" android:layout_weight="1"
+                    android:adjustViewBounds="true" android:scaleType="centerCrop"/>
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView3" android:src="@drawable/user_logo" android:layout_weight="1"
+                    android:adjustViewBounds="true" android:scaleType="centerCrop"/>
+        </LinearLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All images (Album Title)"
+                android:id="@+id/album_title" android:layout_marginLeft="10dp" android:textSize="20sp"
+                android:textColor="#000"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="120 photos (quantity)"
+                android:id="@+id/album_photos_quantity" android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
+</LinearLayout>
