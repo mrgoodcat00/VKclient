@@ -3,8 +3,8 @@ package com.goodcat.vkclient.application.service;
 
 import android.util.Log;
 import com.goodcat.vkclient.application.model.group.GroupModel;
-import com.goodcat.vkclient.application.model.user.UserWallPostsModel;
 import com.goodcat.vkclient.application.model.user.UserModel;
+import com.goodcat.vkclient.application.model.user.UserWallPostsModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

@@ -43,11 +43,11 @@ public class MainActivity extends Activity {
                 @Override
                 public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems) {
                     if (!items.isEmpty() && !wItems.isEmpty()) {
-                        setUserData(items,wItems);
+                        setUserData(items, wItems);
                     }
                 }
 
-            },"14587316");
+            },"14587316"/*"12455497"*/);
         }
 
         @Override
@@ -64,67 +64,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         st = Session.getSession(this);
-
-
-
-/*
-
-
-
-            //------------------------------------------------GETS -------------------------------------------
-            SessionToken currentSession = Session.getSession(this);
-            String token = currentSession.getToken();
-            List<UserWallPostsModel> wallPostsResponse = UserDataService.getUserWall(token, "14587316");
-            List<UserModel> user = UserDataService.getUserData(token, "14587316");
-            ListView wallPosts = (ListView) findViewById(R.id.main_user_posts_wall);
-            View WrapperHead = View.inflate(MainActivity.this,R.layout.header_part_of_main,null);
-            //------------------------------------------------ GET HEADER -----------------------------------
-
-            String firstName = user.get(user.size() - 1).getFirst_name();
-            String lastName = user.get(user.size() - 1).getLast_name();
-            String homeTown = user.get(user.size() - 1).getHome_town();
-            UserLastSeenModel lastSeeModel = user.get(user.size() - 1).getLast_seen();
-            UserCountersModel userCounters = user.get(user.size()-1).getCounters();
-
-            // ----------------------------------------------- SET HEADER -----------------------------------
-            TextView userName = (TextView) WrapperHead.findViewById(R.id.main_user_name);
-            userName.setText(firstName+" "+lastName);
-            TextView userFrom = (TextView) WrapperHead.findViewById(R.id.main_user_from);
-            if(homeTown.length()>0){
-                userFrom.setText("From: "+homeTown);
-            } else {
-                // Needs to add adjustment getter for HOME\TOWN
-                userFrom.setText("From: "+homeTown);
-            }
-            TextView lastSeen = (TextView) WrapperHead.findViewById(R.id.main_online_status);
-            lastSeen.setText("last seen "+lastSeeModel.getTime());
-
-            TextView friendsCounter = (TextView) WrapperHead.findViewById(R.id.main_header_friends_quantity);
-            friendsCounter.setText(userCounters.getFriends().toString()+"\n Friends");
-            TextView commonCounter = (TextView) WrapperHead.findViewById(R.id.main_header_common_friends_quantity);
-            commonCounter.setText(userCounters.getFollowers() +"\n Followers");
-            TextView followersCounter = (TextView) WrapperHead.findViewById(R.id.main_header_followers_quantity);
-            followersCounter.setText(userCounters.getGroups()+"\n Groups");
-            TextView photosCounter = (TextView) WrapperHead.findViewById(R.id.main_header_photos_quantity);
-            photosCounter.setText(userCounters.getPhotos()+"\n Photos");
-            TextView videoCounter = (TextView) WrapperHead.findViewById(R.id.main_header_videos_quantity);
-            videoCounter.setText(userCounters.getVideos()+"\n Videos");
-            TextView audioCounter = (TextView) WrapperHead.findViewById(R.id.main_header_audio_quantity);
-            audioCounter.setText(userCounters.getAudios()+"\n Audios");
-            //---------------------------------------------- SET WALL -----------------------------------------------------
-            wallPosts.addHeaderView(WrapperHead);
-            wallPosts.setHeaderDividersEnabled(false);
-            wallPosts.setFooterDividersEnabled(false);
-            wallPosts.setDividerHeight(0);
-
-            UserWallPostsAdapter adapter = new UserWallPostsAdapter(getApplicationContext(),wallPostsResponse,token);
-            wallPosts.setAdapter(adapter);
-
-
-
-
-
-        */
 
     }
 
@@ -146,12 +85,12 @@ public class MainActivity extends Activity {
         List<UserModel> user = items;
         List<UserWallPostsModel> wall = wPosts;
 
-        String firstName = user.get(user.size() - 1).getFirst_name();
-        String lastName = user.get(user.size() - 1).getLast_name();
-        String homeTown = user.get(user.size() - 1).getHome_town();
+        String firstName = user.get(0).getFirst_name();
+        String lastName = user.get(0).getLast_name();
+        String homeTown = user.get(0).getHome_town();
 
-        UserLastSeenModel lastSeeModel = user.get(user.size() - 1).getLast_seen();
-        UserCountersModel userCounters = user.get(user.size()-1).getCounters();
+        UserLastSeenModel lastSeeModel = user.get(0).getLast_seen();
+        UserCountersModel userCounters = user.get(0).getCounters();
 
         userName.setText(firstName+" "+lastName);
         if(homeTown.length()>0){
@@ -160,7 +99,7 @@ public class MainActivity extends Activity {
             // Needs to add adjustment getter for HOME\TOWN
             userFrom.setText("From: "+homeTown);
         }
-        lastSeen.setText("last seen "+lastSeeModel.getTime());
+        lastSeen.setText(lastSeeModel.getTime());
         //---------------------------------------------- SET COUNTERS -----------------------------------------------------
         friendsCounter.setText(userCounters.getFriends().toString()+"\n Friends");
         commonCounter.setText(userCounters.getFollowers() +"\n Followers");
