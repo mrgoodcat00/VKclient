@@ -36,9 +36,7 @@ public class MainActivity extends Activity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d("SERVICE", "Connected");
-
             RequestService.RequestWorker requestWorker = (RequestService.RequestWorker) service;
-
             requestWorker.getUserWithWallData(new ResponseHomeCallback<UserModel, UserWallPostsModel>() {
                 @Override
                 public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems) {
@@ -47,7 +45,7 @@ public class MainActivity extends Activity {
                     }
                 }
 
-            },"14587316"/*"12455497"*/);
+            }, "14587316"/*"12455497"*/);
         }
 
         @Override
@@ -55,9 +53,6 @@ public class MainActivity extends Activity {
             Log.d("SERVICE","Disconnected");
         }
     };
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +62,7 @@ public class MainActivity extends Activity {
 
     }
 
-
-    private void setUserData(List<UserModel> items, List<UserWallPostsModel> wPosts) {
+    private void setUserData(List<UserModel> user, List<UserWallPostsModel> wall) {
         //------------------------------------------------GETS -------------------------------------------
         ListView wallPosts = (ListView) findViewById(R.id.main_user_posts_wall);
         View WrapperHead = View.inflate(MainActivity.this, R.layout.header_part_of_main, null);
@@ -82,15 +76,13 @@ public class MainActivity extends Activity {
         TextView videoCounter = (TextView) WrapperHead.findViewById(R.id.main_header_videos_quantity);
         TextView audioCounter = (TextView) WrapperHead.findViewById(R.id.main_header_audio_quantity);
 
-        List<UserModel> user = items;
-        List<UserWallPostsModel> wall = wPosts;
+        UserLastSeenModel lastSeeModel = user.get(0).getLast_seen();
+        UserCountersModel userCounters = user.get(0).getCounters();
 
         String firstName = user.get(0).getFirst_name();
         String lastName = user.get(0).getLast_name();
         String homeTown = user.get(0).getHome_town();
 
-        UserLastSeenModel lastSeeModel = user.get(0).getLast_seen();
-        UserCountersModel userCounters = user.get(0).getCounters();
 
         userName.setText(firstName+" "+lastName);
         if(homeTown.length()>0){
@@ -113,9 +105,10 @@ public class MainActivity extends Activity {
         wallPosts.setFooterDividersEnabled(false);
         wallPosts.setDividerHeight(0);
 
-        UserWallPostsAdapter adapter = new UserWallPostsAdapter(getApplicationContext(),wall,st.getToken());
-        wallPosts.setAdapter(adapter);
-
+        if(wall != null) {
+            UserWallPostsAdapter adapter = new UserWallPostsAdapter(getApplicationContext(), wall, st.getToken());
+            wallPosts.setAdapter(adapter);
+        }
 
         TextView musicQuantity = (TextView) findViewById(R.id.main_header_audio_quantity);
         musicQuantity.setOnClickListener(new View.OnClickListener() {

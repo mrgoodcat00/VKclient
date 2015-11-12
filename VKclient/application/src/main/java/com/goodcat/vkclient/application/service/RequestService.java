@@ -43,11 +43,7 @@ public class RequestService extends Service{
             session = s;
         }
 
-
-
-
-
-        public void getUserData (final ResponseCallback<UserModel> userModel, final String userId){
+        /*public void getUserData (final ResponseCallback<UserModel> userModel, final String userId){
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -61,9 +57,7 @@ public class RequestService extends Service{
                     });
                 }
             });
-        }
-
-
+        }*/
 
         public void getUserWithWallData (final ResponseHomeCallback<UserModel,UserWallPostsModel> userModel, final String userId){
             executor.execute(new Runnable() {
@@ -95,7 +89,6 @@ public class RequestService extends Service{
                     final List<UserModel> uM = UserDataService.getUserData(token, userId);
                     final List<UserWallPostsModel> uW = response;
 
-
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -122,7 +115,6 @@ public class RequestService extends Service{
                 new InputStreamReader(inputStream)
         );
     }
-
 
     @Override
     public IBinder onBind(Intent intent) {
