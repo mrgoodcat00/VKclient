@@ -69,11 +69,11 @@ public class UserWallPostsModel {
         return copy_history;
     }
 
-    public static UserWallAttachmentsModel getAttachments() {
+    public UserWallAttachmentsModel getAttachments() {
         return attachments;
     }
 
-    public static void setAttachments(UserWallAttachmentsModel attachments) {
+    public void setAttachments(UserWallAttachmentsModel attachments) {
         UserWallPostsModel.attachments = attachments;
     }
 

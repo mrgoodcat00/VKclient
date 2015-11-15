@@ -12,10 +12,12 @@ import com.goodcat.vkclient.application.model.user.UserModel;
 import com.goodcat.vkclient.application.model.user.UserWallGroupsModel;
 import com.goodcat.vkclient.application.model.user.UserWallPostsModel;
 import com.goodcat.vkclient.application.model.user.UserWallProfilesModel;
-import com.goodcat.vkclient.application.model.user.attachments.UserWallAttachmentsModel;
 import com.goodcat.vkclient.application.session.Session;
 import com.goodcat.vkclient.application.session.SessionToken;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -104,8 +106,8 @@ public class RequestService extends Service{
                             Type fooType = new TypeToken<List<UserWallPostsModel>>() {}.getType();
                             List<UserWallPostsModel> commonWallItemsModel = gson.fromJson(items.toString(), fooType);
                             responseItems = commonWallItemsModel;
-
-                            for(JsonElement jso:items){
+                            //Type attType = new TypeToken<UserWallAttachmentsModel>() {}.getType();
+                            /*for(JsonElement jso:items){
                                 JsonObject jsonObj = (JsonObject) jso;
                                 Log.d("requestService","Items loop "+counter+"  "+jsonObj.toString());
                                 if(jsonObj.getAsJsonArray("attachments") != null && jsonObj.getAsJsonArray("copy_history") == null) {
@@ -115,14 +117,31 @@ public class RequestService extends Service{
                                         UserWallAttachmentsModel attachments = gson.fromJson(arrayItem.toString(), attType);
                                         responseItems.get(counter).setAttachments(attachments);
                                         attachments = null;
-                                        jsonObj = null;
                                         arrayItem = null;
                                     }
                                 }
+                                jsonObj = null;
+                                counter++;
+                            }*/
+
+                           /* for(JsonElement jso:items){
+                                JsonObject jsonObj = (JsonObject) jso;
+                                Log.d("requestService","Items loop "+counter+"  "+jsonObj.toString());
+                                if(jsonObj.getAsJsonArray("attachments") != null && jsonObj.getAsJsonArray("copy_history") == null) {
+
+
+
+                                        UserWallAttachmentsModel attachments = gson.fromJson(jsonObj.getAsJsonArray("attachments").get(0).toString(), attType);
+                                        responseItems.get(counter).setAttachments(attachments);
+                                        attachments = null;
+
+
+                                }
+                                jsonObj = null;
                                 counter++;
                             }
                             Log.d("requestService", responseItems.get(0).getAttachments().getPhoto().getPhoto_130() + "");
-                            Log.d("requestService",responseItems.get(2).getAttachments().getPhoto().getPhoto_130()+"");
+                            Log.d("requestService",responseItems.get(2).getAttachments().getPhoto().getPhoto_130()+"");*/
                         }
 
                         if (groups.size() > 0) {

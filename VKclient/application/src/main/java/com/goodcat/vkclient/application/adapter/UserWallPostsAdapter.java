@@ -101,8 +101,8 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
 
         UserWallAttachmentsModel attachmentsFormOwner = singlePost.getAttachments();
         if(attachmentsFormOwner != null) {
-
-            if(attachmentsFormOwner.getType().equals("photo")){
+            Log.d("!!!!!!!",attachmentsFormOwner.getType()+" ");
+      /*      if(attachmentsFormOwner.getType().equals("photo")){
                 Log.d("GOODCAT", attachmentsFormOwner.getPhoto().getPhoto_130() + "");
                 if( !attachmentsFormOwner.getPhoto().getText().contains("Original") && attachmentsFormOwner.getPhoto().getText() != null ) {
                     holder.post_text.setText(attachmentsFormOwner.getPhoto().getText());
@@ -130,7 +130,9 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
                 else if(attachmentsFormOwner.getPhoto().getPhoto_130().length()>0){
                     DownloadImageService.fetchImage(attachmentsFormOwner.getPhoto().getPhoto_130(),holder.post_image);
                 }
-            }
+            }*/
+
+
         }
 
 
