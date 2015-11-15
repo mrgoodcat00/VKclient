@@ -15,7 +15,7 @@ public class RequestBuilder {
 
     public RequestBuilder(String method, String t, String uId) {
         this.requestMethod = method;
-        this.version = "v=5.37";
+        this.version = "v=5.40";
         this.token = "access_token="+t;
         if(uId != null){
             this.userId = "user_id="+uId;
@@ -33,9 +33,9 @@ public class RequestBuilder {
         StringBuilder sb = new StringBuilder(hostUrl);
         sb.append(requestMethod).append("?").append(version).append("&");
         for(String methSet:paramFields.keySet()){
-            sb.append(methSet).append("=").append(paramFields.get(methSet));
+            sb.append(methSet).append("=").append(paramFields.get(methSet)).append("&");
         }
-        sb.append("&").append(token).append("&").append(userId);
+        sb.append(token).append("&").append(userId);
 
         return sb.toString();
     }

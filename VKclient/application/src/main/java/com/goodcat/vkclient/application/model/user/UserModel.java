@@ -23,6 +23,11 @@ public class UserModel {
     @SerializedName("counters")
     private UserCountersModel counters;
 
+    @SerializedName("photo_200")
+    private String photo_200;
+
+    public String getPhoto_200() {return photo_200;}
+
     public UserCountersModel getCounters() {
         return counters;
     }

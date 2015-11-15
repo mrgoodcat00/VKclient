@@ -9,7 +9,8 @@
                   android:background="#fff" android:paddingTop="10dp" android:paddingBottom="10dp"
                   android:layout_marginBottom="0dp">
         <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
-                      android:orientation="horizontal" android:id="@+id/authorSetLayout">
+                      android:orientation="horizontal" android:id="@+id/authorSetLayout"
+                      android:layout_marginBottom="10dp">
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -35,7 +36,7 @@
         <LinearLayout android:id="@+id/postTextFromWallOwnerWrapper"
                       android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
-                      android:orientation="horizontal" android:minHeight="0dp">
+                      android:orientation="horizontal" android:minHeight="0dp" android:layout_marginTop="5dp">
             <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -73,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:text="2 years ago"
                         android:id="@+id/repost_start_post_time" android:layout_marginLeft="0dp"
-                        android:layout_below="@+id/repost_starter_user_name"/>
+                        android:layout_below="@+id/repost_starter_user_name" android:autoText="true"/>
             </RelativeLayout>
 
         </LinearLayout>
@@ -89,8 +90,7 @@
                     android:id="@+id/post_text" android:textColor="#000" android:textSize="16sp"
                     />
             <ImageView android:layout_width="fill_parent" android:layout_height="240dp"
-                       android:src="@drawable/bro_logo"
-                       android:scaleType="fitXY"
+                       android:scaleType="centerCrop"
                        android:layout_marginTop="5dp" android:id="@+id/post_image"
                        android:contentDescription="@string/post_image"/>
         </LinearLayout>

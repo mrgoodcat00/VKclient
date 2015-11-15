@@ -1,7 +1,10 @@
 package com.goodcat.vkclient.application.model.user;
 
 
+import com.goodcat.vkclient.application.model.user.attachments.UserWallAttachmentsModel;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class UserResponseWallCopyHistoryModel{
 
@@ -22,6 +25,13 @@ public class UserResponseWallCopyHistoryModel{
 
     @SerializedName("text")
     public String text;
+
+    @SerializedName("attachments")
+    private static List<UserWallAttachmentsModel> attachments;
+
+    public static List<UserWallAttachmentsModel> getAttachments() {
+        return attachments;
+    }
 
     public Integer getId() {
         return id;

@@ -23,7 +23,7 @@ public class UserDataService {
     public static List<UserModel> getUserData (String token,String userId){
         List<UserModel> response = new ArrayList<UserModel>();
         RequestBuilder reqBuilder = new RequestBuilder("users.get",token,userId);
-        reqBuilder.setFields("fields","last_name,first_name,id,home_town,last_seen,counters");
+        reqBuilder.setFields("fields","last_name,first_name,id,home_town,last_seen,counters,photo_200");
         String request = reqBuilder.getUrl();
         try {
             URL url = new URL(request);

@@ -3,9 +3,12 @@
     package="com.goodcat.vkclient.application" >
 
     <application
+
         android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name"  >
+        android:label="@string/app_name"
+
+           >
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
@@ -45,5 +48,6 @@
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

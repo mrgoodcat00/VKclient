@@ -12,6 +12,7 @@ public class UserLastSeenModel {
     private Integer platform;
 
     public String getTime() {
+
         DateTime startDate = new DateTime(time * 1000L);
         return "Last seen " + startDate.getDayOfMonth() + "-" +
                 startDate.getMonthOfYear() + "-" + startDate.getYear() + "  " +

@@ -10,19 +10,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.goodcat.vkclient.application.R;
 import com.goodcat.vkclient.application.adapter.UserWallPostsAdapter;
-import com.goodcat.vkclient.application.model.user.UserCountersModel;
-import com.goodcat.vkclient.application.model.user.UserLastSeenModel;
-import com.goodcat.vkclient.application.model.user.UserModel;
-import com.goodcat.vkclient.application.model.user.UserWallPostsModel;
+import com.goodcat.vkclient.application.model.user.*;
+import com.goodcat.vkclient.application.service.DownloadImageService;
 import com.goodcat.vkclient.application.service.RequestService;
 import com.goodcat.vkclient.application.service.ResponseHomeCallback;
 import com.goodcat.vkclient.application.session.Session;
 import com.goodcat.vkclient.application.session.SessionToken;
+import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.List;
 
@@ -37,11 +37,11 @@ public class MainActivity extends Activity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d("SERVICE", "Connected");
             RequestService.RequestWorker requestWorker = (RequestService.RequestWorker) service;
-            requestWorker.getUserWithWallData(new ResponseHomeCallback<UserModel, UserWallPostsModel>() {
+            requestWorker.getUserWithWallData(new ResponseHomeCallback<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
                 @Override
-                public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems) {
+                public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups) {
                     if (!items.isEmpty() && !wItems.isEmpty()) {
-                        setUserData(items, wItems);
+                        setUserData(items, wItems, wProfiles, wGroups);
                     }
                 }
 
@@ -57,12 +57,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
         st = Session.getSession(this);
 
     }
 
-    private void setUserData(List<UserModel> user, List<UserWallPostsModel> wall) {
+    private void setUserData(List<UserModel> user, List<UserWallPostsModel> wall, List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups) {
         //------------------------------------------------GETS -------------------------------------------
         ListView wallPosts = (ListView) findViewById(R.id.main_user_posts_wall);
         View WrapperHead = View.inflate(MainActivity.this, R.layout.header_part_of_main, null);
@@ -75,6 +76,7 @@ public class MainActivity extends Activity {
         TextView photosCounter = (TextView) WrapperHead.findViewById(R.id.main_header_photos_quantity);
         TextView videoCounter = (TextView) WrapperHead.findViewById(R.id.main_header_videos_quantity);
         TextView audioCounter = (TextView) WrapperHead.findViewById(R.id.main_header_audio_quantity);
+        ImageView ownerAvatar = (ImageView) WrapperHead.findViewById(R.id.main_user_logo);
 
         UserLastSeenModel lastSeeModel = user.get(0).getLast_seen();
         UserCountersModel userCounters = user.get(0).getCounters();
@@ -83,6 +85,8 @@ public class MainActivity extends Activity {
         String lastName = user.get(0).getLast_name();
         String homeTown = user.get(0).getHome_town();
 
+
+        DownloadImageService.fetchImage(user.get(0).getPhoto_200(),ownerAvatar);
 
         userName.setText(firstName+" "+lastName);
         if(homeTown.length()>0){
@@ -106,7 +110,7 @@ public class MainActivity extends Activity {
         wallPosts.setDividerHeight(0);
 
         if(wall != null) {
-            UserWallPostsAdapter adapter = new UserWallPostsAdapter(getApplicationContext(), wall, st.getToken());
+            UserWallPostsAdapter adapter = new UserWallPostsAdapter(getApplicationContext(), wall, wProfiles, wGroups, st.getToken());
             wallPosts.setAdapter(adapter);
         }
 
