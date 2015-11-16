@@ -7,25 +7,22 @@ public class UserWallAttachmentsModel {
 
     @SerializedName("type")
     private String type;
-    public String getType() {
-        return type;
-    }
 
-   /* @SerializedName("video")
+    @SerializedName("video")
     private VideoAttachmentModel video;
 
     @SerializedName("photo")
     private PhotoAttachmentModel photo;
 
-    public VideoAttachmentModel getVideo() {
-        return video;
-    }
-
     public String getType() {
         return type;
     }
 
+    public VideoAttachmentModel getVideo() {
+        return video;
+    }
+
     public PhotoAttachmentModel getPhoto() {
         return photo;
-    }*/
+    }
 }

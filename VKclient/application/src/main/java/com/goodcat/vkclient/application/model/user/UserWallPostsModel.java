@@ -30,28 +30,11 @@ public class UserWallPostsModel {
     @SerializedName("friends_only")
     private Integer friends_only;
 
-    //@SerializedName("comments")
-    //private static String comments;
-
-   // @SerializedName("likes")
-   // private static String likes;
-
-    //@SerializedName("reposts")
-    //private static String reposts;
-
     @SerializedName("post_type")
     private String post_type;
 
-   /* @SerializedName("post_source")
-    private static String post_source;
-
-
-
-    @SerializedName("geo")
-    private static String geo;*/
-
     @SerializedName("attachments")
-    private static UserWallAttachmentsModel attachments;
+    private List<UserWallAttachmentsModel> attachments;
 
     @SerializedName("signer_id")
     private  Long signer_id;
@@ -65,22 +48,9 @@ public class UserWallPostsModel {
     @SerializedName("is_pinned")
     private Integer is_pinned;
 
-    public List<UserResponseWallCopyHistoryModel> getCopy_history() {
-        return copy_history;
-    }
-
-    public UserWallAttachmentsModel getAttachments() {
-        return attachments;
-    }
-
-    public void setAttachments(UserWallAttachmentsModel attachments) {
-        UserWallPostsModel.attachments = attachments;
-    }
-
     public Long getId() {
         return id;
     }
-
 
     public Long getOwner_id() {
         return owner_id;
@@ -114,8 +84,16 @@ public class UserWallPostsModel {
         return post_type;
     }
 
+    public List<UserWallAttachmentsModel> getAttachments() {
+        return attachments;
+    }
+
     public Long getSigner_id() {
         return signer_id;
+    }
+
+    public List<UserResponseWallCopyHistoryModel> getCopy_history() {
+        return copy_history;
     }
 
     public Integer getCan_pin() {
@@ -125,5 +103,21 @@ public class UserWallPostsModel {
     public Integer getIs_pinned() {
         return is_pinned;
     }
+
+
+   /* @SerializedName("post_source")
+    private  String post_source;
+
+    @SerializedName("comments")
+    private   String comments;
+
+    @SerializedName("likes")
+    private  String likes;
+
+    @SerializedName("reposts")
+    private  String reposts;
+
+    @SerializedName("geo")
+    private  String geo;*/
 
 }

@@ -2,7 +2,6 @@ package com.goodcat.vkclient.application.adapter;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,11 +13,16 @@ import com.goodcat.vkclient.application.model.user.UserResponseWallCopyHistoryMo
 import com.goodcat.vkclient.application.model.user.UserWallGroupsModel;
 import com.goodcat.vkclient.application.model.user.UserWallPostsModel;
 import com.goodcat.vkclient.application.model.user.UserWallProfilesModel;
+import com.goodcat.vkclient.application.model.user.attachments.PhotoAttachmentModel;
 import com.goodcat.vkclient.application.model.user.attachments.UserWallAttachmentsModel;
+import com.goodcat.vkclient.application.model.user.attachments.VideoAttachmentModel;
 import com.goodcat.vkclient.application.service.DownloadImageService;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
 
@@ -74,159 +78,155 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
             holder.likes_cntr.setText("");
             holder.ownerSetLayout.setVisibility(View.VISIBLE);
             holder.postTextFromWallOwnerWrapper.setVisibility(View.VISIBLE);
-            holder.post_image.setImageResource(0);
+            holder.post_image.setVisibility(View.VISIBLE);
         }
-
-
         UserWallPostsModel singlePost = wItems.get(position);
-
+        List<UserWallAttachmentsModel> attachments = singlePost.getAttachments();
+        List<UserResponseWallCopyHistoryModel> historyRepost = singlePost.getCopy_history();
+        /*-------------------------------- POST OWNER INFO ----------------------------------------*/
         if(singlePost.getOwner_id().equals(singlePost.getFrom_id())){
-
-            UserWallProfilesModel postFromWallOwner = identifyUser(wProfiles,singlePost.getOwner_id());
+            UserWallProfilesModel postFromWallOwner = identifyUser(singlePost.getOwner_id());
             holder.user_name.setText(postFromWallOwner.getFirst_name() + " " + postFromWallOwner.getLast_name());
             DownloadImageService.fetchImage(postFromWallOwner.getPhoto_50(), holder.user_logo);
-
         } else {
-
-            UserWallProfilesModel postFromOtherUser = identifyUser(wProfiles,singlePost.getFrom_id());
-            holder.user_name.setText(postFromOtherUser.getFirst_name() + " " + postFromOtherUser.getLast_name());
-            DownloadImageService.fetchImage(postFromOtherUser.getPhoto_50(), holder.user_logo);
-
+            UserWallProfilesModel postFromOtherUser = identifyUser(singlePost.getFrom_id());
+            if(postFromOtherUser != null){
+                holder.user_name.setText(postFromOtherUser.getFirst_name() + " " + postFromOtherUser.getLast_name());
+                DownloadImageService.fetchImage(postFromOtherUser.getPhoto_50(), holder.user_logo);
+            } else {
+                UserWallGroupsModel group = identifyGroup(singlePost.getFrom_id());
+                holder.user_name.setText(group.getName());
+                DownloadImageService.fetchImage(group.getPhoto_50(), holder.user_logo);
+            }
         }
+        setPostTime(singlePost.getDate(),holder.user_posted_time);
 
-
-
-
-
-
-        UserWallAttachmentsModel attachmentsFormOwner = singlePost.getAttachments();
-        if(attachmentsFormOwner != null) {
-            Log.d("!!!!!!!",attachmentsFormOwner.getType()+" ");
-      /*      if(attachmentsFormOwner.getType().equals("photo")){
-                Log.d("GOODCAT", attachmentsFormOwner.getPhoto().getPhoto_130() + "");
-                if( !attachmentsFormOwner.getPhoto().getText().contains("Original") && attachmentsFormOwner.getPhoto().getText() != null ) {
-                    holder.post_text.setText(attachmentsFormOwner.getPhoto().getText());
-                }
-                if(attachmentsFormOwner.getPhoto().getPhoto_604().length()>0){
-                    DownloadImageService.fetchImage(attachmentsFormOwner.getPhoto().getPhoto_604(),holder.post_image);
-                }
-                else if (attachmentsFormOwner.getPhoto().getPhoto_807().length()>0){
-                    DownloadImageService.fetchImage(attachmentsFormOwner.getPhoto().getPhoto_807(),holder.post_image);
-                }
-                else if(attachmentsFormOwner.getPhoto().getPhoto_130().length()>0){
-                    DownloadImageService.fetchImage(attachmentsFormOwner.getPhoto().getPhoto_130(),holder.post_image);
-                }
-
-            } else if(attachmentsFormOwner.getType().equals("video")){
-                if( !attachmentsFormOwner.getPhoto().getText().contains("Original") && attachmentsFormOwner.getPhoto().getText() != null ) {
-                    holder.post_text.setText(attachmentsFormOwner.getPhoto().getText());
-                }
-                if(attachmentsFormOwner.getPhoto().getPhoto_604().length()>0){
-                    DownloadImageService.fetchImage(attachmentsFormOwner.getPhoto().getPhoto_604(),holder.post_image);
-                }
-                else if (attachmentsFormOwner.getPhoto().getPhoto_807().length()>0){
-                    DownloadImageService.fetchImage(attachmentsFormOwner.getPhoto().getPhoto_807(),holder.post_image);
-                }
-                else if(attachmentsFormOwner.getPhoto().getPhoto_130().length()>0){
-                    DownloadImageService.fetchImage(attachmentsFormOwner.getPhoto().getPhoto_130(),holder.post_image);
-                }
-            }*/
-
-
-        }
-
-
-
-
-
-
-
-
-
-        DateTime startDate = new DateTime(wItems.get(position).getDate() * 1000L);
-        holder.user_posted_time.setText(startDate.getDayOfMonth() + "-" +
-                startDate.getMonthOfYear() + "-" + startDate.getYear() + "  " +
-                startDate.getHourOfDay() + ":" + startDate.getMinuteOfHour());
-
-        if(singlePost.getText() != null) {
+        /*-------------------------------- POST OWNER TEXT ----------------------------------------*/
+        if(singlePost.getText().length()>0 && !singlePost.getText().startsWith("Original: http:")){
             holder.postTextFromWallOwner.setText(singlePost.getText());
         } else {
             holder.postTextFromWallOwnerWrapper.setVisibility(View.GONE);
         }
 
-
-
-
-        final List<UserResponseWallCopyHistoryModel> copy_history = singlePost.getCopy_history();
-
-        if (copy_history != null) {
-
-
-
-
-
-
-
-
-
-            for (UserWallProfilesModel p : wProfiles) {
-                if (p.getId().equals(singlePost.getFrom_id())&& p.getId().equals(singlePost.getOwner_id())) {
-                    holder.ownerSetLayout.setVisibility(View.GONE);
-                    holder.postTextFromWallOwnerWrapper.setVisibility(View.GONE);
-                    break;
-                } else if(p.getId().equals(singlePost.getFrom_id())){
-                    holder.repost_starter_user_name.setText(p.getFirst_name() + " " + p.getLast_name());
-                    DownloadImageService.fetchImage(p.getPhoto_50(), holder.repost_user_logo);
-
-                    DateTime startPostTime = new DateTime(wItems.get(position).getDate() * 1000L);
-                    holder.repost_start_post_time.setText(startPostTime.getDayOfMonth() + "-" +
-                            startPostTime.getMonthOfYear() + "-" + startPostTime.getYear() + "  " +
-                            startPostTime.getHourOfDay() + ":" + startPostTime.getMinuteOfHour());
-                    break;
-                }
+        /*-------------------------------- Post by Post Owner -------------------------------------*/
+        if(attachments != null && historyRepost == null) {
+            if (attachments.get(0).getType().equals("video")) {
+                VideoAttachmentModel video = attachments.get(0).getVideo();
+                holder.post_text.setText("" + video.getTitle() + "\n" + video.getDescription() + "\n");
+                if(video.getPhoto_640() != null) {
+                    DownloadImageService.fetchImage(video.getPhoto_640(), holder.post_image);
+                } else if(video.getPhoto_320()!= null) {
+                    DownloadImageService.fetchImage(video.getPhoto_320(), holder.post_image);
+                } else if(video.getPhoto_130()!= null) {
+                    DownloadImageService.fetchImage(video.getPhoto_130(), holder.post_image);
+                } else {holder.post_image.setVisibility(View.GONE);}
+            } else if (attachments.get(0).getType().equals("photo")) {
+                PhotoAttachmentModel photo = attachments.get(0).getPhoto();
+                if(photo.getText().length()>0 && !photo.getText().startsWith("Original: http:")) {
+                    holder.post_text.setText("" + photo.getText());
+                } else {holder.post_text.setVisibility(View.GONE);}
+                if(photo.getPhoto_604()!= null) {
+                    DownloadImageService.fetchImage(photo.getPhoto_604(), holder.post_image);
+                } else if(photo.getPhoto_807()!= null) {
+                    DownloadImageService.fetchImage(photo.getPhoto_807(), holder.post_image);
+                } else if(photo.getPhoto_130()!= null) {
+                    DownloadImageService.fetchImage(photo.getPhoto_130(), holder.post_image);
+                } else {holder.post_image.setVisibility(View.GONE);}
             }
-
-
-            if (copy_history != null) {
-                if (copy_history.get(0).getText().toString().length()>0) {
-
-                    holder.post_text.setText(copy_history.get(0).getText());
-
-                    for (UserWallGroupsModel g : wGroups) {
-                        String groupID = "-"+g.getId();
-                        if (groupID.equals(copy_history.get(0).getFrom_id().toString())) {
-                            holder.ownerSetLayout.setVisibility(View.VISIBLE);
-                            holder.repost_starter_user_name.setText(g.getName());
-                            DownloadImageService.fetchImage(g.getPhoto_50(), holder.repost_user_logo);
-                            break;
-                        }
-                    }
-
-                    DateTime start = new DateTime(copy_history.get(0).getDate().longValue() * 1000L);
-                    holder.repost_start_post_time.setText(start.getDayOfMonth() + "-" +
-                            start.getMonthOfYear() + "-" + start.getYear() + "  " +
-                            start.getHourOfDay() + ":" + start.getMinuteOfHour());
-
-                }
-            }
-
-
-
-
-
-
-
-
-
-        } else {
             holder.ownerSetLayout.setVisibility(View.GONE);
+
+        } else if(attachments != null && historyRepost != null) {
+
+        /*-------------------------------- Repost by Wall Owner with custom attachment-------------------------------------*/
+            holder.post_text.setText("In construction");
+            holder.ownerSetLayout.setVisibility(View.GONE);
+            holder.post_image.setVisibility(View.GONE);
+            /*-------------------------------- Repost by Wall Owner without custom attachment-------------------------------------*/
+        } else if(historyRepost != null && attachments == null){
+
+            List<UserWallAttachmentsModel> attachmentInsideRepost = historyRepost.get(0).getAttachments();
+
+            if(attachmentInsideRepost == null) {
+                if(historyRepost.get(0).getFrom_id() > 0) {
+                    UserWallProfilesModel postOwner = identifyUser(historyRepost.get(0).getFrom_id());
+                    holder.repost_starter_user_name.setText(postOwner.getFirst_name() + " " + postOwner.getLast_name());
+                    DownloadImageService.fetchImage(postOwner.getPhoto_50(), holder.repost_user_logo);
+                    setPostTime(historyRepost.get(0).getDate(),holder.repost_start_post_time);
+                } else {
+                    UserWallGroupsModel groupOwner = identifyGroup(historyRepost.get(0).getFrom_id());
+                    holder.repost_starter_user_name.setText(groupOwner.getName());
+                    DownloadImageService.fetchImage(groupOwner.getPhoto_50(), holder.repost_user_logo);
+                    setPostTime(historyRepost.get(0).getDate(),holder.repost_start_post_time);
+                }
+                holder.post_text.setText(historyRepost.get(0).getText());
+                holder.post_image.setVisibility(View.GONE);
+            } else {
+
+
+
+
+
+
+
+               /* UserWallProfilesModel postOwner = identifyUser(historyRepost.get(0).getFrom_id());
+                if (postOwner != null) {
+                    holder.repost_starter_user_name.setText(postOwner.getFirst_name() + " " + postOwner.getLast_name());
+                    DownloadImageService.fetchImage(postOwner.getPhoto_50(), holder.repost_user_logo);
+                } else {
+                    UserWallGroupsModel group = identifyGroup(historyRepost.get(0).getFrom_id());
+                    holder.repost_starter_user_name.setText(group.getName());
+                    DownloadImageService.fetchImage(group.getPhoto_50(), holder.repost_user_logo);
+
+                    if (attachments != null) {
+                        if (attachments.get(0).getType().equals("video")) {
+                            VideoAttachmentModel video = attachments.get(0).getVideo();
+                            holder.post_text.setText("" + video.getTitle() + "\n" + video.getDescription() + "\n");
+                            if (video.getPhoto_640() != null) {
+                                if (video.getId().toString().equals("171565754")) {
+                                    Log.d("!!!!!!", video.getPhoto_640() + "");
+                                }
+                                DownloadImageService.fetchImage(video.getPhoto_640(), holder.post_image);
+                            } else if (video.getPhoto_320() != null) {
+                                DownloadImageService.fetchImage(video.getPhoto_320(), holder.post_image);
+                            } else if (video.getPhoto_130() != null) {
+                                DownloadImageService.fetchImage(video.getPhoto_130(), holder.post_image);
+                            } else {
+                                DownloadImageService.fetchImage("default", holder.post_image);
+                            }
+
+                        } else if (attachments.get(0).getType().equals("photo")) {
+                            PhotoAttachmentModel photo = attachments.get(0).getPhoto();
+                            if (photo.getText().length() > 0 && !photo.getText().startsWith("Original: http:")) {
+                                holder.post_text.setText("" + photo.getText());
+                            } else { *//* --------------- Think about it------- *//*}
+                            if (photo.getPhoto_604() != null) {
+                                DownloadImageService.fetchImage(photo.getPhoto_604(), holder.post_image);
+                            } else if (photo.getPhoto_807() != null) {
+                                DownloadImageService.fetchImage(photo.getPhoto_807(), holder.post_image);
+                            } else if (photo.getPhoto_130() != null) {
+                                DownloadImageService.fetchImage(photo.getPhoto_130(), holder.post_image);
+                            } else {
+                                DownloadImageService.fetchImage("default", holder.post_image);
+                            }
+                        }
+                    } else {
+                        holder.post_text.setText(historyRepost.get(0).getText());
+                        holder.post_image.setVisibility(View.GONE);
+                    }
+                }*/
+
+
+            }
+
+
+
+
+
+
+
+
+
         }
-
-
-
-
-
-
 
 
 
@@ -236,20 +236,41 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
         return convertView;
     }
 
-    private UserWallProfilesModel identifyUser(List<UserWallProfilesModel> wProfiles,Long id){
+    private UserWallProfilesModel identifyUser(Long id) {
         UserWallProfilesModel user = null;
-        for(UserWallProfilesModel m : wProfiles){
-            if(m.getId().equals(id)) {
-               user = m;
+        for (UserWallProfilesModel m : wProfiles) {
+            if (m.getId().equals(id)) {
+                user = m;
                 break;
             }
         }
         return user;
     }
 
+    private UserWallGroupsModel identifyGroup(Long id) {
+        id *= -1;
+        UserWallGroupsModel group = null;
+        for (UserWallGroupsModel m : wGroups) {
+            if (m.getId().equals(id)) {
+                group = m;
+                break;
+            }
+        }
+        return group;
+    }
+
+    private void setPostTime(Long postTime,TextView timeView){
+        Calendar cal = Calendar.getInstance();
+        TimeZone tz = cal.getTimeZone();
+        Long time = postTime * 1000L;
+        DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(tz);
+        DateTime repostDateTime = new DateTime(time,dateTimeZone);
+        timeView.setText(repostDateTime.getDayOfMonth() + "-" +
+                repostDateTime.getMonthOfYear() + "-" + repostDateTime.getYear() + "  " +
+                repostDateTime.getHourOfDay() + ":" + repostDateTime.getMinuteOfHour());
+    }
 
     public static class ViewWallItemHolder {
-
         TextView user_name;
         TextView user_posted_time;
         TextView repost_starter_user_name;
@@ -269,7 +290,5 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
         ImageView comments_icon;
         ImageView bottom_repost_icon;
         ImageView likes_icon;
-
-
     }
 }

@@ -106,42 +106,6 @@ public class RequestService extends Service{
                             Type fooType = new TypeToken<List<UserWallPostsModel>>() {}.getType();
                             List<UserWallPostsModel> commonWallItemsModel = gson.fromJson(items.toString(), fooType);
                             responseItems = commonWallItemsModel;
-                            //Type attType = new TypeToken<UserWallAttachmentsModel>() {}.getType();
-                            /*for(JsonElement jso:items){
-                                JsonObject jsonObj = (JsonObject) jso;
-                                Log.d("requestService","Items loop "+counter+"  "+jsonObj.toString());
-                                if(jsonObj.getAsJsonArray("attachments") != null && jsonObj.getAsJsonArray("copy_history") == null) {
-                                    for (JsonElement arrayItem : jsonObj.getAsJsonArray("attachments")) {
-                                        Log.d("requestService","Attachment loop "+counter+" "+arrayItem.toString());
-                                        Type attType = new TypeToken<UserWallAttachmentsModel>() {}.getType();
-                                        UserWallAttachmentsModel attachments = gson.fromJson(arrayItem.toString(), attType);
-                                        responseItems.get(counter).setAttachments(attachments);
-                                        attachments = null;
-                                        arrayItem = null;
-                                    }
-                                }
-                                jsonObj = null;
-                                counter++;
-                            }*/
-
-                           /* for(JsonElement jso:items){
-                                JsonObject jsonObj = (JsonObject) jso;
-                                Log.d("requestService","Items loop "+counter+"  "+jsonObj.toString());
-                                if(jsonObj.getAsJsonArray("attachments") != null && jsonObj.getAsJsonArray("copy_history") == null) {
-
-
-
-                                        UserWallAttachmentsModel attachments = gson.fromJson(jsonObj.getAsJsonArray("attachments").get(0).toString(), attType);
-                                        responseItems.get(counter).setAttachments(attachments);
-                                        attachments = null;
-
-
-                                }
-                                jsonObj = null;
-                                counter++;
-                            }
-                            Log.d("requestService", responseItems.get(0).getAttachments().getPhoto().getPhoto_130() + "");
-                            Log.d("requestService",responseItems.get(2).getAttachments().getPhoto().getPhoto_130()+"");*/
                         }
 
                         if (groups.size() > 0) {

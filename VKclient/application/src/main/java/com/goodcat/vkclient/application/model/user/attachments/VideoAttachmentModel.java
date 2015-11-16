@@ -1,29 +1,61 @@
 package com.goodcat.vkclient.application.model.user.attachments;
 
-public class VideoAttachmentModel {
+import com.google.gson.annotations.SerializedName;
 
-    public Integer id;
-    public Integer owner_id;
+public class VideoAttachmentModel {
+    @SerializedName("id")
+    public Long id;
+
+    @SerializedName("owner_id")
+    public Long owner_id;
+
+    @SerializedName("title")
     public String title;
+
+    @SerializedName("description")
     public String description;
+
+    @SerializedName("duration")
     public Integer duration;
+
+    @SerializedName("photo_130")
     public String photo_130;
+
+    @SerializedName("photo_320")
     public String photo_320;
+
+    @SerializedName("photo_640")
     public String photo_640;
-    public Integer date;
-    public Integer adding_date;
+
+    @SerializedName("date")
+    public Long date;
+
+    @SerializedName("adding_date")
+    public Long adding_date;
+
+    @SerializedName("views")
     public Integer views;
+
+    @SerializedName("comments")
     public Integer comments;
+
+    @SerializedName("player")
     public String  player;
-    public Integer access_key;
+
+    @SerializedName("access_key")
+    public String access_key;
+
+    @SerializedName("processing")
     public Integer processing;
+
+    @SerializedName("live")
     public Integer live;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public Integer getOwner_id() {
+    public Long getOwner_id() {
         return owner_id;
     }
 
@@ -51,11 +83,11 @@ public class VideoAttachmentModel {
         return photo_640;
     }
 
-    public Integer getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public Integer getAdding_date() {
+    public Long getAdding_date() {
         return adding_date;
     }
 
@@ -71,7 +103,7 @@ public class VideoAttachmentModel {
         return player;
     }
 
-    public Integer getAccess_key() {
+    public String getAccess_key() {
         return access_key;
     }
 
