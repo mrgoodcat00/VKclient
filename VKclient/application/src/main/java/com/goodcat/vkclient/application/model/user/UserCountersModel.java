@@ -4,127 +4,80 @@ package com.goodcat.vkclient.application.model.user;
 import com.google.gson.annotations.SerializedName;
 
 public class UserCountersModel {
-
-
-
     @SerializedName("albums")
-    private Integer albums;
+    private int albums;
 
     @SerializedName("videos")
-    private Integer videos;
+    private int videos;
 
     @SerializedName("audios")
-    private Integer audios;
+    private int audios;
 
     @SerializedName("photos")
-    private Integer photos;
+    private int photos;
 
     @SerializedName("notes")
-    private Integer notes;
+    private int notes;
 
     @SerializedName("friends")
-    private Integer friends;
+    private int friends;
 
     @SerializedName("groups")
-    private Integer groups;
+    private int groups;
 
     @SerializedName("online_friends")
-    private Integer online_friends;
+    private int onlineFriends;
 
     @SerializedName("mutual_friends")
-    private Integer mutual_friends;
+    private int mutualFriends;
 
     @SerializedName("user_videos")
-    private Integer user_videos;
+    private int userVideos;
 
     @SerializedName("followers")
-    private Integer followers;
+    private int followers;
 
-    public Integer getAlbums() {
+    public int getAlbums() {
         return albums;
     }
 
-    public void setAlbums(Integer albums) {
-        this.albums = albums;
-    }
-
-    public Integer getVideos() {
+    public int getVideos() {
         return videos;
     }
 
-    public void setVideos(Integer videos) {
-        this.videos = videos;
-    }
-
-    public Integer getAudios() {
+    public int getAudios() {
         return audios;
     }
 
-    public void setAudios(Integer audios) {
-        this.audios = audios;
-    }
-
-    public Integer getPhotos() {
+    public int getPhotos() {
         return photos;
     }
 
-    public void setPhotos(Integer photos) {
-        this.photos = photos;
-    }
-
-    public Integer getNotes() {
+    public int getNotes() {
         return notes;
     }
 
-    public void setNotes(Integer notes) {
-        this.notes = notes;
-    }
-
-    public Integer getFriends() {
+    public int getFriends() {
         return friends;
     }
 
-    public void setFriends(Integer friends) {
-        this.friends = friends;
-    }
-
-    public Integer getGroups() {
+    public int getGroups() {
         return groups;
     }
 
-    public void setGroups(Integer groups) {
-        this.groups = groups;
+    public int getOnlineFriends() {
+        return onlineFriends;
     }
 
-    public Integer getOnline_friends() {
-        return online_friends;
+    public int getMutualFriends() {
+        return mutualFriends;
     }
 
-    public void setOnline_friends(Integer online_friends) {
-        this.online_friends = online_friends;
+    public int getUserVideos() {
+        return userVideos;
     }
 
-    public Integer getMutual_friends() {
-        return mutual_friends;
-    }
-
-    public void setMutual_friends(Integer mutual_friends) {
-        this.mutual_friends = mutual_friends;
-    }
-
-    public Integer getUser_videos() {
-        return user_videos;
-    }
-
-    public void setUser_videos(Integer user_videos) {
-        this.user_videos = user_videos;
-    }
-
-    public Integer getFollowers() {
+    public int getFollowers() {
         return followers;
-    }
-
-    public void setFollowers(Integer followers) {
-        this.followers = followers;
     }
 }

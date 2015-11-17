@@ -5,66 +5,65 @@ import com.google.gson.annotations.SerializedName;
 public class UserWallGroupsModel {
 
     @SerializedName("id")
-    private Long id;
+    private long id;
 
     @SerializedName("name")
     private String name;
 
     @SerializedName("date")
-    private Long date;
+    private long date;
 
     @SerializedName("can_edit")
-    private Integer can_edit;
+    private int canEdit;
 
     @SerializedName("can_delete")
-    private Integer can_delete;
+    private int canDelete;
 
     @SerializedName("can_pin")
-    private Integer can_pin;
+    private int canPin;
 
     @SerializedName("post_type")
-    private String post_type;
+    private String postType;
 
     @SerializedName("text")
     private String text;
 
     @SerializedName("photo_50")
-    private String photo_50;
+    private String photo50;
 
-    public String getPhoto_50() {
-        return photo_50;
+    public long getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
+    public long getDate() {
+        return date;
+    }
+
+    public int getCanEdit() {
+        return canEdit;
+    }
+
+    public int getCanDelete() {
+        return canDelete;
+    }
+
+    public int getCanPin() {
+        return canPin;
+    }
+
+    public String getPostType() {
+        return postType;
+    }
+
     public String getText() {
         return text;
     }
 
-    public Long getId() {
-        return id;
+    public String getPhoto50() {
+        return photo50;
     }
-
-    public Long getDate() {
-        return date;
-    }
-
-    public Integer getCan_edit() {
-        return can_edit;
-    }
-
-    public Integer getCan_delete() {
-        return can_delete;
-    }
-
-    public Integer getCan_pin() {
-        return can_pin;
-    }
-
-    public String getPost_type() {
-        return post_type;
-    }
-
 }

@@ -9,19 +9,19 @@ import java.util.List;
 public class UserResponseWallCopyHistoryModel{
 
     @SerializedName("id")
-    public Long id;
+    public long id;
 
     @SerializedName("owner_id")
-    public Long owner_id;
+    public long ownerId;
 
     @SerializedName("from_id")
-    public Long from_id;
+    public long fromId;
 
     @SerializedName("date")
-    public Long date;
+    public long date;
 
     @SerializedName("post_type")
-    public String post_type;
+    public String postType;
 
     @SerializedName("text")
     public String text;
@@ -37,20 +37,20 @@ public class UserResponseWallCopyHistoryModel{
         return id;
     }
 
-    public Long getOwner_id() {
-        return owner_id;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public Long getFrom_id() {
-        return from_id;
+    public Long getFromId() {
+        return fromId;
     }
 
     public Long getDate() {
         return date;
     }
 
-    public String getPost_type() {
-        return post_type;
+    public String getPostType() {
+        return postType;
     }
 
     public String getText() {

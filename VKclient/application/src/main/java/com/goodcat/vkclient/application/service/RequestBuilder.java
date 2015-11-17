@@ -18,7 +18,11 @@ public class RequestBuilder {
         this.version = "v=5.40";
         this.token = "access_token="+t;
         if(uId != null){
-            this.userId = "user_id="+uId;
+            if(method.startsWith("user.get")){
+                this.userId = "user_ids=" + uId;
+            } else {
+                this.userId = "user_id=" + uId;
+            }
         }
 
     }

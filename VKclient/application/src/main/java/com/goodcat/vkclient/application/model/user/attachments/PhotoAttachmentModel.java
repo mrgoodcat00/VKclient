@@ -5,91 +5,93 @@ import com.google.gson.annotations.SerializedName;
 public class PhotoAttachmentModel {
 
     @SerializedName("id")
-    private Long id;
+    private long id;
 
     @SerializedName("album_id")
-    private Long album_id;
+    private long albumId;
 
     @SerializedName("owner_id")
-    private Long owner_id;
+    private long ownerId;
 
     @SerializedName("user_id")
-    private Long user_id;
+    private long userId;
 
     @SerializedName("text")
     private String text;
 
     @SerializedName("date")
-    private Long date;
+    private long date;
 
     @SerializedName("photo_75")
-    private String photo_75;
+    private String photo75;
 
     @SerializedName("photo_130")
-    private String photo_130;
+    private String photo130;
 
     @SerializedName("photo_604")
-    private String photo_604;
+    private String photo604;
 
     @SerializedName("photo_807")
-    private String photo_807;
+    private String photo807;
 
     @SerializedName("photo_1280")
-    private String photo_1280;
+    private String photo1280;
 
     @SerializedName("photo_2560")
-    private String photo_2560;
+    private String photo2560;
 
     @SerializedName("access_key")
-    private String access_key;
+    private String accessKey;
 
-    public String getAccess_key() {return access_key;}
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public Long getAlbum_id() {
-        return album_id;
+    public long getAlbumId() {
+        return albumId;
     }
 
-    public Long getOwner_id() {
-        return owner_id;
+    public long getOwnerId() {
+        return ownerId;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public long getUserId() {
+        return userId;
     }
 
     public String getText() {
         return text;
     }
 
-    public Long getDate() {
+    public long getDate() {
         return date;
     }
 
-    public String getPhoto_75() {
-        return photo_75;
+    public String getPhoto75() {
+        return photo75;
     }
 
-    public String getPhoto_130() {
-        return photo_130;
+    public String getPhoto130() {
+        return photo130;
     }
 
-    public String getPhoto_604() {
-        return photo_604;
+    public String getPhoto604() {
+        return photo604;
     }
 
-    public String getPhoto_807() {
-        return photo_807;
+    public String getPhoto807() {
+        return photo807;
     }
 
-    public String getPhoto_1280() {
-        return photo_1280;
+    public String getPhoto1280() {
+        return photo1280;
     }
 
-    public String getPhoto_2560() {
-        return photo_2560;
+    public String getPhoto2560() {
+        return photo2560;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
     }
 }

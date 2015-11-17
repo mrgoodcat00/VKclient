@@ -81,10 +81,14 @@ uses-permission#android.permission.INTERNET
 ADDED from AndroidManifest.xml:50:5
 	android:name
 		ADDED from AndroidManifest.xml:50:22
-uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from AndroidManifest.xml:51:5
 	android:name
 		ADDED from AndroidManifest.xml:51:22
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from AndroidManifest.xml:52:5
+	android:name
+		ADDED from AndroidManifest.xml:52:22
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
 MERGED from com.android.support:appcompat-v7:23.0.1:20:5

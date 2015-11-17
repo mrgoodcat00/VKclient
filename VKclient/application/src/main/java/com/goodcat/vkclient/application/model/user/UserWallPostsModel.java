@@ -7,60 +7,69 @@ import java.util.List;
 
 public class UserWallPostsModel {
     @SerializedName("id")
-    private Long id;
+    private long id;
 
     @SerializedName("owner_id")
-    private Long owner_id;
+    private long ownerId;
 
     @SerializedName("from_id")
-    private Long from_id;
+    private long fromId;
 
     @SerializedName("date")
-    private Long date;
+    private long date;
 
     @SerializedName("text")
     private String text;
 
     @SerializedName("reply_owner_id")
-    private Long reply_owner_id;
+    private long replyOwnerId;
 
     @SerializedName("reply_post_id")
-    private Long reply_post_id;
+    private long replyPostId;
 
     @SerializedName("friends_only")
-    private Integer friends_only;
+    private int friendsOnly;
 
     @SerializedName("post_type")
-    private String post_type;
+    private String postType;
 
     @SerializedName("attachments")
     private List<UserWallAttachmentsModel> attachments;
 
+    @SerializedName("comments")
+    private UserWallPostsCommentsCountModel comments;
+
+    @SerializedName("likes")
+    private UserWallPostsLikesCountModel likes;
+
+    @SerializedName("reposts")
+    private UserWallPostsRepostsCountModel reposts;
+
     @SerializedName("signer_id")
-    private  Long signer_id;
+    private  long signerId;
 
     @SerializedName("copy_history")
-    private List<UserResponseWallCopyHistoryModel> copy_history;
+    private List<UserResponseWallCopyHistoryModel> copyHistory;
 
     @SerializedName("can_pin")
-    private  Integer can_pin;
+    private  int canPin;
 
     @SerializedName("is_pinned")
-    private Integer is_pinned;
+    private int isPinned;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public Long getOwner_id() {
-        return owner_id;
+    public long getOwnerId() {
+        return ownerId;
     }
 
-    public Long getFrom_id() {
-        return from_id;
+    public long getFromId() {
+        return fromId;
     }
 
-    public Long getDate() {
+    public long getDate() {
         return date;
     }
 
@@ -68,42 +77,53 @@ public class UserWallPostsModel {
         return text;
     }
 
-    public Long getReply_owner_id() {
-        return reply_owner_id;
+    public long getReplyOwnerId() {
+        return replyOwnerId;
     }
 
-    public Long getReply_post_id() {
-        return reply_post_id;
+    public long getReplyPostId() {
+        return replyPostId;
     }
 
-    public Integer getFriends_only() {
-        return friends_only;
+    public int getFriendsOnly() {
+        return friendsOnly;
     }
 
-    public String getPost_type() {
-        return post_type;
+    public String getPostType() {
+        return postType;
     }
 
     public List<UserWallAttachmentsModel> getAttachments() {
         return attachments;
     }
 
-    public Long getSigner_id() {
-        return signer_id;
+    public UserWallPostsCommentsCountModel getComments() {
+        return comments;
     }
 
-    public List<UserResponseWallCopyHistoryModel> getCopy_history() {
-        return copy_history;
+    public UserWallPostsLikesCountModel getLikes() {
+        return likes;
     }
 
-    public Integer getCan_pin() {
-        return can_pin;
+    public UserWallPostsRepostsCountModel getReposts() {
+        return reposts;
     }
 
-    public Integer getIs_pinned() {
-        return is_pinned;
+    public long getSignerId() {
+        return signerId;
     }
 
+    public List<UserResponseWallCopyHistoryModel> getCopyHistory() {
+        return copyHistory;
+    }
+
+    public int getCanPin() {
+        return canPin;
+    }
+
+    public int getIsPinned() {
+        return isPinned;
+    }
 
    /* @SerializedName("post_source")
     private  String post_source;

@@ -69,9 +69,32 @@ public class RequestService extends Service{
                 @Override
                 public void run() {
                     String token = session.getToken();
+                    List<UserModel> responseUser = new ArrayList<UserModel>();
                     List<UserWallPostsModel> responseItems = new ArrayList<UserWallPostsModel>();
                     List<UserWallProfilesModel> responseProfiles = new ArrayList<UserWallProfilesModel>();
                     List<UserWallGroupsModel> responseGroups = new ArrayList<UserWallGroupsModel>();
+
+                    try {
+                        RequestBuilder reqBuilder = new RequestBuilder("users.get", token, userId);
+                        reqBuilder.setFields("fields", "sex,bdate,city,country,photo_50,photo_100,photo_200_orig,photo_200,photo_400_orig,photo_max,photo_max_orig,photo_id,online,online_mobile,domain,has_mobile,contacts,connections,site,education,universities,schools,can_post,can_see_all_posts,can_see_audio,can_write_private_message,status,last_seen,common_count,relation,relatives,counters,screen_name,maiden_name,timezone,occupation,activities,interests,music,movies,tv,books,games,about,quotes,personal,friend_status,military,career");
+                        BufferedReader br = executeHttpRequest(reqBuilder);
+                        String line = null;
+                        StringBuilder st = new StringBuilder();
+                        while ((line = br.readLine()) != null) {
+                            st.append(line + "");
+                        }
+                        Log.d("JSON-user", st.toString());
+                        if (st.length() > 0) {
+                            Gson gson = new Gson();
+                            Type fooType =  new TypeToken<CommonListResponseModel<UserModel>>(){}.getType();
+                            CommonListResponseModel userListResponse = gson.fromJson(st.toString(), fooType);
+                            responseUser = userListResponse.getResponse();
+                        }
+                    }  catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
 
                     try {
                         RequestBuilder reqBuilder = new RequestBuilder("wall.get", token, userId);
@@ -79,7 +102,6 @@ public class RequestService extends Service{
                         reqBuilder.setFields("extended", "1");
                         reqBuilder.setFields("filter", "all");
                         reqBuilder.setFields("offset","0");
-                        //reqBuilder.setFields("fields", "name,last_name,first_name,id,photo_50");
 
                         BufferedReader br = executeHttpRequest(reqBuilder);
                         String line = null;
@@ -101,7 +123,6 @@ public class RequestService extends Service{
                         Log.d("JSON-groups", groups.toString());
 
                         if (items.size() > 0) {
-                            int counter = 0;
                             Gson gson = new Gson();
                             Type fooType = new TypeToken<List<UserWallPostsModel>>() {}.getType();
                             List<UserWallPostsModel> commonWallItemsModel = gson.fromJson(items.toString(), fooType);
@@ -110,16 +131,14 @@ public class RequestService extends Service{
 
                         if (groups.size() > 0) {
                             Gson gson = new Gson();
-                            Type fooType = new TypeToken<List<UserWallGroupsModel>>() {
-                            }.getType();
+                            Type fooType = new TypeToken<List<UserWallGroupsModel>>() {}.getType();
                             List<UserWallGroupsModel> commonWallGroupsModel = gson.fromJson(groups.toString(), fooType);
                             responseGroups = commonWallGroupsModel;
                         }
 
                         if (profiles.size() > 0) {
                             Gson gson = new Gson();
-                            Type fooType = new TypeToken<List<UserWallProfilesModel>>() {
-                            }.getType();
+                            Type fooType = new TypeToken<List<UserWallProfilesModel>>() {}.getType();
                             List<UserWallProfilesModel> commonWallProfilesModel = gson.fromJson(profiles.toString(), fooType);
                             responseProfiles = commonWallProfilesModel;
                         }
@@ -128,8 +147,7 @@ public class RequestService extends Service{
                     } catch(IOException e) {
                         e.printStackTrace();
                     }
-
-                    final List<UserModel> uM = UserDataService.getUserData(token, userId);
+                    final List<UserModel> uM = responseUser;
                     final List<UserWallPostsModel> uW = responseItems;
                     final List<UserWallProfilesModel> uP = responseProfiles;
                     final List<UserWallGroupsModel> uG = responseGroups;

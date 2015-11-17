@@ -6,79 +6,79 @@ import com.google.gson.annotations.SerializedName;
 public class UserWallProfilesModel {
 
     @SerializedName("id")
-    private Long id;
+    private long id;
 
     @SerializedName("first_name")
-    private String first_name;
+    private String firstName;
 
     @SerializedName("last_name")
-    private String last_name;
+    private String lastName;
 
     @SerializedName("sex")
-    private Integer sex;
+    private int sex;
 
     @SerializedName("screen_name")
-    private String screen_name;
+    private String screenName;
 
     @SerializedName("text")
     private String text;
 
     @SerializedName("photo_50")
-    private String photo_50;
+    private String photo50;
 
     @SerializedName("photo_100")
-    private String photo_100;
+    private String photo100;
 
     @SerializedName("online")
-    private Integer online;
+    private int online;
 
     @SerializedName("online_app")
-    private String online_app;
+    private String onlineApp;
 
     @SerializedName("online_mobile")
-    private Integer online_mobile;
+    private int onlineMobile;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public Integer getSex() {
+    public int getSex() {
         return sex;
     }
 
-    public String getScreen_name() {
-        return screen_name;
+    public String getScreenName() {
+        return screenName;
     }
 
     public String getText() {
         return text;
     }
 
-    public String getPhoto_50() {
-        return photo_50;
+    public String getPhoto50() {
+        return photo50;
     }
 
-    public String getPhoto_100() {
-        return photo_100;
+    public String getPhoto100() {
+        return photo100;
     }
 
-    public Integer getOnline() {
+    public int getOnline() {
         return online;
     }
 
-    public String getOnline_app() {
-        return online_app;
+    public String getOnlineApp() {
+        return onlineApp;
     }
 
-    public Integer getOnline_mobile() {
-        return online_mobile;
+    public int getOnlineMobile() {
+        return onlineMobile;
     }
 }

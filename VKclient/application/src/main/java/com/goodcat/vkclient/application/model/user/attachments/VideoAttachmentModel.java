@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class VideoAttachmentModel {
     @SerializedName("id")
-    public Long id;
+    public long id;
 
     @SerializedName("owner_id")
-    public Long owner_id;
+    public long ownerId;
 
     @SerializedName("title")
     public String title;
@@ -16,47 +16,47 @@ public class VideoAttachmentModel {
     public String description;
 
     @SerializedName("duration")
-    public Integer duration;
+    public int duration;
 
     @SerializedName("photo_130")
-    public String photo_130;
+    public String photo130;
 
     @SerializedName("photo_320")
-    public String photo_320;
+    public String photo320;
 
     @SerializedName("photo_640")
-    public String photo_640;
+    public String photo640;
 
     @SerializedName("date")
-    public Long date;
+    public long date;
 
     @SerializedName("adding_date")
-    public Long adding_date;
+    public long addingDate;
 
     @SerializedName("views")
-    public Integer views;
+    public int views;
 
     @SerializedName("comments")
-    public Integer comments;
+    public int comments;
 
     @SerializedName("player")
     public String  player;
 
     @SerializedName("access_key")
-    public String access_key;
+    public String accessKey;
 
     @SerializedName("processing")
-    public Integer processing;
+    public int processing;
 
     @SerializedName("live")
-    public Integer live;
+    public int live;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public Long getOwner_id() {
-        return owner_id;
+    public long getOwnerId() {
+        return ownerId;
     }
 
     public String getTitle() {
@@ -67,35 +67,35 @@ public class VideoAttachmentModel {
         return description;
     }
 
-    public Integer getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public String getPhoto_130() {
-        return photo_130;
+    public String getPhoto130() {
+        return photo130;
     }
 
-    public String getPhoto_320() {
-        return photo_320;
+    public String getPhoto320() {
+        return photo320;
     }
 
-    public String getPhoto_640() {
-        return photo_640;
+    public String getPhoto640() {
+        return photo640;
     }
 
-    public Long getDate() {
+    public long getDate() {
         return date;
     }
 
-    public Long getAdding_date() {
-        return adding_date;
+    public long getAddingDate() {
+        return addingDate;
     }
 
-    public Integer getViews() {
+    public int getViews() {
         return views;
     }
 
-    public Integer getComments() {
+    public int getComments() {
         return comments;
     }
 
@@ -103,15 +103,15 @@ public class VideoAttachmentModel {
         return player;
     }
 
-    public String getAccess_key() {
-        return access_key;
+    public String getAccessKey() {
+        return accessKey;
     }
 
-    public Integer getProcessing() {
+    public int getProcessing() {
         return processing;
     }
 
-    public Integer getLive() {
+    public int getLive() {
         return live;
     }
 }

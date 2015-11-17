@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
                     }
                 }
 
-            }, "14587316"/*"12455497"*/);
+            }, st.getUserId().toString());//"14587316"/*"12455497"*/);
         }
 
         @Override
@@ -65,8 +65,9 @@ public class MainActivity extends Activity {
 
     private void setUserData(List<UserModel> user, List<UserWallPostsModel> wall, List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups) {
         //------------------------------------------------GETS -------------------------------------------
-        ListView wallPosts = (ListView) findViewById(R.id.main_user_posts_wall);
+
         View WrapperHead = View.inflate(MainActivity.this, R.layout.header_part_of_main, null);
+        ListView wallPosts = (ListView) findViewById(R.id.main_user_posts_wall);
         TextView userName = (TextView) WrapperHead.findViewById(R.id.main_user_name);
         TextView userFrom = (TextView) WrapperHead.findViewById(R.id.main_user_from);
         TextView lastSeen = (TextView) WrapperHead.findViewById(R.id.main_online_status);
@@ -78,26 +79,26 @@ public class MainActivity extends Activity {
         TextView audioCounter = (TextView) WrapperHead.findViewById(R.id.main_header_audio_quantity);
         ImageView ownerAvatar = (ImageView) WrapperHead.findViewById(R.id.main_user_logo);
 
-        UserLastSeenModel lastSeeModel = user.get(0).getLast_seen();
+        UserLastSeenModel lastSeeModel = user.get(0).getLastSeen();
         UserCountersModel userCounters = user.get(0).getCounters();
 
-        String firstName = user.get(0).getFirst_name();
-        String lastName = user.get(0).getLast_name();
-        String homeTown = user.get(0).getHome_town();
+        String firstName = user.get(0).getFirstName();
+        String lastName = user.get(0).getLastName();
+        String homeTown = user.get(0).getHomeTown();
 
 
-        DownloadImageService.fetchImage(user.get(0).getPhoto_200(),ownerAvatar);
+        DownloadImageService.fetchImage(user.get(0).getPhoto200(),ownerAvatar);
 
         userName.setText(firstName+" "+lastName);
-        if(homeTown.length()>0){
+        if(homeTown != null){
             userFrom.setText("From: "+homeTown);
         } else {
             // Needs to add adjustment getter for HOME\TOWN
-            userFrom.setText("From: "+homeTown);
+            userFrom.setText("From: Earth "+homeTown);
         }
         lastSeen.setText(lastSeeModel.getTime());
         //---------------------------------------------- SET COUNTERS -----------------------------------------------------
-        friendsCounter.setText(userCounters.getFriends().toString()+"\n Friends");
+        friendsCounter.setText(userCounters.getFriends()+"\n Friends");
         commonCounter.setText(userCounters.getFollowers() +"\n Followers");
         followersCounter.setText(userCounters.getGroups()+"\n Groups");
         photosCounter.setText(userCounters.getPhotos()+"\n Photos");
@@ -110,9 +111,13 @@ public class MainActivity extends Activity {
         wallPosts.setDividerHeight(0);
 
         if(wall != null) {
-            UserWallPostsAdapter adapter = new UserWallPostsAdapter(getApplicationContext(), wall, wProfiles, wGroups, st.getToken());
+            UserWallPostsAdapter adapter = new UserWallPostsAdapter(getBaseContext(), wall, wProfiles, wGroups, st.getToken());
             wallPosts.setAdapter(adapter);
         }
+
+
+
+
 
         TextView musicQuantity = (TextView) findViewById(R.id.main_header_audio_quantity);
         musicQuantity.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +125,6 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent musicIntent = new Intent(MainActivity.this,MusicActivity.class);
                 Toast.makeText(MainActivity.this, "Music activity clicked", Toast.LENGTH_SHORT).show();
-
                 startActivity(musicIntent);
             }
         });
@@ -130,7 +134,6 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent photoIntent = new Intent(MainActivity.this,PhotoAlbumsActivity.class);
                 Toast.makeText(MainActivity.this, "Photos activity clicked", Toast.LENGTH_SHORT).show();
-
                 startActivity(photoIntent);
             }
         });
