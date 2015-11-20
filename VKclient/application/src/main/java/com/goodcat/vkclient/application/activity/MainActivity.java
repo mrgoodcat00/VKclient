@@ -44,7 +44,6 @@ public class MainActivity extends Activity {
                         setUserData(items, wItems, wProfiles, wGroups);
                     }
                 }
-
             }, st.getUserId().toString());//"14587316"/*"12455497"*/);
         }
 
@@ -105,12 +104,15 @@ public class MainActivity extends Activity {
         videoCounter.setText(userCounters.getVideos()+"\n Videos");
         audioCounter.setText(userCounters.getAudios()+"\n Audios");
         //---------------------------------------------- SET WALL -----------------------------------------------------
-        wallPosts.addHeaderView(WrapperHead);
-        wallPosts.setHeaderDividersEnabled(false);
-        wallPosts.setFooterDividersEnabled(false);
-        wallPosts.setDividerHeight(0);
+
 
         if(wall != null) {
+            if(wallPosts.getHeaderViewsCount() == 0){
+                wallPosts.addHeaderView(WrapperHead);
+            }
+            wallPosts.setHeaderDividersEnabled(false);
+            wallPosts.setFooterDividersEnabled(false);
+            wallPosts.setDividerHeight(0);
             UserWallPostsAdapter adapter = new UserWallPostsAdapter(getBaseContext(), wall, wProfiles, wGroups, st.getToken());
             wallPosts.setAdapter(adapter);
         }
@@ -125,6 +127,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent musicIntent = new Intent(MainActivity.this,MusicActivity.class);
                 Toast.makeText(MainActivity.this, "Music activity clicked", Toast.LENGTH_SHORT).show();
+                musicIntent.putExtra("userId",st.getUserId());
                 startActivity(musicIntent);
             }
         });

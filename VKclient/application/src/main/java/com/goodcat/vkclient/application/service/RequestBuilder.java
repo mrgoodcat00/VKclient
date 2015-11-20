@@ -20,7 +20,9 @@ public class RequestBuilder {
         if(uId != null){
             if(method.startsWith("user.get")){
                 this.userId = "user_ids=" + uId;
-            } else {
+            } else if(method.startsWith("audio.get")) {
+                this.userId = "owner_id=" + uId;
+            }else {
                 this.userId = "user_id=" + uId;
             }
         }

@@ -1,4 +1,4 @@
-package com.goodcat.vkclient.application.service;
+package com.goodcat.vkclient.application.model;
 
 import com.google.gson.annotations.SerializedName;
 

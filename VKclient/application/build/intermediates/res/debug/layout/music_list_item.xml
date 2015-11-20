@@ -1,22 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              android:orientation="horizontal"
               android:layout_width="fill_parent"
-              android:layout_height="wrap_content" android:background="#fff" android:paddingLeft="5dp"
-              android:paddingTop="10dp" android:paddingBottom="10dp">
+              android:layout_height="70dp" android:background="#fff" android:paddingLeft="5dp"
+              android:paddingTop="10dp" android:paddingBottom="10dp" android:paddingRight="5dp">
 
-            <TextView
+
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent"
+                  android:orientation="vertical" android:layout_weight="4">
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/music_song_title"
+                android:textColor="#000" android:textSize="14sp"/>
+
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/music_singer"
+                android:textColor="#000"
+                android:layout_marginTop="3dp" android:textSize="13sp"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+            <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/music_song_title" android:text="Striljay"
-                    android:textColor="#000" android:textSize="20sp"/>
-
-            <TextView
+                    android:id="@+id/music_play" android:src="@drawable/play"/>
+            <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Okean Elzi"
-                    android:id="@+id/music_singer"
-                    android:layout_marginTop="3dp" android:textSize="13sp"/>
+                    android:id="@+id/music_pause" android:src="@drawable/pause"/>
+            <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/music_stop" android:src="@drawable/stop"/>
+        </LinearLayout>
 
+    </LinearLayout>
 
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent"
+                  android:orientation="vertical" android:layout_weight="1">
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/music_duration"
+                android:textColor="#000" android:text="3,2 min" android:textSize="14sp"
+                android:gravity="right"/>
+
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/music_circled"
+                android:textColor="#000"
+                android:layout_gravity="right" android:text="true" android:textSize="14sp" android:gravity="right"/>
+
+    </LinearLayout>
 </LinearLayout><!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/src/main/res/layout/music_list_item.xml -->

@@ -2,6 +2,8 @@ package com.goodcat.vkclient.application.service;
 
 
 import android.util.Log;
+import com.goodcat.vkclient.application.model.CommonListResponseModel;
+import com.goodcat.vkclient.application.model.CommonParseCountVariableModel;
 import com.goodcat.vkclient.application.model.group.GroupModel;
 import com.goodcat.vkclient.application.model.user.UserModel;
 import com.goodcat.vkclient.application.model.user.UserWallPostsModel;

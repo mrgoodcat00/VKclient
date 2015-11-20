@@ -1,32 +1,81 @@
 package com.goodcat.vkclient.application.model.music;
 
+import com.google.gson.annotations.SerializedName;
+
 public class MusicModel {
 
-    private String songTitle;
-    private String songSinger;
-    private String songUrl;
+    @SerializedName("id")
+    private long id;
 
-    public String getSongTitle() {
-        return songTitle;
+    @SerializedName("owner_id")
+    private long ownerId;
+
+    @SerializedName("artist")
+    private String artist;
+
+    @SerializedName("title")
+    private String title;
+
+    @SerializedName("duration")
+    private long duration;
+
+    @SerializedName("url")
+    private String url;
+
+    @SerializedName("lyrics_id")
+    private long lyricsId;
+
+    @SerializedName("album_id")
+    private long albumId;
+
+    @SerializedName("genre_id")
+    private long genreId;
+
+    @SerializedName("date")
+    private long date;
+
+
+    public long getId() {
+        return id;
     }
 
-    public void setSongTitle(String songTitle) {
-        this.songTitle = songTitle;
+    public long getOwnerId() {
+        return ownerId;
     }
 
-    public String getSongSinger() {
-        return songSinger;
+    public String getArtist() {
+        return artist;
     }
 
-    public void setSongSinger(String songSinger) {
-        this.songSinger = songSinger;
+    public String getTitle() {
+        return title;
     }
 
-    public String getSongUrl() {
-        return songUrl;
+    public long getDuration() {
+        return duration;
     }
 
-    public void setSongUrl(String songUrl) {
-        this.songUrl = songUrl;
+    public String getUrl() {
+        return url;
     }
+
+    public long getLyricsId() {
+        return lyricsId;
+    }
+
+    public long getAlbumId() {
+        return albumId;
+    }
+
+    public long getGenreId() {
+        return genreId;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+
+
+
 }

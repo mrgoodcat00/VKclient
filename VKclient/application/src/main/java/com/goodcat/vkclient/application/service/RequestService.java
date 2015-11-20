@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import com.goodcat.vkclient.application.model.CommonListResponseModel;
+import com.goodcat.vkclient.application.model.music.MusicModel;
 import com.goodcat.vkclient.application.model.user.UserModel;
 import com.goodcat.vkclient.application.model.user.UserWallGroupsModel;
 import com.goodcat.vkclient.application.model.user.UserWallPostsModel;
@@ -48,21 +50,54 @@ public class RequestService extends Service{
             session = s;
         }
 
-        /*public void getUserData (final ResponseCallback<UserModel> userModel, final String userId){
+        public void getUserAudio (final ResponseCallback<MusicModel> userAudios, final String userId){
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
                     String token = session.getToken();
-                    final List<UserModel> uM = UserDataService.getUserData(token,userId);
+                    List<MusicModel> responseUser = new ArrayList<MusicModel>();
+
+                    try {
+                        RequestBuilder reqBuilder = new RequestBuilder("audio.get", token, userId);
+                        reqBuilder.setFields("count", "50");
+                        BufferedReader br = executeHttpRequest(reqBuilder);
+                        String line = null;
+                        StringBuilder st = new StringBuilder();
+                        while ((line = br.readLine()) != null) {
+                            st.append(line + "");
+                        }
+                        Log.d("JSON-audio", st.toString());
+                        if (st.length() > 0) {
+                            JsonParser  parser = new JsonParser();
+                            JsonObject jObject =  (JsonObject) parser.parse( st.toString()).getAsJsonObject().get("response");
+                            JsonArray items = jObject.getAsJsonArray("items");
+                            Log.d("AudioResponse",st.toString());
+                            Log.d("JSON-music-items", items.toString());
+
+                            if (items.size() > 0) {
+                                Gson gson = new Gson();
+                                Type fooType = new TypeToken<List<MusicModel>>() {}.getType();
+                                List<MusicModel> commonWallItemsModel = gson.fromJson(items.toString(), fooType);
+                                responseUser = commonWallItemsModel;
+                            }
+                        }
+                    }  catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    final List<MusicModel> responseAudio = responseUser;
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            userModel.onResponse(uM);
+                            userAudios.onResponse(responseAudio);
                         }
                     });
+
                 }
             });
-        }*/
+
+
+
+        }
 
         public void getUserWithWallData (final ResponseHomeCallback<UserModel,UserWallPostsModel,UserWallProfilesModel,UserWallGroupsModel> userModel, final String userId){
             executor.execute(new Runnable() {
@@ -93,8 +128,6 @@ public class RequestService extends Service{
                     }  catch (IOException e) {
                         e.printStackTrace();
                     }
-
-
 
                     try {
                         RequestBuilder reqBuilder = new RequestBuilder("wall.get", token, userId);

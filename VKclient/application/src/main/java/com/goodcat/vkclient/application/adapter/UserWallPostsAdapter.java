@@ -2,7 +2,6 @@ package com.goodcat.vkclient.application.adapter;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,10 +91,6 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
         UserWallPostsModel singlePost = wItems.get(position);
         List<UserWallAttachmentsModel> attachments = singlePost.getAttachments();
         List<UserResponseWallCopyHistoryModel> historyRepost = singlePost.getCopyHistory();
-
-
-        Log.d("!!!!!!!", singlePost.getText() + "" + singlePost.getOwnerId() + "" + singlePost.getComments().getCount()
-                + "" + singlePost.getPostType() + "" + singlePost.getDate() + "" + singlePost.getLikes().getCount() + "" + singlePost.getReplyOwnerId() + "");
 
         /*-------------------------------- POST OWNER INFO ----------------------------------------*/
         if(singlePost.getOwnerId() == singlePost.getFromId()){
