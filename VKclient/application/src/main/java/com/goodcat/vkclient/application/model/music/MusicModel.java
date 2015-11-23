@@ -17,7 +17,7 @@ public class MusicModel {
     private String title;
 
     @SerializedName("duration")
-    private long duration;
+    private int duration;
 
     @SerializedName("url")
     private String url;
@@ -51,7 +51,7 @@ public class MusicModel {
         return title;
     }
 
-    public long getDuration() {
+    public int getDuration() {
         return duration;
     }
 

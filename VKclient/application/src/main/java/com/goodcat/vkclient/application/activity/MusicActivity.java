@@ -49,11 +49,12 @@ public class MusicActivity extends Activity{
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             musicBinder = (MusicService.MusicWorker) service;
+            Log.d("M_ACTIVITY", "Service connected!");
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
+            Log.d("M_ACTIVITY", "Service disconnected!");
         }
     };
 

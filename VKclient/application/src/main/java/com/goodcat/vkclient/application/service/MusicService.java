@@ -25,7 +25,7 @@ public class MusicService extends Service {
         boolean paused = false;
         boolean stoped = false;
 
-        String currentPos = null;
+        int previousTrack = -1;
 
 
         public MusicWorker(){
@@ -36,10 +36,10 @@ public class MusicService extends Service {
         }
 
 
-        public void playAudioTrack(String url,String pos){
-
-            if(paused && !stoped && currentPos.equals(pos)) {
+        public int playAudioTrack(String url,int pos){
+            if(paused && !stoped && previousTrack == pos) {
                 mp.start();
+                return -1;
             } else {
                 try {
                     mp.reset();
@@ -50,30 +50,30 @@ public class MusicService extends Service {
                 mp.prepareAsync();
                 paused = false;
                 stoped = false;
-                currentPos = pos;
+                previousTrack = pos;
+                return previousTrack;
             }
-            Log.d("M_WORKER","incoming position:"+pos);
-            Log.d("M_WORKER","previous position:"+currentPos);
-
         }
 
-        public void pauseAudioTrack(String pos){
-            if(mp != null && mp.isPlaying() && currentPos.equals(pos)) {
+        public void pauseAudioTrack(int pos){
+            if(mp != null && mp.isPlaying() && previousTrack == pos) {
                 mp.pause();
                 paused = true;
             }
         }
 
-        public void stopAudioTrack(String pos){
-            if(mp != null && currentPos.equals(pos)) {
+        public int stopAudioTrack(int pos){
+            if(mp != null && previousTrack == pos) {
                 mp.stop();
                 stoped = true;
+                return previousTrack;
             }
+            return -1;
         }
 
         @Override
         public void onBufferingUpdate(MediaPlayer mp, int percent) {
-
+            //new Thread.
         }
 
         @Override
@@ -114,6 +114,12 @@ public class MusicService extends Service {
     @Override
     public void onRebind(Intent intent) {
         super.onRebind(intent);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("M_SERVICE","Service destroyed");
     }
 
     /*
