@@ -1,8 +1,8 @@
 package com.goodcat.vkclient.application.adapter;
 
 import android.content.Context;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,24 +11,24 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.goodcat.vkclient.application.R;
 import com.goodcat.vkclient.application.model.music.MusicModel;
+import com.goodcat.vkclient.application.service.MusicService;
 
-import java.io.IOException;
 import java.util.List;
 
 public class MusicAdapter extends ArrayAdapter<MusicModel>{
 
     private static String token;
     private List<MusicModel> mItems;
-    private MediaPlayer mediaPlayer;
-
-    public MusicAdapter(Context context,List<MusicModel> objects) {
+    private ServiceConnection musicConnection;
+    private Intent musicIntent = new Intent(getContext(),MusicService.class);
+    public MusicAdapter(Context context,List<MusicModel> objects, ServiceConnection musicConnection) {
         super(context, 0, objects);
-        this.token     = token;
         this.mItems    = objects;
+        this.musicConnection = musicConnection;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewAudioItemsHolder holder;
         View currentView = null;
         if (convertView == null) {
@@ -60,9 +60,38 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
         holder.music_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("!!!!!!!",musicItem.getUrl().substring(0,musicItem.getUrl().indexOf("?")));
+                musicIntent.putExtra("START_COMMAND", "play");
+                musicIntent.putExtra("START_POSITION",""+position);
+                musicIntent.putExtra("FILE_URL",musicItem.getUrl().substring(0,musicItem.getUrl().indexOf("?")));
+                //getContext().startService(musicIntent);
+                getContext().bindService(musicIntent,musicConnection,getContext().BIND_AUTO_CREATE);
+            }
+        });
+
+        holder.music_stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                musicIntent.putExtra("START_COMMAND","stop");
+                getContext().bindService(musicIntent,musicConnection,getContext().BIND_AUTO_CREATE);
+            }
+        });
+
+        holder.music_pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                musicIntent.putExtra("START_COMMAND","pause");
+                getContext().bindService(musicIntent, musicConnection,getContext().BIND_AUTO_CREATE);
+            }
+        });
+
+        /*holder.music_play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
                 if( mediaPlayer == null) {
                     try {
+
                         mediaPlayer = new MediaPlayer();
                         Log.d("MEDIA_PLAYER", "start HTTP " + musicItem.getUrl());
                         mediaPlayer.setDataSource(musicItem.getUrl());
@@ -91,9 +120,9 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
 
 
             }
-        });
+        });*/
 
-        holder.music_pause.setOnClickListener(new View.OnClickListener() {
+       /* holder.music_pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mediaPlayer.isPlaying()){
@@ -109,13 +138,13 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
                 mediaPlayer.stop();
                 releaseMP();
             }
-        });
+        });*/
 
 
         return currentView;
     }
 
-    private void releaseMP() {
+   /* private void releaseMP() {
         if (mediaPlayer != null) {
             try {
                 mediaPlayer.release();
@@ -124,7 +153,7 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
     public static class ViewAudioItemsHolder {
         TextView music_song_title;

@@ -27,6 +27,7 @@ public class MusicActivity extends Activity{
     private String userID;
     private MediaPlayer mediaPlayer;
 
+    private ServiceConnection musicConnection;
 
     private ServiceConnection connection = new ServiceConnection() {
         @Override
@@ -46,10 +47,27 @@ public class MusicActivity extends Activity{
         }
     };
 
+    private ServiceConnection musicServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
     private void setAudios(List<MusicModel> items) {
         ListView musicList = (ListView) findViewById(R.id.music_songs_list);
-        MusicAdapter adapter = new MusicAdapter(this,items);
+        MusicAdapter adapter = new MusicAdapter(this,items,musicServiceConnection);
         musicList.setAdapter(adapter);
+
+
+
+
+
     }
 
     @Override
@@ -73,6 +91,7 @@ public class MusicActivity extends Activity{
         super.onStart();
         Log.d("LOGGER", "App is started!");
         bindService(new Intent(this,RequestService.class),connection,BIND_AUTO_CREATE);
+        //this.startService(new Intent(this,MusicService.class));
     }
 
     @Override
@@ -80,13 +99,11 @@ public class MusicActivity extends Activity{
         super.onStop();
         Log.d("LOGGER","App is stopped!");
         unbindService(connection);
-        //releaseMP();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
 }

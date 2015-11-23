@@ -29,6 +29,10 @@
         </activity>
 
         <service android:name="com.goodcat.vkclient.application.service.RequestService" />
+        <service
+            android:name="com.goodcat.vkclient.application.service.MusicService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name="com.goodcat.vkclient.application.activity.MainActivity"
