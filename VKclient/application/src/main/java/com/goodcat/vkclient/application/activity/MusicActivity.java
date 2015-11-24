@@ -25,7 +25,8 @@ public class MusicActivity extends Activity{
 
     private SessionToken st;
     private String userID;
-    private MusicService.MusicWorker musicBinder = null;
+
+    private MusicService.MusicWorker musicBinder;
 
     private ServiceConnection connection = new ServiceConnection() {
         @Override
@@ -86,6 +87,7 @@ public class MusicActivity extends Activity{
         Log.d("LOGGER", "App is started!");
         bindService(new Intent(this,RequestService.class),connection,BIND_AUTO_CREATE);
         bindService(new Intent(this,MusicService.class),musicServiceConnection,BIND_AUTO_CREATE);
+
     }
 
     @Override
