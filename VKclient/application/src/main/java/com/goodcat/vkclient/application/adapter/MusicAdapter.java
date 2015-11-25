@@ -1,6 +1,7 @@
 package com.goodcat.vkclient.application.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -41,7 +42,7 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
             holder.music_pause = (ImageButton) currentView.findViewById(R.id.music_pause);
             holder.music_stop = (ImageButton) currentView.findViewById(R.id.music_stop);
 
-            holder.music_progress = (SeekBar) currentView.findViewById(R.id.music_progress);;
+            holder.music_progress = (SeekBar) currentView.findViewById(R.id.music_progress);
 
             currentView.setTag(holder);
         } else {
@@ -55,11 +56,13 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
         holder.music_singer.setText(musicItem.getArtist());
         holder.music_song_title.setText(musicItem.getTitle());
         holder.music_progress.setMax(musicItem.getDuration());
-        holder.music_progress.setProgress(0);
+
+        Log.d("M_ADAPTER","duration "+musicItem.getDuration());
+
 
         float sec = musicItem.getDuration()%60;
         int min = musicItem.getDuration() / 60;
-        holder.music_duration.setText(min+","+sec+ "min");
+        holder.music_duration.setText(min+"."+Math.round(sec));
 
 
 
@@ -70,10 +73,8 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
         holder.music_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                musicBinder.setProgressBar(holder.music_progress);
                 int i = musicBinder.playAudioTrack(musicItem.getUrl().substring(0, musicItem.getUrl().indexOf("?")), position);
-                if (i > 0) {
-                    holder.music_progress.setVisibility(View.VISIBLE);
-                }
             }
         });
 

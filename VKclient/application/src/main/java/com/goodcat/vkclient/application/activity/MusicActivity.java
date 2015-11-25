@@ -86,8 +86,8 @@ public class MusicActivity extends Activity{
         super.onStart();
         Log.d("LOGGER", "App is started!");
         bindService(new Intent(this,RequestService.class),connection,BIND_AUTO_CREATE);
+        startService(new Intent(this,MusicService.class));
         bindService(new Intent(this,MusicService.class),musicServiceConnection,BIND_AUTO_CREATE);
-
     }
 
     @Override

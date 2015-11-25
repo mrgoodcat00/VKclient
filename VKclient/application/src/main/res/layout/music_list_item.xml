@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="fill_parent"
-              android:layout_height="120dp" android:background="#fff" android:paddingLeft="5dp"
+              android:layout_height="wrap_content" android:background="#fff" android:paddingLeft="5dp"
               android:paddingTop="10dp" android:paddingBottom="10dp" android:paddingRight="5dp"
               android:baselineAligned="false">
 
@@ -25,24 +25,27 @@
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp">
+                android:layout_height="30dp" android:layout_marginLeft="5dp">
             <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/music_play" android:src="@drawable/play"/>
+                    android:id="@+id/music_play" android:src="@drawable/play" android:background="#1e0c0c18"
+                    android:layout_marginRight="5dp" android:padding="5dp"/>
             <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/music_pause" android:src="@drawable/pause"/>
+                    android:id="@+id/music_pause" android:src="@drawable/pause" android:background="#1e0c0c18"
+                    android:layout_marginRight="5dp" android:padding="5dp"/>
             <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/music_stop" android:src="@drawable/stop"/>
+                    android:id="@+id/music_stop" android:src="@drawable/stop" android:background="#1e0c0c18"
+                    android:padding="5dp" android:layout_marginRight="5dp"/>
+            <SeekBar
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/music_progress" android:indeterminate="false" android:layout_marginLeft="5dp"/>
         </LinearLayout>
-        <SeekBar
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/music_progress" android:indeterminate="false" android:visibility="invisible"/>
     </LinearLayout>
 
     <LinearLayout android:layout_width="wrap_content" android:layout_height="fill_parent"

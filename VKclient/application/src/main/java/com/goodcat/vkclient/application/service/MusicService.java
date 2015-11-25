@@ -3,50 +3,53 @@ package com.goodcat.vkclient.application.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.SeekBar;
 
 import java.io.IOException;
 
 public class MusicService extends Service {
 
-    MusicWorker worker = new MusicWorker();
+    MusicWorker worker;
+    // ExecutorService es;
+    //private final Handler handler = new Handler(Looper.getMainLooper());
 
     public class MusicWorker extends Binder implements MediaPlayer.OnCompletionListener,
                                                        MediaPlayer.OnPreparedListener,
                                                        MediaPlayer.OnBufferingUpdateListener{
-
         MediaPlayer mp;
-        AudioManager am;
-
         boolean paused = false;
         boolean stoped = false;
-
         int previousTrack = -1;
-
+        int progress = 0;
+        SeekBar progressBar = null;
 
         public MusicWorker(){
-            this.mp = new MediaPlayer();
-            this.mp.setOnPreparedListener(this);
-            this.mp.setOnCompletionListener(this);
-            this.mp.setOnBufferingUpdateListener(this);
+            if(mp == null) {
+                this.mp = new MediaPlayer();
+                this.mp.setOnPreparedListener(this);
+                this.mp.setOnCompletionListener(this);
+                this.mp.setOnBufferingUpdateListener(this);
+            }
+
         }
 
-
         public int playAudioTrack(String url,int pos){
-            if(paused && !stoped && previousTrack == pos) {
+            if(mp.isPlaying()){mp.stop(); mp.reset();}
+
+            if(paused && !stoped && previousTrack == pos && mp != null) {
                 mp.start();
                 return -1;
             } else {
-                try {
-                    mp.reset();
-                    mp.setDataSource(url);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        mp.reset();
+                        mp.setDataSource(url);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 mp.prepareAsync();
                 paused = false;
                 stoped = false;
@@ -71,10 +74,29 @@ public class MusicService extends Service {
             return -1;
         }
 
+        public void setProgressBar(SeekBar progressBarIn){
+            if(progressBarIn != null){
+                progressBar = progressBarIn;
+            } else {Log.d("M_SERVICE", "progress bar is null in setter");}
+        }
+
         @Override
         public void onBufferingUpdate(MediaPlayer mp, int percent) {
-            //new Thread.
+            if(mp != null && mp.isPlaying()) {
+                progress = percent;
+                int total = progressBar.getMax();
+                Log.d("M_SERVICE", "track percents " + percent + "||" + total / 1000L + "||" + mp.getCurrentPosition() / 1000L);
+                progressBar.setProgress((int) (mp.getCurrentPosition() / 1000L));
+            }
         }
+
+        private Runnable updateProgress = new Runnable() {
+            public void run() {
+                //long totalDuration = mp.getDuration();
+                int currentDuration = mp.getCurrentPosition();
+                progressBar.setProgress(currentDuration);
+            }
+        };
 
         @Override
         public void onCompletion(MediaPlayer mp) {
@@ -96,19 +118,23 @@ public class MusicService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        //es = Executors.newFixedThreadPool(1);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         Log.d("M_SERVICE","Service binded");
-        return worker;
+        if(worker == null){
+            return new MusicWorker();
+        } else {
+            return worker;
+        }
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
         Log.d("M_SERVICE","Service unbinded");
-        return super.onUnbind(intent);
+         return super.onUnbind(intent);
     }
 
     @Override
@@ -122,91 +148,4 @@ public class MusicService extends Service {
         Log.d("M_SERVICE","Service destroyed");
     }
 
-    /*
-
-
-
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        String startCommand = intent.getStringExtra("START_COMMAND");
-        Log.d("M_SERVICE","Current Command is - "+startCommand);
-        if(startCommand.equals("play")) {
-            String startPosition = intent.getStringExtra("START_POSITION");
-            String fileUrl = intent.getStringExtra("FILE_URL");
-            if(mp == null){ Log.d("M_SERVICE","madeiaplayer is null");}
-            startTrack(mp,fileUrl);
-            currentPlayingPosition = startPosition;
-        }*/
-
-
-
-        /*else if(startCommand.equals("stop")){
-            mp.stop();
-            mp.release();
-            stopSelf();
-        } else if(startCommand.equals("pause")){
-            mp.pause();
-            Log.d("M_SERVICE","paused_"+intent.getDataString());
-        }*/
-
-
-
-/*
-        Log.d("M_SERVICE","Started with code:"+startId);
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        Log.d("M_SERVICE","Binded_"+intent.getDataString());
-        return mBinder;
-    }
-
-    @Override
-    public void onBufferingUpdate(MediaPlayer mp, final int percent) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("M_SERVICE", ""+percent);
-            }
-        });
-    }
-
-    private void startTrack(MediaPlayer mp, String fileUrl){
-        try {
-            if(mp == null){ mp = new MediaPlayer();}
-            mp.setDataSource(fileUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mp.prepareAsync();
-    }
-
-    @Override
-    public void onCompletion(MediaPlayer mp) {
-        mp.stop();
-        mp.release();
-        mp = null;
-        stopSelf();
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mp) {
-        mp.start();
-    }
-
-    @Override
-    public void onDestroy() {
-        if (mp != null) {
-            if (mp.isPlaying()) {
-                mp.stop();
-            }
-            mp.release();
-        }
-        Log.d("M_SERVICE","service stopped");
-        super.onDestroy();
-    }*/
 }
