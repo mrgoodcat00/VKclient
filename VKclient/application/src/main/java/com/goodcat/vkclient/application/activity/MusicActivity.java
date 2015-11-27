@@ -50,6 +50,8 @@ public class MusicActivity extends Activity{
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             musicBinder = (MusicService.MusicWorker) service;
+            ListView musicList = (ListView) findViewById(R.id.music_songs_list);
+
             Log.d("M_ACTIVITY", "Service connected!");
         }
 
@@ -61,6 +63,7 @@ public class MusicActivity extends Activity{
 
     private void setAudios(List<MusicModel> items) {
         ListView musicList = (ListView) findViewById(R.id.music_songs_list);
+
         MusicAdapter adapter = new MusicAdapter(this,items,musicBinder);
         musicList.setAdapter(adapter);
     }

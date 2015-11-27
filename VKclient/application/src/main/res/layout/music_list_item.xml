@@ -44,7 +44,8 @@
             <SeekBar
                     android:layout_width="100dp"
                     android:layout_height="30dp"
-                    android:id="@+id/music_progress" android:indeterminate="false" android:layout_marginLeft="5dp"/>
+                    android:id="@+id/music_progress" android:indeterminate="false" android:layout_marginLeft="5dp"
+                    android:visibility="invisible"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -2,6 +2,7 @@ package com.goodcat.vkclient.application.service;
 
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
@@ -14,8 +15,6 @@ import java.io.IOException;
 public class MusicService extends Service {
 
     MusicWorker worker;
-    // ExecutorService es;
-    //private final Handler handler = new Handler(Looper.getMainLooper());
 
     public class MusicWorker extends Binder implements MediaPlayer.OnCompletionListener,
                                                        MediaPlayer.OnPreparedListener,
@@ -26,9 +25,11 @@ public class MusicService extends Service {
         int previousTrack = -1;
         int progress = 0;
         SeekBar progressBar = null;
+        Context context;
 
-        public MusicWorker(){
+        public MusicWorker(Context cntxt){
             if(mp == null) {
+                this.context = cntxt;
                 this.mp = new MediaPlayer();
                 this.mp.setOnPreparedListener(this);
                 this.mp.setOnCompletionListener(this);
@@ -37,8 +38,16 @@ public class MusicService extends Service {
 
         }
 
+        public int getCurrentTrack(){
+            return previousTrack;
+        }
+
+        public MediaPlayer getMediaPlayer(){
+            return mp;
+        }
+
         public int playAudioTrack(String url,int pos){
-            if(mp.isPlaying()){mp.stop(); mp.reset();}
+            //if(mp.isPlaying()){mp.stop(); mp.reset();}
 
             if(paused && !stoped && previousTrack == pos && mp != null) {
                 mp.start();
@@ -68,7 +77,6 @@ public class MusicService extends Service {
         public int stopAudioTrack(int pos){
             if(mp != null && previousTrack == pos) {
                 mp.stop();
-                stoped = true;
                 return previousTrack;
             }
             return -1;
@@ -80,23 +88,16 @@ public class MusicService extends Service {
             } else {Log.d("M_SERVICE", "progress bar is null in setter");}
         }
 
+
         @Override
         public void onBufferingUpdate(MediaPlayer mp, int percent) {
             if(mp != null && mp.isPlaying()) {
                 progress = percent;
-                int total = progressBar.getMax();
-                Log.d("M_SERVICE", "track percents " + percent + "||" + total / 1000L + "||" + mp.getCurrentPosition() / 1000L);
+                Log.d("M_SERVICE", "track percents " + percent + "||" + mp.getCurrentPosition() / 1000L);
                 progressBar.setProgress((int) (mp.getCurrentPosition() / 1000L));
             }
         }
 
-        private Runnable updateProgress = new Runnable() {
-            public void run() {
-                //long totalDuration = mp.getDuration();
-                int currentDuration = mp.getCurrentPosition();
-                progressBar.setProgress(currentDuration);
-            }
-        };
 
         @Override
         public void onCompletion(MediaPlayer mp) {
@@ -118,14 +119,13 @@ public class MusicService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        //es = Executors.newFixedThreadPool(1);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         Log.d("M_SERVICE","Service binded");
         if(worker == null){
-            return new MusicWorker();
+            return new MusicWorker(this);
         } else {
             return worker;
         }
