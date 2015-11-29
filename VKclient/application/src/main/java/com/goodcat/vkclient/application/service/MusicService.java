@@ -9,6 +9,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.SeekBar;
+import com.goodcat.vkclient.application.model.music.MusicModel;
 
 import java.io.IOException;
 
@@ -19,13 +20,15 @@ public class MusicService extends Service {
     public class MusicWorker extends Binder implements MediaPlayer.OnCompletionListener,
                                                        MediaPlayer.OnPreparedListener,
                                                        MediaPlayer.OnBufferingUpdateListener{
-        MediaPlayer mp;
-        boolean paused = false;
-        boolean stoped = false;
-        int previousTrack = -1;
-        int progress = 0;
-        SeekBar progressBar = null;
-        Context context;
+        private MediaPlayer mp;
+        private boolean paused = false;
+        private boolean stoped = false;
+        private int lastPosition = -1;
+        private MusicModel currentPlayingItem = null;
+
+
+        private SeekBar progressBar;
+        private Context context;
 
         public MusicWorker(Context cntxt){
             if(mp == null) {
@@ -35,21 +38,26 @@ public class MusicService extends Service {
                 this.mp.setOnCompletionListener(this);
                 this.mp.setOnBufferingUpdateListener(this);
             }
-
         }
 
-        public int getCurrentTrack(){
-            return previousTrack;
+        public int getTrackPosition(){return mp.getCurrentPosition();}
+        public SeekBar getSeekBar(){
+            return progressBar;
+        }
+        public MusicModel getCurrentPlayingTrack(){
+            return currentPlayingItem;
+        }
+        public int getLastPosition(){return lastPosition;}
+        public void setCurrentPlayingTrack(MusicModel track){
+            currentPlayingItem = track;
+        }
+        public void dropTrack(){
+            currentPlayingItem = null;
         }
 
-        public MediaPlayer getMediaPlayer(){
-            return mp;
-        }
 
         public int playAudioTrack(String url,int pos){
-            //if(mp.isPlaying()){mp.stop(); mp.reset();}
-
-            if(paused && !stoped && previousTrack == pos && mp != null) {
+            if(paused && !stoped && lastPosition == pos && mp != null) {
                 mp.start();
                 return -1;
             } else {
@@ -60,24 +68,25 @@ public class MusicService extends Service {
                         e.printStackTrace();
                     }
                 mp.prepareAsync();
-                paused = false;
-                stoped = false;
-                previousTrack = pos;
-                return previousTrack;
+                lastPosition = pos;
+                return lastPosition;
             }
         }
 
         public void pauseAudioTrack(int pos){
-            if(mp != null && mp.isPlaying() && previousTrack == pos) {
+            if(mp != null && mp.isPlaying() && lastPosition == pos) {
                 mp.pause();
                 paused = true;
             }
         }
 
         public int stopAudioTrack(int pos){
-            if(mp != null && previousTrack == pos) {
+            if(mp != null && lastPosition == pos && ( mp.isPlaying() || paused == true)) {
                 mp.stop();
-                return previousTrack;
+                currentPlayingItem=null;
+                stoped = true;
+                paused = false;
+                return lastPosition;
             }
             return -1;
         }
@@ -85,25 +94,24 @@ public class MusicService extends Service {
         public void setProgressBar(SeekBar progressBarIn){
             if(progressBarIn != null){
                 progressBar = progressBarIn;
-            } else {Log.d("M_SERVICE", "progress bar is null in setter");}
+            }
         }
-
 
         @Override
         public void onBufferingUpdate(MediaPlayer mp, int percent) {
-            if(mp != null && mp.isPlaying()) {
-                progress = percent;
+            if(mp != null && mp.isPlaying() || paused) {
+                progressBar.setMax(mp.getDuration()/ 1000);
                 Log.d("M_SERVICE", "track percents " + percent + "||" + mp.getCurrentPosition() / 1000L);
                 progressBar.setProgress((int) (mp.getCurrentPosition() / 1000L));
             }
         }
-
 
         @Override
         public void onCompletion(MediaPlayer mp) {
             if (mp != null) {
                 try {
                     mp.release();
+                    currentPlayingItem=null;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -113,6 +121,9 @@ public class MusicService extends Service {
         @Override
         public void onPrepared(MediaPlayer mp) {
             mp.start();
+            currentPlayingItem.setIsPlaying(true);
+            paused = false;
+            stoped = false;
         }
     }
 
@@ -147,5 +158,4 @@ public class MusicService extends Service {
         super.onDestroy();
         Log.d("M_SERVICE","Service destroyed");
     }
-
 }

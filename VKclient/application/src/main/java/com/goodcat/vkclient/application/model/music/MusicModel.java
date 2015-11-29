@@ -34,6 +34,15 @@ public class MusicModel {
     @SerializedName("date")
     private long date;
 
+    private boolean isPlaying = false;
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setIsPlaying(boolean isPlaying) {
+        this.isPlaying = isPlaying;
+    }
 
     public long getId() {
         return id;

@@ -16,23 +16,22 @@ import java.util.List;
 
 public class MusicAdapter extends ArrayAdapter<MusicModel>{
 
-    private static String token;
-    private List<MusicModel> mItems;
     private MusicService.MusicWorker musicBinder;
-
 
     public MusicAdapter(Context context,List<MusicModel> objects, MusicService.MusicWorker musicBinder) {
         super(context, 0, objects);
-        this.mItems    = objects;
         this.musicBinder = musicBinder;
     }
 
-
-
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        final ViewAudioItemsHolder holder;
+    public View getView(int pos, View convertView, ViewGroup parent) {
+        final int position = pos;
+        float sec = getItem(position).getDuration() % 60;
+        int min = getItem(position).getDuration() / 60;
         View currentView = null;
+        final ViewAudioItemsHolder holder;
+        final SeekBar progressBar;
+
         if (convertView == null) {
             holder = new ViewAudioItemsHolder();
             currentView = View.inflate(getContext(),R.layout.music_list_item, null);
@@ -44,41 +43,33 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
             holder.music_pause = (ImageButton) currentView.findViewById(R.id.music_pause);
             holder.music_stop = (ImageButton) currentView.findViewById(R.id.music_stop);
 
-            //holder.music_progress = (SeekBar) currentView.findViewById(R.id.music_progress);
-
             currentView.setTag(holder);
         } else {
             currentView = convertView;
             holder = (ViewAudioItemsHolder) currentView.getTag();
-
         }
+            progressBar = (SeekBar) currentView.findViewById(R.id.music_progress);
 
-        final MusicModel musicItem = mItems.get(position);
+        if(getItem(position).isPlaying()){
+            Log.d("M_ADAPTER", "is current item - " + position);
+            progressBar.setVisibility(View.VISIBLE);
+            musicBinder.setProgressBar(progressBar);
+        } else {progressBar.setVisibility(View.INVISIBLE);Log.d("M_ADAPTER","is not current item - "+position);}
 
-        holder.music_singer.setText(musicItem.getArtist());
-        holder.music_song_title.setText(musicItem.getTitle());
-        final SeekBar progress = (SeekBar) currentView.findViewById(R.id.music_progress);
-        progress.setMax(musicItem.getDuration());
-        Log.d("M_ADAPTER","duration "+musicItem.getDuration());
-
-
-        float sec = musicItem.getDuration()%60;
-        int min = musicItem.getDuration() / 60;
+        holder.music_singer.setText(getItem(position).getArtist());
+        holder.music_song_title.setText(getItem(position).getTitle());
         holder.music_duration.setText(min+"."+Math.round(sec));
-
-
-
-
-
-
 
         holder.music_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                int i = musicBinder.playAudioTrack(musicItem.getUrl().substring(0, musicItem.getUrl().indexOf("?")), position);
-                musicBinder.setProgressBar(progress);
-                progress.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                if(musicBinder.getLastPosition() > 0 && musicBinder.getLastPosition() != position){
+                    musicBinder.stopAudioTrack(musicBinder.getLastPosition());
+                }
+                musicBinder.playAudioTrack(getItem(position).getUrl().substring(0,getItem(position).getUrl().indexOf("?")), position);
+                musicBinder.setCurrentPlayingTrack(getItem(position));
+                musicBinder.setProgressBar(progressBar);
             }
         });
 
@@ -86,6 +77,9 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
             @Override
             public void onClick(View v) {
                 musicBinder.stopAudioTrack(position);
+                getItem(position).setIsPlaying(false);
+                progressBar.setVisibility(View.INVISIBLE);
+                musicBinder.dropTrack();
             }
         });
 
@@ -95,19 +89,8 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
                 musicBinder.pauseAudioTrack(position);
             }
         });
-
-
-
-
-
-
-
-
-       
         return currentView;
     }
-
-
 
     public static class ViewAudioItemsHolder {
         TextView music_song_title;
@@ -117,8 +100,6 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
         ImageButton music_stop;
         TextView music_duration;
         TextView music_circled;
-        //SeekBar music_progress;
+
     }
-
-
 }
