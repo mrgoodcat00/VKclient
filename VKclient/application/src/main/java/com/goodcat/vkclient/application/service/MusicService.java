@@ -12,6 +12,7 @@ import android.widget.SeekBar;
 import com.goodcat.vkclient.application.model.music.MusicModel;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class MusicService extends Service {
 
@@ -19,7 +20,8 @@ public class MusicService extends Service {
 
     public class MusicWorker extends Binder implements MediaPlayer.OnCompletionListener,
                                                        MediaPlayer.OnPreparedListener,
-                                                       MediaPlayer.OnBufferingUpdateListener{
+                                                       MediaPlayer.OnBufferingUpdateListener,
+                                                       MediaPlayer.OnErrorListener {
         private MediaPlayer mp;
         private boolean paused = false;
         private boolean stoped = false;
@@ -28,22 +30,17 @@ public class MusicService extends Service {
 
 
         private SeekBar progressBar;
-        private Context context;
 
         public MusicWorker(Context cntxt){
             if(mp == null) {
-                this.context = cntxt;
                 this.mp = new MediaPlayer();
                 this.mp.setOnPreparedListener(this);
                 this.mp.setOnCompletionListener(this);
                 this.mp.setOnBufferingUpdateListener(this);
+                this.mp.setOnErrorListener(this);
             }
         }
 
-        public int getTrackPosition(){return mp.getCurrentPosition();}
-        public SeekBar getSeekBar(){
-            return progressBar;
-        }
         public MusicModel getCurrentPlayingTrack(){
             return currentPlayingItem;
         }
@@ -51,24 +48,40 @@ public class MusicService extends Service {
         public void setCurrentPlayingTrack(MusicModel track){
             currentPlayingItem = track;
         }
-        public void dropTrack(){
-            currentPlayingItem = null;
-        }
 
-
-        public int playAudioTrack(String url,int pos){
-            if(paused && !stoped && lastPosition == pos && mp != null) {
+        public int playAudioTrack(String url, int pos) {
+            lastPosition = pos;
+            if (paused && !stoped && lastPosition == pos && mp != null) {
                 mp.start();
                 return -1;
             } else {
+                try {
                     try {
+                        TimeUnit.MILLISECONDS.sleep(1500);
                         mp.reset();
                         mp.setDataSource(url);
-                    } catch (IOException e) {
+                        mp.prepareAsync();
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                mp.prepareAsync();
-                lastPosition = pos;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                    mp = new MediaPlayer();
+                    mp.setOnPreparedListener(this);
+                    mp.setOnCompletionListener(this);
+                    mp.setOnBufferingUpdateListener(this);
+                    try {
+                        mp.setDataSource(url);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    mp.prepareAsync();
+                }
+
                 return lastPosition;
             }
         }
@@ -81,9 +94,8 @@ public class MusicService extends Service {
         }
 
         public int stopAudioTrack(int pos){
-            if(mp != null && lastPosition == pos && ( mp.isPlaying() || paused == true)) {
+            if(mp != null && lastPosition == pos && ( !stoped || paused == true)) {
                 mp.stop();
-                currentPlayingItem=null;
                 stoped = true;
                 paused = false;
                 return lastPosition;
@@ -121,9 +133,15 @@ public class MusicService extends Service {
         @Override
         public void onPrepared(MediaPlayer mp) {
             mp.start();
-            currentPlayingItem.setIsPlaying(true);
             paused = false;
             stoped = false;
+        }
+
+        @Override
+        public boolean onError(MediaPlayer mp, int what, int extra) {
+            Log.e(getPackageName(), String.format("Error(%s%s)", what, extra));
+            mp.release();
+            return true;
         }
     }
 

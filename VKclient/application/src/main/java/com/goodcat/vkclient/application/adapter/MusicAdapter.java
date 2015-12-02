@@ -24,11 +24,11 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
     }
 
     @Override
-    public View getView(int pos, View convertView, ViewGroup parent) {
+    public View getView(int pos,  View convertView, final ViewGroup parent) {
         final int position = pos;
         float sec = getItem(position).getDuration() % 60;
         int min = getItem(position).getDuration() / 60;
-        View currentView = null;
+        View currentView;
         final ViewAudioItemsHolder holder;
         final SeekBar progressBar;
 
@@ -38,23 +38,21 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
             holder.music_singer = (TextView) currentView.findViewById(R.id.music_singer);
             holder.music_song_title = (TextView) currentView.findViewById(R.id.music_song_title);
             holder.music_duration = (TextView) currentView.findViewById(R.id.music_duration);
-
             holder.music_play = (ImageButton) currentView.findViewById(R.id.music_play);
             holder.music_pause = (ImageButton) currentView.findViewById(R.id.music_pause);
             holder.music_stop = (ImageButton) currentView.findViewById(R.id.music_stop);
-
             currentView.setTag(holder);
         } else {
             currentView = convertView;
             holder = (ViewAudioItemsHolder) currentView.getTag();
         }
-            progressBar = (SeekBar) currentView.findViewById(R.id.music_progress);
+        progressBar = (SeekBar) currentView.findViewById(R.id.music_progress);
 
         if(getItem(position).isPlaying()){
-            Log.d("M_ADAPTER", "is current item - " + position);
+            Log.d("M_ADAPTER", "is current item: " + position);
             progressBar.setVisibility(View.VISIBLE);
             musicBinder.setProgressBar(progressBar);
-        } else {progressBar.setVisibility(View.INVISIBLE);Log.d("M_ADAPTER","is not current item - "+position);}
+        } else {progressBar.setVisibility(View.GONE);}
 
         holder.music_singer.setText(getItem(position).getArtist());
         holder.music_song_title.setText(getItem(position).getTitle());
@@ -63,23 +61,34 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
         holder.music_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                if(musicBinder.getLastPosition() > 0 && musicBinder.getLastPosition() != position){
-                    musicBinder.stopAudioTrack(musicBinder.getLastPosition());
+                if (musicBinder.getLastPosition() >= 0 && musicBinder.getLastPosition() != position) {
+                    stopTrackEvent(musicBinder.getLastPosition(), progressBar);
+                    if (parent != null && musicBinder.getLastPosition() >= 0 && parent.getChildAt(musicBinder.getLastPosition()) != null) {
+                        parent.getChildAt(musicBinder.getLastPosition()).findViewById(R.id.music_progress).setVisibility(View.GONE);
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                        MusicAdapter.this.notifyDataSetInvalidated();
+                        MusicAdapter.this.notifyDataSetChanged();
+                    }
+                    musicBinder.playAudioTrack(getItem(position).getUrl().substring(0, getItem(position).getUrl().indexOf("?")), position);
+                    getItem(position).setIsPlaying(true);
+                    musicBinder.setCurrentPlayingTrack(getItem(position));
+                    progressBar.setVisibility(View.VISIBLE);
+                    musicBinder.setProgressBar(progressBar);
+                } else {
+                    progressBar.setVisibility(View.VISIBLE);
+                    musicBinder.playAudioTrack(getItem(position).getUrl().substring(0, getItem(position).getUrl().indexOf("?")), position);
+                    getItem(position).setIsPlaying(true);
+                    musicBinder.setCurrentPlayingTrack(getItem(position));
+                    musicBinder.setProgressBar(progressBar);
                 }
-                musicBinder.playAudioTrack(getItem(position).getUrl().substring(0,getItem(position).getUrl().indexOf("?")), position);
-                musicBinder.setCurrentPlayingTrack(getItem(position));
-                musicBinder.setProgressBar(progressBar);
             }
         });
 
         holder.music_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                musicBinder.stopAudioTrack(position);
-                getItem(position).setIsPlaying(false);
-                progressBar.setVisibility(View.INVISIBLE);
-                musicBinder.dropTrack();
+                stopTrackEvent(position,progressBar);
             }
         });
 
@@ -89,7 +98,16 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
                 musicBinder.pauseAudioTrack(position);
             }
         });
+
         return currentView;
+    }
+
+    public void stopTrackEvent(int position, SeekBar progressBar){
+        musicBinder.stopAudioTrack(position);
+        musicBinder.getCurrentPlayingTrack().setIsPlaying(false);
+        getItem(position).setIsPlaying(false);
+        progressBar.setVisibility(View.GONE);
+        musicBinder.setProgressBar(progressBar);
     }
 
     public static class ViewAudioItemsHolder {
@@ -99,7 +117,5 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
         ImageButton music_pause;
         ImageButton music_stop;
         TextView music_duration;
-        TextView music_circled;
-
     }
 }
