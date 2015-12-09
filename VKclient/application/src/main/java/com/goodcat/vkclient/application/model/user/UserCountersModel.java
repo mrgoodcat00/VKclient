@@ -80,4 +80,48 @@ public class UserCountersModel {
     public int getFollowers() {
         return followers;
     }
+
+    public void setAlbums(int albums) {
+        this.albums = albums;
+    }
+
+    public void setVideos(int videos) {
+        this.videos = videos;
+    }
+
+    public void setAudios(int audios) {
+        this.audios = audios;
+    }
+
+    public void setPhotos(int photos) {
+        this.photos = photos;
+    }
+
+    public void setNotes(int notes) {
+        this.notes = notes;
+    }
+
+    public void setFriends(int friends) {
+        this.friends = friends;
+    }
+
+    public void setGroups(int groups) {
+        this.groups = groups;
+    }
+
+    public void setOnlineFriends(int onlineFriends) {
+        this.onlineFriends = onlineFriends;
+    }
+
+    public void setMutualFriends(int mutualFriends) {
+        this.mutualFriends = mutualFriends;
+    }
+
+    public void setUserVideos(int userVideos) {
+        this.userVideos = userVideos;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
 }

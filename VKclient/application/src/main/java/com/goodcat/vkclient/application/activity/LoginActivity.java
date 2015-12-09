@@ -13,6 +13,8 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import com.goodcat.vkclient.application.R;
 import com.goodcat.vkclient.application.session.Session;
 
@@ -50,7 +52,28 @@ public class LoginActivity extends Activity{
 
 
         if (!Session.isValidSession(this)) {
-            setContentView(R.layout.activity_login);
+
+            if(Session.internetConnection(this)) {
+                setContentView(R.layout.activity_login);
+            } else {
+                setContentView(R.layout.no_internet_connection);
+                ImageButton ib = (ImageButton) findViewById(R.id.noInternet);
+                TextView tv = (TextView) findViewById(R.id.reLoad);
+
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
+                ib.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
+            }
+
             loginWebView = (WebView) findViewById(R.id.webView);
             WebSettings webSettings = loginWebView.getSettings();
             webSettings.setJavaScriptEnabled(true);

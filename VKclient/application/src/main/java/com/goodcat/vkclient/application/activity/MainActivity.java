@@ -1,19 +1,18 @@
 package com.goodcat.vkclient.application.activity;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.goodcat.vkclient.application.R;
 import com.goodcat.vkclient.application.adapter.UserWallPostsAdapter;
 import com.goodcat.vkclient.application.model.user.*;
@@ -27,9 +26,13 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import java.util.List;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private SessionToken st;
+
+    private boolean deviceHaveMenuButton = false;
+
+    private ActionBar actionBar;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
@@ -39,8 +42,10 @@ public class MainActivity extends Activity {
             RequestService.RequestWorker requestWorker = (RequestService.RequestWorker) service;
             requestWorker.getUserWithWallData(new ResponseHomeCallback<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
                 @Override
-                public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups) {
+                public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles, List<UserWallGroupsModel> wGroups) {
                     if (!items.isEmpty() && !wItems.isEmpty()) {
+                        setUserData(items, wItems, wProfiles, wGroups);
+                    } else {
                         setUserData(items, wItems, wProfiles, wGroups);
                     }
                 }
@@ -63,10 +68,29 @@ public class MainActivity extends Activity {
     }
 
     private void setUserData(List<UserModel> user, List<UserWallPostsModel> wall, List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups) {
-        //------------------------------------------------GETS -------------------------------------------
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setTitle("Profile");
 
+       /* SharedPreferences preferences = getSharedPreferences(Constants.SHARED_NAME, MODE_PRIVATE);
+        long prefId = preferences.getLong(Constants.SHARED_MY_ID, 0);
+        if (userId == prefId) {
+            actionBar.setIcon(getResources().getDrawable(R.drawable.ic_menu));
+        } else {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }*/
+
+        //------------------------------------------------GETS -------------------------------------------
         View WrapperHead = View.inflate(MainActivity.this, R.layout.header_part_of_main, null);
-        ListView wallPosts = (ListView) findViewById(R.id.main_user_posts_wall);
+        UserLastSeenModel lastSeeModel = user.get(0).getLastSeen();
+        UserCountersModel userCounters = user.get(0).getCounters();
+        String firstName = user.get(0).getFirstName();
+        String lastName = user.get(0).getLastName();
+        String homeTown = user.get(0).getHomeTown();
+
+        ImageView ownerAvatar = (ImageView) WrapperHead.findViewById(R.id.main_user_logo);
+        DownloadImageService.fetchImage(user.get(0).getPhoto200(), ownerAvatar);
+
         TextView userName = (TextView) WrapperHead.findViewById(R.id.main_user_name);
         TextView userFrom = (TextView) WrapperHead.findViewById(R.id.main_user_from);
         TextView lastSeen = (TextView) WrapperHead.findViewById(R.id.main_online_status);
@@ -76,17 +100,6 @@ public class MainActivity extends Activity {
         TextView photosCounter = (TextView) WrapperHead.findViewById(R.id.main_header_photos_quantity);
         TextView videoCounter = (TextView) WrapperHead.findViewById(R.id.main_header_videos_quantity);
         TextView audioCounter = (TextView) WrapperHead.findViewById(R.id.main_header_audio_quantity);
-        ImageView ownerAvatar = (ImageView) WrapperHead.findViewById(R.id.main_user_logo);
-
-        UserLastSeenModel lastSeeModel = user.get(0).getLastSeen();
-        UserCountersModel userCounters = user.get(0).getCounters();
-
-        String firstName = user.get(0).getFirstName();
-        String lastName = user.get(0).getLastName();
-        String homeTown = user.get(0).getHomeTown();
-
-
-        DownloadImageService.fetchImage(user.get(0).getPhoto200(),ownerAvatar);
 
         userName.setText(firstName+" "+lastName);
         if(homeTown != null){
@@ -95,7 +108,8 @@ public class MainActivity extends Activity {
             // Needs to add adjustment getter for HOME\TOWN
             userFrom.setText("From: Earth "+homeTown);
         }
-        lastSeen.setText(lastSeeModel.getTime());
+        lastSeen.setText(""+lastSeeModel.getTime());
+
         //---------------------------------------------- SET COUNTERS -----------------------------------------------------
         friendsCounter.setText(userCounters.getFriends()+"\n Friends");
         commonCounter.setText(userCounters.getFollowers() +"\n Followers");
@@ -105,16 +119,32 @@ public class MainActivity extends Activity {
         audioCounter.setText(userCounters.getAudios()+"\n Audios");
         //---------------------------------------------- SET WALL -----------------------------------------------------
 
+        ListView wallPosts = (ListView) findViewById(R.id.main_user_posts_wall);
 
-        if(wall != null) {
-            if(wallPosts.getHeaderViewsCount() == 0){
-                wallPosts.addHeaderView(WrapperHead);
-            }
+        if(wallPosts.getHeaderViewsCount() == 0){
+            wallPosts.addHeaderView(WrapperHead);
+        }
+
+        if(wall != null && Session.internetConnection(this)) {
             wallPosts.setHeaderDividersEnabled(false);
             wallPosts.setFooterDividersEnabled(false);
             wallPosts.setDividerHeight(0);
             UserWallPostsAdapter adapter = new UserWallPostsAdapter(getBaseContext(), wall, wProfiles, wGroups, st.getToken());
             wallPosts.setAdapter(adapter);
+        } else {
+            if (wallPosts.getHeaderViewsCount() == 1) {
+                View noInet = View.inflate(MainActivity.this, R.layout.no_internet_connection, null);
+                wallPosts.addHeaderView(noInet);
+                wallPosts.setAdapter(new HeaderViewListAdapter(null, null, null));
+                ImageButton button = (ImageButton) noInet.findViewById(R.id.noInternet);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                        startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    }
+                });
+            }
         }
 
 
@@ -145,8 +175,8 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if(deviceHaveMenuButton){getMenuInflater().inflate(R.menu.menu_main_old, menu);}
+        else{getMenuInflater().inflate(R.menu.menu_main_new, menu);}
         return true;
     }
 
@@ -169,6 +199,9 @@ public class MainActivity extends Activity {
     protected void onStart() {
         super.onStart();
         Log.d("LOGGER","App is started!");
+        if(Build.VERSION.SDK_INT <= 10){
+            deviceHaveMenuButton = true;
+        }
         bindService(new Intent(this,RequestService.class),serviceConnection,BIND_AUTO_CREATE);
     }
 

@@ -3,6 +3,7 @@ package com.goodcat.vkclient.application.session;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 public class Session {
@@ -64,4 +65,12 @@ public class Session {
         return params;
     }
 
+    public static boolean internetConnection(Context context){
+        ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+        String WIFI = String.valueOf(connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState());
+        String MOBILE = String.valueOf(connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState());
+        if(WIFI == "CONNECTED" || MOBILE == "CONNECTED"){
+            return true;
+        } else {return false;}
+    }
 }

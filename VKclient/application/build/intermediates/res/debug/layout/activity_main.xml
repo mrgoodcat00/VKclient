@@ -6,7 +6,7 @@
               android:layout_height="wrap_content"
               android:orientation="vertical" android:id="@+id/root_element" android:focusable="false">
 
-    <LinearLayout android:layout_width="fill_parent"
+    <!--<LinearLayout android:layout_width="fill_parent"
                   android:layout_height="50dp"
                   android:orientation="horizontal"
                   android:id="@+id/main_top_header"
@@ -22,13 +22,7 @@
                 android:id="@+id/main_header_page_title" android:textSize="17sp" android:layout_marginLeft="15dp"
                 android:textColor="#fff"/>
 
-    </LinearLayout>
-
-
-
-
-
-
+    </LinearLayout>-->
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

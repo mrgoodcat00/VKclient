@@ -53,4 +53,32 @@ public class UserModel {
     public String getPhoto200() {
         return photo200;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setLastSeen(UserLastSeenModel lastSeen) {
+        this.lastSeen = lastSeen;
+    }
+
+    public void setHomeTown(String homeTown) {
+        this.homeTown = homeTown;
+    }
+
+    public void setCounters(UserCountersModel counters) {
+        this.counters = counters;
+    }
+
+    public void setPhoto200(String photo200) {
+        this.photo200 = photo200;
+    }
 }

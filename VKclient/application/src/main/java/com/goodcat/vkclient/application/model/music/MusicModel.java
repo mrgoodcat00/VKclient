@@ -85,6 +85,43 @@ public class MusicModel {
     }
 
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
+    public void setOwnerId(long ownerId) {
+        this.ownerId = ownerId;
+    }
 
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setLyricsId(long lyricsId) {
+        this.lyricsId = lyricsId;
+    }
+
+    public void setAlbumId(long albumId) {
+        this.albumId = albumId;
+    }
+
+    public void setGenreId(long genreId) {
+        this.genreId = genreId;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
 }

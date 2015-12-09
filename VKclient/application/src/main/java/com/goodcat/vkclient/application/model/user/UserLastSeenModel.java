@@ -17,8 +17,19 @@ public class UserLastSeenModel {
     @SerializedName("platform")
     private int platform;
 
-    public String getTime() {
+    public void setTime(int time) {
+        this.time = time;
+    }
 
+    public void setPlatform(int platform) {
+        this.platform = platform;
+    }
+
+    public int getSimpleTime(){
+        return time;
+    }
+
+    public String getTime() {
         Calendar cal = Calendar.getInstance();
         TimeZone tz = cal.getTimeZone();
         Long timeLong = time * 1000L;
@@ -28,7 +39,7 @@ public class UserLastSeenModel {
         return fmt.print(repostDateTime);
     }
 
-    public Integer getPlatform() {
+    public int getPlatform() {
         return platform;
     }
 

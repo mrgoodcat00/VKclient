@@ -78,17 +78,14 @@
         <item msgid="4869870056547896011" quantity="one">"1 segundo ang nakakalipas"</item>
         <item msgid="3903706804349556379" quantity="other">"<ns1:g id="COUNT">%d</ns1:g> (na) segundo ang nakalipas"</item>
     </plurals>
-    <!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-tl/values-tl.xml -->
+    <!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values-tl/values-tl.xml -->
     <eat-comment/>
     <string msgid="4600421777120114993" name="abc_action_bar_home_description">"Mag-navigate patungo sa home"</string>
-    <string msgid="1397052879051804371" name="abc_action_bar_home_description_format">"%1$s, %2$s"</string>
-    <string msgid="6623331958280229229" name="abc_action_bar_home_subtitle_description_format">"%1$s, %2$s, %3$s"</string>
     <string msgid="1594238315039666878" name="abc_action_bar_up_description">"Mag-navigate pataas"</string>
     <string msgid="3588849162933574182" name="abc_action_menu_overflow_description">"Higit pang mga opsyon"</string>
     <string msgid="4076576682505996667" name="abc_action_mode_done">"Tapos na"</string>
     <string msgid="7468859129482906941" name="abc_activity_chooser_view_see_all">"Tingnan lahat"</string>
     <string msgid="2031811694353399454" name="abc_activitychooserview_choose_application">"Pumili ng isang app"</string>
-    <string msgid="7723749260725869598" name="abc_search_hint">"Maghanap…"</string>
     <string msgid="3691816814315814921" name="abc_searchview_description_clear">"I-clear ang query"</string>
     <string msgid="2550479030709304392" name="abc_searchview_description_query">"Query sa paghahanap"</string>
     <string msgid="8264924765203268293" name="abc_searchview_description_search">"Maghanap"</string>
@@ -96,14 +93,10 @@
     <string msgid="893419373245838918" name="abc_searchview_description_voice">"Paghahanap gamit ang boses"</string>
     <string msgid="3421042268587513524" name="abc_shareactionprovider_share_with">"Ibahagi sa/kay"</string>
     <string msgid="7165123711973476752" name="abc_shareactionprovider_share_with_application">"Ibahagi sa/kay %s"</string>
-    <string msgid="1603543279005712093" name="abc_toolbar_collapse_description">"I-collapse"</string>
     <!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/build/intermediates/exploded-aar/net.danlew/android.joda/2.9.0/res/values-tl/values-tl.xml -->
     <eat-comment/>
     <string name="joda_time_android_date_time">%2$s %1$s</string>
     <string msgid="9093949757757445117" name="joda_time_android_preposition_for_date">"sa <ns1:g id="DATE">%s</ns1:g>"</string>
     <string msgid="5506831244263083793" name="joda_time_android_preposition_for_time">"nang <ns1:g id="TIME">%s</ns1:g>"</string>
     <string msgid="1818557177829411417" name="joda_time_android_relative_time">"<ns1:g id="DATE">%1$s</ns1:g>, <ns1:g id="TIME">%2$s</ns1:g>"</string>
-    <!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values-tl/values-tl.xml -->
-    <eat-comment/>
-    <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
 </resources>

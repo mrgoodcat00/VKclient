@@ -33,6 +33,15 @@ public class UserWallPostsModel {
     @SerializedName("post_type")
     private String postType;
 
+    @SerializedName("signer_id")
+    private  long signerId;
+
+    @SerializedName("can_pin")
+    private  int canPin;
+
+    @SerializedName("is_pinned")
+    private int isPinned;
+
     @SerializedName("attachments")
     private List<UserWallAttachmentsModel> attachments;
 
@@ -45,17 +54,8 @@ public class UserWallPostsModel {
     @SerializedName("reposts")
     private UserWallPostsRepostsCountModel reposts;
 
-    @SerializedName("signer_id")
-    private  long signerId;
-
     @SerializedName("copy_history")
     private List<UserResponseWallCopyHistoryModel> copyHistory;
-
-    @SerializedName("can_pin")
-    private  int canPin;
-
-    @SerializedName("is_pinned")
-    private int isPinned;
 
     public long getId() {
         return id;
@@ -71,6 +71,18 @@ public class UserWallPostsModel {
 
     public long getDate() {
         return date;
+    }
+
+    public int getCanPin() {
+        return canPin;
+    }
+
+    public int getIsPinned() {
+        return isPinned;
+    }
+
+    public long getSignerId() {
+        return signerId;
     }
 
     public String getText() {
@@ -109,23 +121,15 @@ public class UserWallPostsModel {
         return reposts;
     }
 
-    public long getSignerId() {
-        return signerId;
-    }
-
     public List<UserResponseWallCopyHistoryModel> getCopyHistory() {
         return copyHistory;
     }
 
-    public int getCanPin() {
-        return canPin;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public int getIsPinned() {
-        return isPinned;
-    }
-
-   /* @SerializedName("post_source")
+    /* @SerializedName("post_source")
     private  String post_source;
 
     @SerializedName("comments")

@@ -14,7 +14,7 @@
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/user_logo" android:src="@drawable/my_logo" android:layout_marginLeft="10dp"
+                    android:id="@+id/user_logo" android:src="@drawable/little_logo" android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp" android:contentDescription="@string/user_logo"/>
             <LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content"
                           android:orientation="vertical">
@@ -52,7 +52,7 @@
             <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:id="@+id/repost_user_logo" android:src="@drawable/bro_logo"
+                    android:id="@+id/repost_user_logo" android:src="@drawable/little_logo"
                     android:contentDescription="repost user logo" android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"/>
             <RelativeLayout

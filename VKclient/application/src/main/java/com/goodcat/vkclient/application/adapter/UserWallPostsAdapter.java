@@ -46,6 +46,21 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+/*        if(!Session.internetConnection(getContext())){
+            convertView = inflater.inflate(R.layout.no_internet_connection,null);
+
+            ImageButton button = (ImageButton) convertView.findViewById(R.id.noInternet);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(),MainActivity.class);
+                    getContext().startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                }
+            });
+            return convertView;
+        }*/
+
         ViewWallItemHolder holder;
 
         if (convertView == null) {
