@@ -202,6 +202,19 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
         return convertView;
     }
 
+    public void updateWallPosts(List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups){
+        for(UserWallProfilesModel uwpm:wProfiles){
+            if(!this.wProfiles.contains(uwpm)){
+                this.wProfiles.add(uwpm);
+            }
+        }
+        for(UserWallGroupsModel ugpm:wGroups){
+            if(!this.wGroups.contains(ugpm)){
+                this.wGroups.add(ugpm);
+            }
+        }
+
+    }
 
     private UserWallProfilesModel identifyUser(Long id) {
         UserWallProfilesModel user = null;

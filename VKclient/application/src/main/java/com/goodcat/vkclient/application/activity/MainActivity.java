@@ -168,9 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }
-
-
-
+        
         wallPosts.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -181,19 +179,16 @@ public class MainActivity extends AppCompatActivity {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if(totalItemCount-1 == firstVisibleItem) {
                     Log.d("setOnScrollListener", " firstVisibleItem:" + firstVisibleItem + "   totalItemCount:" + totalItemCount);
-
                     requestWorker.getUserWallPart(new ResponseHomeCallback<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
                         @Override
                         public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles, List<UserWallGroupsModel> wGroups) {
-
+                            adapter.updateWallPosts(wProfiles,wGroups);
                             for (UserWallPostsModel w : wItems) {
                                 adapter.add(w);
                             }
-                            
                         }
                     }, totalItemCount - 1, String.valueOf(user.get(0).getId()));
                     adapter.notifyDataSetChanged();
-                    adapter.notifyDataSetInvalidated();
                 }
             }
         });
@@ -228,9 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id){
+        switch (item.getItemId()){
             case R.id.main_header_back_button:
                 finish();
                 return true;
