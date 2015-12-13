@@ -1,9 +1,10 @@
 package com.goodcat.vkclient.application.activity;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,13 +16,18 @@ import com.goodcat.vkclient.application.model.photos.PhotoAlbumsModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhotoAlbumsActivity extends Activity{
+public class PhotoAlbumsActivity extends AppCompatActivity {
+
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photos);
 
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setTitle("Albums");
 
         ListView albumsList = (ListView) findViewById(R.id.album_photo_list_albums);
 

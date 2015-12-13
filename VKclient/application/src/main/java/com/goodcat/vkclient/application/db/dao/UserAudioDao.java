@@ -53,6 +53,11 @@ public class UserAudioDao implements CommonDAO<MusicModel> {
         }
     }
 
+    public boolean dropTheBase(int id){
+        db.delete(DbBone.AUDIO_TABLE,DbBone.AUDIO_OWNER_ID+ "=?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
     @Override
     public boolean update(MusicModel item) {
         return false;

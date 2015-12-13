@@ -1,7 +1,8 @@
 package com.goodcat.vkclient.application.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -12,14 +13,18 @@ import com.goodcat.vkclient.application.model.messages.MessagesModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessagesActivity extends Activity{
+public class MessagesActivity extends AppCompatActivity {
+    private ActionBar actionBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
 
-
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setTitle("Messages");
 
 
 

@@ -25,4 +25,6 @@
     <string name="sender_logo">sender_logo</string>
     <string name="music">My Music</string>
     <string name="photo_albums">Photo Albums</string>
+    <string name="back_button">back</string>
+    <string name="get_music">music</string>
 </resources>

@@ -42,7 +42,7 @@
                     android:id="@+id/music_stop" android:src="@drawable/stop" android:background="#1e0c0c18"
                     android:padding="5dp" android:layout_marginRight="5dp"/>
             <SeekBar
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="30dp"
                     android:id="@+id/music_progress" android:indeterminate="false" android:layout_marginLeft="5dp"
                     android:visibility="gone"/>

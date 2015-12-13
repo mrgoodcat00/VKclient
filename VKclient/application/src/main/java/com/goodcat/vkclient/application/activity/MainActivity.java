@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,14 +34,20 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean deviceHaveMenuButton = false;
 
+    private SwipeRefreshLayout swipeLayout;
+
     private ActionBar actionBar;
+
+    private RequestService.RequestWorker requestWorker;
+
+    private UserWallPostsAdapter adapter;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d("SERVICE", "Connected");
-            RequestService.RequestWorker requestWorker = (RequestService.RequestWorker) service;
+            requestWorker = (RequestService.RequestWorker) service;
             requestWorker.getUserWithWallData(new ResponseHomeCallback<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
                 @Override
                 public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles, List<UserWallGroupsModel> wGroups) {
@@ -65,20 +73,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         st = Session.getSession(this);
 
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setColorSchemeResources(R.color.colorPrimary,R.color.colorPrimaryDark);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        unbindService(serviceConnection);
+                        bindService(new Intent(MainActivity.this,RequestService.class),serviceConnection,BIND_AUTO_CREATE);
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 3000);
+            }
+        });
+
     }
 
-    private void setUserData(List<UserModel> user, List<UserWallPostsModel> wall, List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups) {
+    private void setUserData(final List<UserModel> user, List<UserWallPostsModel> wall, List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups) {
         actionBar = getSupportActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setTitle("Profile");
+        View actionBarView = View.inflate(MainActivity.this, R.layout.old_custom_menu, null);
+        TextView title = (TextView) actionBarView.findViewById(R.id.main_header_page_title);
+        title.setVisibility(View.VISIBLE);
+        title.setText("Profile");
 
-       /* SharedPreferences preferences = getSharedPreferences(Constants.SHARED_NAME, MODE_PRIVATE);
-        long prefId = preferences.getLong(Constants.SHARED_MY_ID, 0);
-        if (userId == prefId) {
-            actionBar.setIcon(getResources().getDrawable(R.drawable.ic_menu));
-        } else {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }*/
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setCustomView(actionBarView);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
 
         //------------------------------------------------GETS -------------------------------------------
         View WrapperHead = View.inflate(MainActivity.this, R.layout.header_part_of_main, null);
@@ -105,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         if(homeTown != null){
             userFrom.setText("From: "+homeTown);
         } else {
-            // Needs to add adjustment getter for HOME\TOWN
+            // Needs to add implement getter for HOME\TOWN
             userFrom.setText("From: Earth "+homeTown);
         }
         lastSeen.setText(""+lastSeeModel.getTime());
@@ -119,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         audioCounter.setText(userCounters.getAudios()+"\n Audios");
         //---------------------------------------------- SET WALL -----------------------------------------------------
 
-        ListView wallPosts = (ListView) findViewById(R.id.main_user_posts_wall);
+        final ListView wallPosts = (ListView) findViewById(R.id.main_user_posts_wall);
 
         if(wallPosts.getHeaderViewsCount() == 0){
             wallPosts.addHeaderView(WrapperHead);
@@ -129,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             wallPosts.setHeaderDividersEnabled(false);
             wallPosts.setFooterDividersEnabled(false);
             wallPosts.setDividerHeight(0);
-            UserWallPostsAdapter adapter = new UserWallPostsAdapter(getBaseContext(), wall, wProfiles, wGroups, st.getToken());
+            adapter = new UserWallPostsAdapter(getBaseContext(), wall, wProfiles, wGroups, st.getToken());
             wallPosts.setAdapter(adapter);
         } else {
             if (wallPosts.getHeaderViewsCount() == 1) {
@@ -149,7 +171,32 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        wallPosts.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                Log.d("setOnScrollListener"," "+view.toString()+"   scroll state"+scrollState);
+            }
 
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if(totalItemCount-1 == firstVisibleItem) {
+                    Log.d("setOnScrollListener", " firstVisibleItem:" + firstVisibleItem + "   totalItemCount:" + totalItemCount);
+
+                    requestWorker.getUserWallPart(new ResponseHomeCallback<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
+                        @Override
+                        public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles, List<UserWallGroupsModel> wGroups) {
+
+                            for (UserWallPostsModel w : wItems) {
+                                adapter.add(w);
+                            }
+                            
+                        }
+                    }, totalItemCount - 1, String.valueOf(user.get(0).getId()));
+                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetInvalidated();
+                }
+            }
+        });
 
         TextView musicQuantity = (TextView) findViewById(R.id.main_header_audio_quantity);
         musicQuantity.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(photoIntent);
             }
         });
-
     }
 
     @Override
@@ -183,14 +229,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.exit) {
-            finish();
-            return true;
-        }
-        if (id == R.id.get_messages) {
-            Intent messages = new Intent(MainActivity.this,MessagesActivity.class);
-            startActivity(messages);
-            return true;
+
+        switch (id){
+            case R.id.main_header_back_button:
+                finish();
+                return true;
+
+            case R.id.exit:
+                finish();
+                return true;
+
+            case R.id.get_messages:
+                Intent messages = new Intent(MainActivity.this,MessagesActivity.class);
+                startActivity(messages);
+                return true;
+
+            case R.id.get_music:
+                Intent music = new Intent(MainActivity.this,MusicActivity.class);
+                startActivity(music);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -199,9 +256,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d("LOGGER","App is started!");
-        if(Build.VERSION.SDK_INT <= 10){
-            deviceHaveMenuButton = true;
-        }
+        if(Build.VERSION.SDK_INT <= 10){deviceHaveMenuButton = true;}
         bindService(new Intent(this,RequestService.class),serviceConnection,BIND_AUTO_CREATE);
     }
 
@@ -229,4 +284,5 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.d("LOGGER","App is destroyed!");
     }
+
 }

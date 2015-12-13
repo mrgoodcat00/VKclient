@@ -94,7 +94,7 @@ public class MusicService extends Service {
         }
 
         public int stopAudioTrack(int pos){
-            if(mp != null && lastPosition == pos && ( !stoped || paused == true)) {
+            if(mp != null && lastPosition == pos && !stoped) {
                 mp.stop();
                 stoped = true;
                 paused = false;
