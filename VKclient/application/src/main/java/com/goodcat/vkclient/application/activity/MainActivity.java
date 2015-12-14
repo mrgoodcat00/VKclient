@@ -21,6 +21,7 @@ import com.goodcat.vkclient.application.model.user.*;
 import com.goodcat.vkclient.application.service.DownloadImageService;
 import com.goodcat.vkclient.application.service.RequestService;
 import com.goodcat.vkclient.application.service.ResponseHomeCallback;
+import com.goodcat.vkclient.application.service.ResponseLazyLoad;
 import com.goodcat.vkclient.application.session.Session;
 import com.goodcat.vkclient.application.session.SessionToken;
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -168,27 +169,19 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }
-        
+
+
         wallPosts.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                Log.d("setOnScrollListener"," "+view.toString()+"   scroll state"+scrollState);
+                //Log.d("setOnScrollListener"," "+view.toString()+"   scroll state"+scrollState);
             }
-
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if(totalItemCount-1 == firstVisibleItem) {
-                    Log.d("setOnScrollListener", " firstVisibleItem:" + firstVisibleItem + "   totalItemCount:" + totalItemCount);
-                    requestWorker.getUserWallPart(new ResponseHomeCallback<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
-                        @Override
-                        public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles, List<UserWallGroupsModel> wGroups) {
-                            adapter.updateWallPosts(wProfiles,wGroups);
-                            for (UserWallPostsModel w : wItems) {
-                                adapter.add(w);
-                            }
-                        }
-                    }, totalItemCount - 1, String.valueOf(user.get(0).getId()));
-                    adapter.notifyDataSetChanged();
+            public void onScroll(final AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                Log.d("setOnScrollListener", " firstVisibleItem:" + (firstVisibleItem+visibleItemCount));
+                Log.d("setOnScrollListener", " totalItemCount:" + (totalItemCount) );
+                if(totalItemCount == firstVisibleItem+visibleItemCount) {
+                    updateAdapter(totalItemCount,user);
                 }
             }
         });
@@ -212,6 +205,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(photoIntent);
             }
         });
+    }
+
+    private void updateAdapter(int totalItemCount,List<UserModel> user){
+        requestWorker.getUserWallPart(new ResponseLazyLoad<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
+            @Override
+            public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles, List<UserWallGroupsModel> wGroups) {
+                adapter.updateWallPosts(wItems,wProfiles,wGroups);
+                Log.d("!!!!!", ""+adapter.getCount());
+            }
+        }, totalItemCount, String.valueOf(user.get(0).getId()));
+
     }
 
     @Override

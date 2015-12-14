@@ -202,7 +202,10 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
         return convertView;
     }
 
-    public void updateWallPosts(List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups){
+    public void updateWallPosts(List<UserWallPostsModel> wPosts,List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups){
+        for(UserWallPostsModel uwm:wPosts){
+            this.wItems.add(this.wItems.size(),uwm);
+        }
         for(UserWallProfilesModel uwpm:wProfiles){
             if(!this.wProfiles.contains(uwpm)){
                 this.wProfiles.add(uwpm);
@@ -213,7 +216,7 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
                 this.wGroups.add(ugpm);
             }
         }
-
+        this.notifyDataSetChanged();
     }
 
     private UserWallProfilesModel identifyUser(Long id) {
@@ -291,6 +294,9 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
             DownloadImageService.fetchImage(photo.getPhoto130(), holder.post_image);
         } else { holder.post_image.setVisibility(View.GONE);}
     }
+
+
+
 
     public static class ViewWallItemHolder {
         TextView user_name;

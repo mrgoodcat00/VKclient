@@ -124,7 +124,7 @@ public class RequestService extends Service {
         }
 
 
-        public void getUserWallPart(final ResponseHomeCallback<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel> userModel, final int ofset, final String userId) {
+        public void getUserWallPart(final ResponseLazyLoad<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel> userModel, final int ofset, final String userId) {
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
@@ -221,6 +221,7 @@ public class RequestService extends Service {
                             userModel.onResponse(uM, uW, uP, uG);
                         }
                     });
+
                 }
             });
         }
