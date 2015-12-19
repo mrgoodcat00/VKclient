@@ -70,18 +70,21 @@ public class MusicAdapter extends ArrayAdapter<MusicModel>{
                         MusicAdapter.this.notifyDataSetInvalidated();
                         MusicAdapter.this.notifyDataSetChanged();
                     }
+                    progressBar.setVisibility(View.VISIBLE);
+                    musicBinder.setProgressBar(progressBar);
                     musicBinder.playAudioTrack(getItem(position).getUrl().substring(0, getItem(position).getUrl().indexOf("?")), position);
                     getItem(position).setIsPlaying(true);
                     musicBinder.setCurrentPlayingTrack(getItem(position));
-                    progressBar.setVisibility(View.VISIBLE);
-                    musicBinder.setProgressBar(progressBar);
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
+                    musicBinder.setProgressBar(progressBar);
                     musicBinder.playAudioTrack(getItem(position).getUrl().substring(0, getItem(position).getUrl().indexOf("?")), position);
                     getItem(position).setIsPlaying(true);
                     musicBinder.setCurrentPlayingTrack(getItem(position));
-                    musicBinder.setProgressBar(progressBar);
+                    MusicAdapter.this.notifyDataSetInvalidated();
+                    MusicAdapter.this.notifyDataSetChanged();
                 }
+                musicBinder.setProgressBar(progressBar);
             }
         });
 

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,7 +20,7 @@ import com.goodcat.vkclient.application.adapter.MusicAdapter;
 import com.goodcat.vkclient.application.model.music.MusicModel;
 import com.goodcat.vkclient.application.service.MusicService;
 import com.goodcat.vkclient.application.service.RequestService;
-import com.goodcat.vkclient.application.service.ResponseCallback;
+import com.goodcat.vkclient.application.service.callbacks.ResponseCallback;
 import com.goodcat.vkclient.application.session.Session;
 import com.goodcat.vkclient.application.session.SessionToken;
 
@@ -60,7 +59,6 @@ public class MusicActivity extends AppCompatActivity {
             musicBinder = (MusicService.MusicWorker) service;
             Log.d("M_ACTIVITY", "Service connected!");
         }
-
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Log.d("M_ACTIVITY", "Service disconnected!");
@@ -83,12 +81,6 @@ public class MusicActivity extends AppCompatActivity {
         MusicAdapter adapter = new MusicAdapter(this,result,musicBinder);
         musicList.setAdapter(adapter);
 
-        musicList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("M_ACTIVITY","id:"+view.getId()+" pos:"+position);
-            }
-        });
     }
 
     @Override
@@ -129,9 +121,7 @@ public class MusicActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id){
+        switch (item.getItemId()){
             case R.id.main_header_back_button:
                 finish();
                 return true;
@@ -144,11 +134,9 @@ public class MusicActivity extends AppCompatActivity {
                 Intent messages = new Intent(MusicActivity.this,MessagesActivity.class);
                 startActivity(messages);
                 return true;
-
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

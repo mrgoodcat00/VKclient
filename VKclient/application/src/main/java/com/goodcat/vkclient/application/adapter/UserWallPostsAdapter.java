@@ -46,21 +46,6 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-/*        if(!Session.internetConnection(getContext())){
-            convertView = inflater.inflate(R.layout.no_internet_connection,null);
-
-            ImageButton button = (ImageButton) convertView.findViewById(R.id.noInternet);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getContext(),MainActivity.class);
-                    getContext().startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                }
-            });
-            return convertView;
-        }*/
-
         ViewWallItemHolder holder;
 
         if (convertView == null) {
@@ -111,16 +96,18 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
         if(singlePost.getOwnerId() == singlePost.getFromId()){
             UserWallProfilesModel postFromWallOwner = identifyUser(singlePost.getOwnerId());
             holder.user_name.setText(postFromWallOwner.getFirstName() + " " + postFromWallOwner.getLastName());
-            DownloadImageService.fetchImage(postFromWallOwner.getPhoto50(), holder.user_logo);
+            DownloadImageService.loadImage(holder.user_logo, postFromWallOwner.getPhoto50());
         } else {
             UserWallProfilesModel postFromOtherUser = identifyUser(singlePost.getFromId());
             if(postFromOtherUser != null){
                 holder.user_name.setText(postFromOtherUser.getFirstName() + " " + postFromOtherUser.getLastName());
-                DownloadImageService.fetchImage(postFromOtherUser.getPhoto50(), holder.user_logo);
+               /* DownloadImageService.fetchImage(postFromOtherUser.getPhoto50(), holder.user_logo);*/
+                DownloadImageService.loadImage( holder.user_logo, postFromOtherUser.getPhoto50());
             } else {
                 UserWallGroupsModel group = identifyGroup(singlePost.getFromId());
                 holder.user_name.setText(group.getName());
-                DownloadImageService.fetchImage(group.getPhoto50(), holder.user_logo);
+                /*DownloadImageService.fetchImage(group.getPhoto50(), holder.user_logo);*/
+                DownloadImageService.loadImage(holder.user_logo,group.getPhoto50());
             }
         }
         setPostTime(singlePost.getDate(),holder.user_posted_time);
@@ -156,6 +143,7 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
             holder.post_text.setText("In construction");
             holder.ownerSetLayout.setVisibility(View.GONE);
             holder.post_image.setVisibility(View.GONE);
+
             /*-------------------------------- Repost by Wall Owner without custom attachment-------------------------------------*/
         } else if(historyRepost != null && attachments == null){
 
@@ -165,12 +153,14 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
                 if(historyRepost.get(0).getFromId() > 0) {
                     UserWallProfilesModel postOwner = identifyUser(historyRepost.get(0).getFromId());
                     holder.repost_starter_user_name.setText(postOwner.getFirstName() + " " + postOwner.getLastName());
-                    DownloadImageService.fetchImage(postOwner.getPhoto50(), holder.repost_user_logo);
+                    /*DownloadImageService.fetchImage(postOwner.getPhoto50(), holder.repost_user_logo);*/
+                    DownloadImageService.loadImage(holder.repost_user_logo,postOwner.getPhoto50());
                     setPostTime(historyRepost.get(0).getDate(),holder.repost_start_post_time);
                 } else {
                     UserWallGroupsModel groupOwner = identifyGroup(historyRepost.get(0).getFromId());
                     holder.repost_starter_user_name.setText(groupOwner.getName());
-                    DownloadImageService.fetchImage(groupOwner.getPhoto50(), holder.repost_user_logo);
+                    /*DownloadImageService.fetchImage(groupOwner.getPhoto50(), holder.repost_user_logo);*/
+                    DownloadImageService.loadImage(holder.repost_user_logo,groupOwner.getPhoto50());
                     setPostTime(historyRepost.get(0).getDate(),holder.repost_start_post_time);
                     holder.post_text.setText(historyRepost.get(0).getText());
                 }
@@ -182,11 +172,13 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
                 if (historyRepost.get(0).getFromId() > 0) {
                     UserWallProfilesModel postOwner = identifyUser(historyRepost.get(0).getFromId());
                     holder.repost_starter_user_name.setText(postOwner.getFirstName() + " " + postOwner.getLastName());
-                    DownloadImageService.fetchImage(postOwner.getPhoto50(), holder.repost_user_logo);
+                    /*DownloadImageService.fetchImage(postOwner.getPhoto50(), holder.repost_user_logo);*/
+                    DownloadImageService.loadImage(holder.repost_user_logo,postOwner.getPhoto50());
                 } else {
                     UserWallGroupsModel group = identifyGroup(historyRepost.get(0).getFromId());
                     holder.repost_starter_user_name.setText(group.getName());
-                    DownloadImageService.fetchImage(group.getPhoto50(), holder.repost_user_logo);
+                    /*DownloadImageService.fetchImage(group.getPhoto50(), holder.repost_user_logo);*/
+                    DownloadImageService.loadImage(holder.repost_user_logo,group.getPhoto50());
                 }
 
                 if (attachmentInsideRepost.get(0).getType().equals("video")) {
@@ -204,7 +196,7 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
 
     public void updateWallPosts(List<UserWallPostsModel> wPosts,List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups){
         for(UserWallPostsModel uwm:wPosts){
-            this.wItems.add(this.wItems.size(),uwm);
+            this.wItems.add(uwm);
         }
         for(UserWallProfilesModel uwpm:wProfiles){
             if(!this.wProfiles.contains(uwpm)){
@@ -266,11 +258,14 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
             }
         }
         if (video.getPhoto640() != null) {
-            DownloadImageService.fetchImage(video.getPhoto640(), holder.post_image);
+            /*DownloadImageService.fetchImage(video.getPhoto640(), holder.post_image);*/
+            DownloadImageService.loadImage(holder.post_image, video.getPhoto640());
         } else if (video.getPhoto320() != null) {
-            DownloadImageService.fetchImage(video.getPhoto320(), holder.post_image);
+            /*DownloadImageService.fetchImage(video.getPhoto320(), holder.post_image);*/
+            DownloadImageService.loadImage(holder.post_image, video.getPhoto320());
         } else if (video.getPhoto130() != null) {
-            DownloadImageService.fetchImage(video.getPhoto130(), holder.post_image);
+            /*DownloadImageService.fetchImage(video.getPhoto130(), holder.post_image);*/
+            DownloadImageService.loadImage(holder.post_image, video.getPhoto130());
         } else {
             holder.post_image.setVisibility(View.GONE);
         }
@@ -287,11 +282,14 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
         }
 
         if (photo.getPhoto604() != null) {
-            DownloadImageService.fetchImage(photo.getPhoto604(), holder.post_image);
+            /*DownloadImageService.fetchImage(photo.getPhoto604(), holder.post_image);*/
+            DownloadImageService.loadImage(holder.post_image, photo.getPhoto604());
         } else if (photo.getPhoto807() != null) {
-            DownloadImageService.fetchImage(photo.getPhoto807(), holder.post_image);
+            /*DownloadImageService.fetchImage(photo.getPhoto807(), holder.post_image);*/
+            DownloadImageService.loadImage(holder.post_image, photo.getPhoto807());
         } else if (photo.getPhoto130() != null) {
-            DownloadImageService.fetchImage(photo.getPhoto130(), holder.post_image);
+            /*DownloadImageService.fetchImage(photo.getPhoto130(), holder.post_image);*/
+            DownloadImageService.loadImage(holder.post_image, photo.getPhoto130());
         } else { holder.post_image.setVisibility(View.GONE);}
     }
 

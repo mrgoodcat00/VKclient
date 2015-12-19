@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent" android:background="#000">
 
-    <LinearLayout android:layout_width="fill_parent"
+    <!--<LinearLayout android:layout_width="fill_parent"
                   android:layout_height="50dp"
                   android:orientation="horizontal"
                   android:id="@+id/photos_in_album_top_header"
@@ -26,15 +26,21 @@
                 android:id="@+id/photos_in_album_header_page_title" android:textSize="17sp" android:layout_marginLeft="15dp"
                 android:textColor="#fff"/>
 
-    </LinearLayout>
+    </LinearLayout>-->
 
 
 
     <ListView android:layout_width="fill_parent"
               android:layout_height="match_parent"
               android:background="#000"
-              android:id="@+id/photos_in_album_list">
+              android:id="@+id/photos_in_album_list"
+              android:clickable="false" android:focusable="false"
+            android:listSelector="#000c0c18">
+
     </ListView>
+
+
+
 
 
 </LinearLayout><!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/src/main/res/layout/activity_photos_in_album.xml -->

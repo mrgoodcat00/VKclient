@@ -111,7 +111,7 @@ public class MusicService extends Service {
 
         @Override
         public void onBufferingUpdate(MediaPlayer mp, int percent) {
-            if(mp != null && mp.isPlaying() || paused) {
+            if(mp != null && (mp.isPlaying() || paused)) {
                 progressBar.setMax(mp.getDuration()/ 1000);
                 Log.d("M_SERVICE", "track percents " + percent + "||" + mp.getCurrentPosition() / 1000L);
                 progressBar.setProgress((int) (mp.getCurrentPosition() / 1000L));

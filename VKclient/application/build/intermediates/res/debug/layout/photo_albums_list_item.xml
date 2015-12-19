@@ -19,18 +19,19 @@
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageView1" android:src="@drawable/user_logo" android:layout_weight="1"
+                    android:id="@+id/albumPreView" android:src="@drawable/user_logo" android:layout_weight="1"
+                    android:adjustViewBounds="true" android:scaleType="centerCrop" android:minHeight="150dp"
+                    android:maxHeight="200dp"/>
+           <!-- <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/albumPreView2" android:src="@drawable/user_logo" android:layout_weight="1"
                     android:adjustViewBounds="true" android:scaleType="centerCrop"/>
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageView2" android:src="@drawable/user_logo" android:layout_weight="1"
-                    android:adjustViewBounds="true" android:scaleType="centerCrop"/>
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView3" android:src="@drawable/user_logo" android:layout_weight="1"
-                    android:adjustViewBounds="true" android:scaleType="centerCrop"/>
+                    android:id="@+id/albumPreView3" android:src="@drawable/user_logo" android:layout_weight="1"
+                    android:adjustViewBounds="true" android:scaleType="centerCrop"/>-->
         </LinearLayout>
         <TextView
                 android:layout_width="wrap_content"

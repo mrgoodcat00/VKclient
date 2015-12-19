@@ -2,26 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="fill_parent"
-              android:layout_height="wrap_content" android:paddingTop="2dp">
+              android:layout_height="wrap_content" android:paddingTop="2dp" android:background="#000c0c18">
 
     <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView4" android:layout_weight="1" android:src="@drawable/bro_logo"
-            android:scaleType="center" android:layout_marginRight="2dp"/>
+            android:layout_height="70dp"
+            android:id="@+id/imageView4" android:layout_weight="1" android:src="@drawable/little_logo"
+            android:scaleType="centerCrop" android:layout_marginRight="2dp" android:background="#000"
+            />
     <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView5" android:layout_weight="1" android:src="@drawable/bro_logo"
-            android:scaleType="center" android:layout_marginRight="2dp"/>
+            android:layout_height="70dp"
+            android:id="@+id/imageView5" android:layout_weight="1" android:src="@drawable/little_logo"
+            android:scaleType="centerCrop" android:layout_marginRight="2dp" android:maxHeight="70dp"
+            android:minHeight="60dp"/>
     <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView6" android:layout_weight="1" android:src="@drawable/bro_logo"
-            android:scaleType="center" android:layout_marginRight="2dp"/>
+            android:layout_height="70dp"
+            android:id="@+id/imageView6" android:layout_weight="1" android:src="@drawable/little_logo"
+            android:scaleType="centerCrop" android:layout_marginRight="2dp" android:maxHeight="70dp"
+            android:minHeight="60dp" android:adjustViewBounds="true"/>
     <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView7" android:layout_weight="1" android:src="@drawable/bro_logo"
-            android:scaleType="center"/>
+            android:layout_height="70dp"
+            android:id="@+id/imageView7" android:layout_weight="1" android:src="@drawable/little_logo"
+            android:scaleType="centerCrop" android:maxHeight="70dp" android:minHeight="60dp"/>
 </LinearLayout><!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/src/main/res/layout/photo_album_list_item.xml -->

@@ -1,26 +1,34 @@
 package com.goodcat.vkclient.application.service;
 
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
+import android.content.Context;
 import android.widget.ImageView;
-import com.goodcat.vkclient.application.R;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class DownloadImageService{
 
     private static final String TAG = DownloadImageService.class.getName();
 
+    public static void init(Context context) {
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
 
-    public static void fetchImage(final String iUrl, final ImageView iView) {
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .defaultDisplayImageOptions(defaultOptions)
+                .build();
+
+        ImageLoader.getInstance().init(config);
+    }
+
+    public static void loadImage(ImageView imageView, String url) {
+        ImageLoader.getInstance().displayImage(url, imageView);
+    }
+
+/*    public static void fetchImage(final String iUrl, final ImageView iView) {
         if ( iUrl == null || iView == null )
             return;
 
@@ -78,7 +86,8 @@ public class DownloadImageService{
                 conn.disconnect();
         }
         return bitmap;
-    }
+    }*/
+
 }
 
 

@@ -22,11 +22,14 @@ public class RequestBuilder {
                 this.userId = "user_ids=" + uId;
             } else if(method.startsWith("audio.get")) {
                 this.userId = "owner_id=" + uId;
-            }else {
+            } else if(method.startsWith("photos.getAlbums")) {
+                this.userId = "owner_id=" + uId;
+            } else if(method.startsWith("photos.get")) {
+                this.userId = "owner_id=" + uId;
+            } else {
                 this.userId = "user_id=" + uId;
             }
         }
-
     }
 
     public void setFields(String paramName, Object params){
@@ -42,7 +45,6 @@ public class RequestBuilder {
             sb.append(methSet).append("=").append(paramFields.get(methSet)).append("&");
         }
         sb.append(token).append("&").append(userId);
-
         return sb.toString();
     }
 }

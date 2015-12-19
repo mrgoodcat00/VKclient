@@ -9,14 +9,18 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 import com.goodcat.vkclient.application.db.DbHandler;
-import com.goodcat.vkclient.application.db.dao.UserAudioDao;
 import com.goodcat.vkclient.application.db.dao.UserDataDao;
 import com.goodcat.vkclient.application.model.CommonListResponseModel;
 import com.goodcat.vkclient.application.model.music.MusicModel;
+import com.goodcat.vkclient.application.model.photos.PhotoAlbumModel;
+import com.goodcat.vkclient.application.model.photos.PhotoAlbumsModel;
 import com.goodcat.vkclient.application.model.user.UserModel;
 import com.goodcat.vkclient.application.model.user.UserWallGroupsModel;
 import com.goodcat.vkclient.application.model.user.UserWallPostsModel;
 import com.goodcat.vkclient.application.model.user.UserWallProfilesModel;
+import com.goodcat.vkclient.application.service.callbacks.ResponseCallback;
+import com.goodcat.vkclient.application.service.callbacks.ResponseHomeCallback;
+import com.goodcat.vkclient.application.service.callbacks.ResponseLazyLoad;
 import com.goodcat.vkclient.application.session.Session;
 import com.goodcat.vkclient.application.session.SessionToken;
 import com.google.gson.Gson;
@@ -44,33 +48,20 @@ public class RequestService extends Service {
     public class RequestWorker extends Binder {
 
         private final Executor executor = Executors.newSingleThreadExecutor();
-
         private final Handler handler = new Handler(Looper.getMainLooper());
-
         private final SessionToken session;
-
+        public String LOG = this.getClass().getSimpleName();
         public RequestWorker(SessionToken s) {
             session = s;
         }
-
-        public String LOG = this.getClass().getSimpleName();
 
         public void getUserAudio(final ResponseCallback<MusicModel> userAudios, final String userId) {
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-        /*------------------------------------------------------ Get data from DATABASE ------------------------------- */
-                    DbHandler dbHandler = new DbHandler(getBaseContext());
-                    UserAudioDao userAudioDao = dbHandler.getAudioDao();
-                    List<MusicModel> userAudioFromDB = userAudioDao.findById(Long.parseLong(userId), 50);
-                    userAudioDao.dropTheBase(Integer.parseInt(userId));
-        /*------------------------------------------------------ Get data from WEB ------------------------------- */
+
                     String token = session.getToken();
                     List<MusicModel> responseUserAudio = new ArrayList<MusicModel>();
-                    if (userAudioFromDB != null && !userAudioFromDB.isEmpty()) {
-                        responseUserAudio = userAudioFromDB;
-                        Log.d(LOG, "Audio getted from DB");
-                    } else {
                         try {
                             RequestBuilder reqBuilder = new RequestBuilder("audio.get", token, userId);
                             reqBuilder.setFields("count", "50");
@@ -94,23 +85,12 @@ public class RequestService extends Service {
                                     }.getType();
                                     List<MusicModel> commonWallItemsModel = gson.fromJson(items.toString(), fooType);
                                     responseUserAudio = commonWallItemsModel;
-                                    for (MusicModel musMod : commonWallItemsModel) {
-                                        userAudioDao.insert(musMod);
-                                    }
+
                                 }
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Log.d(LOG, "Audio getted from HTTP");
-                    }
-
-                    int counter = 0;
-                    for (MusicModel musMod : userAudioFromDB) {
-                        Log.d(LOG, "U DATA " + counter + ": \n url-" + musMod.getUrl() + " \n id-" + musMod.getId() + " \n dur-" + musMod.getDuration() + " \n title-" + musMod.getTitle() + " \n " + musMod.getArtist() + " \n date" + musMod.getDate() + " \n oId-" + musMod.getOwnerId() + "\n");
-                        counter++;
-                    }
-                    dbHandler.closeDbConnection();
 
                     final List<MusicModel> responseAudio = responseUserAudio;
                     handler.post(new Runnable() {
@@ -347,6 +327,133 @@ public class RequestService extends Service {
                 }
             });
         }
+
+        public void getPhotosFromAlbum(final ResponseCallback<PhotoAlbumModel> userAlbums, final String userId, final long albumId){
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    String albumType = null;
+                    String token = session.getToken();
+                        switch ((int) albumId){
+                            case -6:
+                                albumType = "profile";
+                                break;
+
+                            case -7:
+                                albumType = "wall";
+                                break;
+
+                            case -15:
+                                albumType = "saved";
+                                break;
+                            default:
+                                albumType = ""+albumId;
+                        }
+                    List<PhotoAlbumModel> photosFromAlbum = new ArrayList<PhotoAlbumModel>();
+                    try {
+                        RequestBuilder reqBuilder = new RequestBuilder("photos.get", token, userId);
+                        reqBuilder.setFields("album_id",albumType);
+                        reqBuilder.setFields("extended","1");
+                        BufferedReader br = executeHttpRequest(reqBuilder);
+                        String line = null;
+                        StringBuilder st = new StringBuilder();
+                        while ((line = br.readLine()) != null) {
+                            st.append(line + "");
+                        }
+                        Log.d("JSON-photos-from-album", st.toString());
+                        if (st.length() > 0) {
+                            JsonParser parser = new JsonParser();
+                            JsonObject jObject = (JsonObject) parser.parse(st.toString()).getAsJsonObject().get("response");
+                            JsonArray items = jObject.getAsJsonArray("items");
+                            Log.d("PhotosResponse", st.toString());
+                            Log.d("JSON-photo-items", items.toString());
+
+                            if (items.size() > 0) {
+                                Gson gson = new Gson();
+                                Type fooType = new TypeToken<List<PhotoAlbumModel>>() {
+                                }.getType();
+                                List<PhotoAlbumModel> commonItemsModel = gson.fromJson(items.toString(), fooType);
+                                photosFromAlbum = commonItemsModel;
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    final List<PhotoAlbumModel> responsephotosFromAlbum = photosFromAlbum;
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            userAlbums.onResponse(responsephotosFromAlbum);
+                        }
+                    });
+                }
+            });
+        }
+
+
+        public void getPhotoAlbums(final ResponseCallback<PhotoAlbumsModel> userAlbums, final String userId){
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    String token = session.getToken();
+                    List<PhotoAlbumsModel> photoAlbums = new ArrayList<PhotoAlbumsModel>();
+                    try {
+                        RequestBuilder reqBuilder = new RequestBuilder("photos.getAlbums", token, null);
+                        reqBuilder.setFields("need_system", "1");
+                        reqBuilder.setFields("need_covers","1");
+                        reqBuilder.setFields("photo_sizes","1");
+                        BufferedReader br = executeHttpRequest(reqBuilder);
+                        String line = null;
+                        StringBuilder st = new StringBuilder();
+                        while ((line = br.readLine()) != null) {
+                            st.append(line + "");
+                        }
+                        Log.d("JSON-albums", st.toString());
+                        if (st.length() > 0) {
+                            JsonParser parser = new JsonParser();
+                            JsonObject jObject = (JsonObject) parser.parse(st.toString()).getAsJsonObject().get("response");
+                            JsonArray items = jObject.getAsJsonArray("items");
+                            Log.d("AlbumsResponse", st.toString());
+                            Log.d("JSON-album-items", items.toString());
+
+                            if (items.size() > 0) {
+                                Gson gson = new Gson();
+                                Type fooType = new TypeToken<List<PhotoAlbumsModel>>() {
+                                }.getType();
+                                List<PhotoAlbumsModel> commonWallItemsModel = gson.fromJson(items.toString(), fooType);
+                                photoAlbums = commonWallItemsModel;
+
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    final List<PhotoAlbumsModel> responseAlbums = photoAlbums;
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            userAlbums.onResponse(responseAlbums);
+                        }
+                    });
+                }
+            });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     private static BufferedReader executeHttpRequest(RequestBuilder request) throws IOException {

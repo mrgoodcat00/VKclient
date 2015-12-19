@@ -20,8 +20,8 @@ import com.goodcat.vkclient.application.adapter.UserWallPostsAdapter;
 import com.goodcat.vkclient.application.model.user.*;
 import com.goodcat.vkclient.application.service.DownloadImageService;
 import com.goodcat.vkclient.application.service.RequestService;
-import com.goodcat.vkclient.application.service.ResponseHomeCallback;
-import com.goodcat.vkclient.application.service.ResponseLazyLoad;
+import com.goodcat.vkclient.application.service.callbacks.ResponseHomeCallback;
+import com.goodcat.vkclient.application.service.callbacks.ResponseLazyLoad;
 import com.goodcat.vkclient.application.session.Session;
 import com.goodcat.vkclient.application.session.SessionToken;
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private SessionToken st;
 
     private boolean deviceHaveMenuButton = false;
+    private boolean isLoadingItems = false;
 
     private SwipeRefreshLayout swipeLayout;
 
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
         st = Session.getSession(this);
+        DownloadImageService.init(this);
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeLayout.setColorSchemeResources(R.color.colorPrimary,R.color.colorPrimaryDark);
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         String homeTown = user.get(0).getHomeTown();
 
         ImageView ownerAvatar = (ImageView) WrapperHead.findViewById(R.id.main_user_logo);
-        DownloadImageService.fetchImage(user.get(0).getPhoto200(), ownerAvatar);
+        DownloadImageService.loadImage(ownerAvatar, user.get(0).getPhoto200());
 
         TextView userName = (TextView) WrapperHead.findViewById(R.id.main_user_name);
         TextView userFrom = (TextView) WrapperHead.findViewById(R.id.main_user_from);
@@ -180,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
             public void onScroll(final AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 Log.d("setOnScrollListener", " firstVisibleItem:" + (firstVisibleItem+visibleItemCount));
                 Log.d("setOnScrollListener", " totalItemCount:" + (totalItemCount) );
-                if(totalItemCount == firstVisibleItem+visibleItemCount) {
-                    updateAdapter(totalItemCount,user);
+                if(totalItemCount == firstVisibleItem+visibleItemCount && !isLoadingItems ) {
+                    updateAdapter(totalItemCount-1,user);
                 }
             }
         });
@@ -208,14 +210,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateAdapter(int totalItemCount,List<UserModel> user){
+        isLoadingItems = true;
         requestWorker.getUserWallPart(new ResponseLazyLoad<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
             @Override
             public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles, List<UserWallGroupsModel> wGroups) {
                 adapter.updateWallPosts(wItems,wProfiles,wGroups);
-                Log.d("!!!!!", ""+adapter.getCount());
+                isLoadingItems = false;
             }
         }, totalItemCount, String.valueOf(user.get(0).getId()));
-
     }
 
     @Override
@@ -252,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("LOGGER","App is started!");
+        Log.d("LOGGER","MainActivity is started!");
         if(Build.VERSION.SDK_INT <= 10){deviceHaveMenuButton = true;}
         bindService(new Intent(this,RequestService.class),serviceConnection,BIND_AUTO_CREATE);
     }
