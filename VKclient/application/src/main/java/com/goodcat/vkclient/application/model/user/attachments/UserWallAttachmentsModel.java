@@ -18,6 +18,10 @@ public class UserWallAttachmentsModel {
         return type;
     }
 
+    public String getStyledType() {
+        return type;
+    }
+
     public VideoAttachmentModel getVideo() {
         return video;
     }

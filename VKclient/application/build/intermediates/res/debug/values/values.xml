@@ -33,9 +33,11 @@
     <color name="button_material_light">#ffd6d7d7</color>
     <!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/src/main/res/values/colors.xml -->
     <eat-comment/>
+    <color name="colorMessage">#fff</color>
     <color name="colorPrimary">#527dad</color>
     <color name="colorPrimaryDark">#38618d</color>
     <color name="colorPrimaryMiddle">#45668e</color>
+    <color name="colorUnreadedMessage">#ffdaecff</color>
     <!-- From: file:/D:/Java/idea_workspase/hw/android/VKclient/application/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
     <eat-comment/>
     <color name="dim_foreground_disabled_material_dark">#80bebebe</color>

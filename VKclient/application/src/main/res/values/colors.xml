@@ -3,4 +3,6 @@
     <color name="colorPrimary">#527dad</color>
     <color name="colorPrimaryDark">#38618d</color>
     <color name="colorPrimaryMiddle">#45668e</color>
+    <color name="colorUnreadedMessage">#ffdaecff</color>
+    <color name="colorMessage">#fff</color>
 </resources>

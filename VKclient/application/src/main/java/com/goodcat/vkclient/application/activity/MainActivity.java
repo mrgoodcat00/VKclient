@@ -24,7 +24,6 @@ import com.goodcat.vkclient.application.service.callbacks.ResponseHomeCallback;
 import com.goodcat.vkclient.application.service.callbacks.ResponseLazyLoad;
 import com.goodcat.vkclient.application.session.Session;
 import com.goodcat.vkclient.application.session.SessionToken;
-import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.util.List;
 
@@ -71,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        JodaTimeAndroid.init(this);
         setContentView(R.layout.activity_main);
         st = Session.getSession(this);
         DownloadImageService.init(this);

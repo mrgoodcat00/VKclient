@@ -11,6 +11,7 @@ import android.util.Log;
 import com.goodcat.vkclient.application.db.DbHandler;
 import com.goodcat.vkclient.application.db.dao.UserDataDao;
 import com.goodcat.vkclient.application.model.CommonListResponseModel;
+import com.goodcat.vkclient.application.model.messages.DialogModel;
 import com.goodcat.vkclient.application.model.music.MusicModel;
 import com.goodcat.vkclient.application.model.photos.PhotoAlbumModel;
 import com.goodcat.vkclient.application.model.photos.PhotoAlbumsModel;
@@ -21,6 +22,7 @@ import com.goodcat.vkclient.application.model.user.UserWallProfilesModel;
 import com.goodcat.vkclient.application.service.callbacks.ResponseCallback;
 import com.goodcat.vkclient.application.service.callbacks.ResponseHomeCallback;
 import com.goodcat.vkclient.application.service.callbacks.ResponseLazyLoad;
+import com.goodcat.vkclient.application.service.callbacks.ResponseMessagesWithUserData;
 import com.goodcat.vkclient.application.session.Session;
 import com.goodcat.vkclient.application.session.SessionToken;
 import com.google.gson.Gson;
@@ -37,6 +39,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -443,17 +446,99 @@ public class RequestService extends Service {
         }
 
 
+        public void getPrivateMessages(final ResponseMessagesWithUserData<DialogModel,UserModel> userMessages){
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
 
+                    String token = session.getToken();
+                    List<DialogModel> privateMessages = new ArrayList<DialogModel>();
+                    List<String> stringsIds = new ArrayList<String>();
+                    try {
+                        RequestBuilder reqBuilder = new RequestBuilder("messages.getDialogs", token, null);
+                        reqBuilder.setFields("offset","0");
+                        reqBuilder.setFields("count","25");
+                        reqBuilder.setFields("preview_length","55");
+                        BufferedReader br = executeHttpRequest(reqBuilder);
+                        String line = null;
+                        StringBuilder st = new StringBuilder();
+                        while ((line = br.readLine()) != null) {
+                            st.append(line + "");
+                        }
+                        Log.d("JSON-messages", st.toString());
+                        if (st.length() > 0) {
+                            JsonParser parser = new JsonParser();
+                            JsonObject jObject = (JsonObject) parser.parse(st.toString()).getAsJsonObject().get("response");
+                            JsonArray items = jObject.getAsJsonArray("items");
+                            Log.d("PrivateMessages", st.toString());
+                            Log.d("JSON-message-items", items.toString());
 
+                            if (items.size() > 0) {
+                                Gson gson = new Gson();
+                                Type fooType = new TypeToken<List<DialogModel>>() {
+                                }.getType();
+                                List<DialogModel> commonMessagesModel = gson.fromJson(items.toString(), fooType);
+                                privateMessages = commonMessagesModel;
 
+                                for(DialogModel d:privateMessages){
+                                    stringsIds.add(d.getMessage().getUser_id()+"");
+                                }
 
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
+                    final List<UserModel> uIds = getUserByID(stringsIds);
+                    final List<DialogModel> responseMessages = privateMessages;
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            userMessages.onResponse(responseMessages,uIds);
+                        }
+                    });
+                }
+            });
+        }
 
+        public List<UserModel> getUserByID(List<String> userId) {
+            String token = session.getToken();
+            List<UserModel> userInfo = new ArrayList<UserModel>();
+            StringBuilder reqString = new StringBuilder();
+            HashSet<String> uniqIds = new HashSet<String>();
+            for (String id : userId) { uniqIds.add(id); }
 
-
-
-
-
+            int counter = 0;
+            try {
+                RequestBuilder reqBuilder = new RequestBuilder("users.get", token, null);
+                reqBuilder.setFields("fields", "photo_50,first_name,last_name");
+                for (String uId : uniqIds) {
+                    Log.d("JSON-UsersInfo", uId);
+                    if(counter < userId.size()) {
+                        reqString.append(uId).append(",");
+                    } else {reqString.append(uId);}
+                }
+                reqBuilder.setFields("user_ids", reqString.toString());
+                BufferedReader br = executeHttpRequest(reqBuilder);
+                String line = null;
+                StringBuilder st = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    st.append(line + "");
+                }
+                Log.d("JSON-UsersInfo", st.toString());
+                if (st.length() > 0) {
+                    Gson gson = new Gson();
+                    Type fooType = new TypeToken<CommonListResponseModel<UserModel>>() {
+                    }.getType();
+                    CommonListResponseModel userListResponse = gson.fromJson(st.toString(), fooType);
+                    userInfo = userListResponse.getResponse();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return userInfo;
+        }
     }
 
     private static BufferedReader executeHttpRequest(RequestBuilder request) throws IOException {
@@ -472,7 +557,6 @@ public class RequestService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-
         return new RequestWorker(Session.getSession(this));
     }
 }
