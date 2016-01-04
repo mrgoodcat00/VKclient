@@ -26,6 +26,9 @@ public class UserModel {
     @SerializedName("photo_200")
     private String photo200;
 
+    @SerializedName("photo_100")
+    private String photo100;
+
     @SerializedName("photo_50")
     private String photo50;
 
@@ -63,6 +66,14 @@ public class UserModel {
 
     public String getPhoto50() {
         return photo50;
+    }
+
+    public String getPhoto100() {
+        return photo100;
+    }
+
+    public void setPhoto100(String photo100) {
+        this.photo100 = photo100;
     }
 
     public void setId(long id) {

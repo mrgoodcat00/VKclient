@@ -11,6 +11,7 @@ import android.util.Log;
 import com.goodcat.vkclient.application.db.DbHandler;
 import com.goodcat.vkclient.application.db.dao.UserDataDao;
 import com.goodcat.vkclient.application.model.CommonListResponseModel;
+import com.goodcat.vkclient.application.model.longpoll.LongPollServerModel;
 import com.goodcat.vkclient.application.model.messages.DialogModel;
 import com.goodcat.vkclient.application.model.music.MusicModel;
 import com.goodcat.vkclient.application.model.photos.PhotoAlbumModel;
@@ -450,7 +451,6 @@ public class RequestService extends Service {
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-
                     String token = session.getToken();
                     List<DialogModel> privateMessages = new ArrayList<DialogModel>();
                     List<String> stringsIds = new ArrayList<String>();
@@ -512,7 +512,7 @@ public class RequestService extends Service {
             int counter = 0;
             try {
                 RequestBuilder reqBuilder = new RequestBuilder("users.get", token, null);
-                reqBuilder.setFields("fields", "photo_50,first_name,last_name");
+                reqBuilder.setFields("fields", "photo_50,photo_100,first_name,last_name");
                 for (String uId : uniqIds) {
                     Log.d("JSON-UsersInfo", uId);
                     if(counter < userId.size()) {
@@ -539,6 +539,76 @@ public class RequestService extends Service {
             }
             return userInfo;
         }
+
+        public void getPollServer(final ResponseCallback<LongPollServerModel> server){
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    String token = session.getToken();
+                    List<LongPollServerModel> responseServer = new ArrayList<LongPollServerModel>();
+                    try {
+                        RequestBuilder reqBuilder = new RequestBuilder("messages.getLongPollServer", token,null);
+                        reqBuilder.setFields("use_ssl", "1");
+                        reqBuilder.setFields("need_pts", "1");
+                        BufferedReader br = executeHttpRequest(reqBuilder);
+                        String line = null;
+                        StringBuilder st = new StringBuilder();
+                        while ((line = br.readLine()) != null) {
+                            st.append(line + "");
+                        }
+                        Log.d("JSON-serverLongpoll", st.toString());
+                        if (st.length() > 0) {
+                            JsonParser parser = new JsonParser();
+                            JsonObject jObject = (JsonObject) parser.parse(st.toString()).getAsJsonObject().get("response");
+                            if(jObject != null){
+                                LongPollServerModel pollSever = new LongPollServerModel();
+                                pollSever.setKey(jObject.get("key").toString().replace("\"", ""));
+                                pollSever.setTs(jObject.get("ts").getAsLong());
+                                pollSever.setServer(jObject.get("server").toString().replace("\"", ""));
+                                responseServer.add(pollSever);
+
+                                try {
+                                    RequestBuilder actionsReq = new RequestBuilder(token,pollSever.getServer());
+                                    actionsReq.setFields("act", "a_check");
+                                    actionsReq.setFields("key", pollSever.getKey());
+                                    actionsReq.setFields("ts", pollSever.getTs());
+                                    actionsReq.setFields("wait", "25");
+                                    actionsReq.setFields("mode", "8");
+                                    BufferedReader bReader = executeHttpRequest(actionsReq);
+                                    String bLine = null;
+                                    StringBuilder stB = new StringBuilder();
+                                    while ((bLine = bReader.readLine()) != null) {
+                                        stB.append(bLine + "");
+                                    }
+
+                                    Log.d("!!!!",""+stB.toString());
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+
+
+
+                            }
+
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    final List<LongPollServerModel> responseLongPoll = responseServer;
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            server.onResponse(responseLongPoll);
+                        }
+                    });
+                }
+            });
+        }
+
     }
 
     private static BufferedReader executeHttpRequest(RequestBuilder request) throws IOException {

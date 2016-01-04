@@ -59,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }, st.getUserId().toString());//"14587316"/*"12455497"*/);
+
+           /* requestWorker.getPollServer(new ResponseCallback<LongPollServerModel>() {
+                @Override
+                public void onResponse(List<LongPollServerModel> items) {
+
+                }
+            });*/
         }
 
         @Override
@@ -105,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
 
         //------------------------------------------------GETS -------------------------------------------
         View WrapperHead = View.inflate(MainActivity.this, R.layout.header_part_of_main, null);
+
+
         UserLastSeenModel lastSeeModel = user.get(0).getLastSeen();
         UserCountersModel userCounters = user.get(0).getCounters();
         String firstName = user.get(0).getFirstName();

@@ -11,6 +11,10 @@ public class RequestBuilder {
     private String version;
     private String token;
     private String userId;
+    private String customHost;
+
+    private StringBuilder sb = new StringBuilder();
+
     private Map<String, String> paramFields = new LinkedHashMap<String, String>();
 
     public RequestBuilder(String method, String t, String uId) {
@@ -32,6 +36,12 @@ public class RequestBuilder {
         }
     }
 
+    public RequestBuilder(String t, String server) {
+        this.version = "v=5.40";
+        this.customHost = server;
+        this.token = "access_token="+t;
+    }
+
     public void setFields(String paramName, Object params){
         if(params != null) {
             paramFields.put(paramName, params.toString());
@@ -39,12 +49,25 @@ public class RequestBuilder {
     }
 
     public String getUrl(){
-        StringBuilder sb = new StringBuilder(hostUrl);
-        sb.append(requestMethod).append("?").append(version).append("&");
+        if(customHost != null){
+            sb.append("https://").append(customHost);
+        } else {
+            sb.append(hostUrl);
+        }
+        if(requestMethod != null) {
+            sb.append(requestMethod).append("?").append(version).append("&");
+        } else {
+            sb.append("?").append(version).append("&");
+        }
+
         for(String methSet:paramFields.keySet()){
             sb.append(methSet).append("=").append(paramFields.get(methSet)).append("&");
         }
-        sb.append(token).append("&").append(userId);
+
+        if(userId != null) {sb.append(token).append("&").append(userId);}
+        else {sb.append(token);}
+
+        //if(userId != null && token != null) {sb.append(token).append("&").append(userId);}
         return sb.toString();
     }
 }

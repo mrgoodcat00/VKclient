@@ -2,20 +2,6 @@
 <items version="2" >
 
     <item
-        jar="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\classes-dae90fc9da04521df503c5ff45751fee3790679c.jar" />
-    </item>
-    <item
-        jar="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\classes-0eaade487ce343e606ffa91f2d133a8d4b9f268b.jar" />
-    </item>
-    <item
         jar="C:\Users\Goodcat\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.4\695b63d702f505b9b916e02272e3b6381bade7f\gson-2.4.jar"
         jumboMode="false"
         revision="23.0.1"
@@ -30,6 +16,34 @@
         <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-009b805189386edefe848f4116a7e56321ba7d1c.jar" />
     </item>
     <item
+        jar="C:\Users\Goodcat\.gradle\caches\modules-2\files-2.1\com.nostra13.universalimageloader\universal-image-loader\1.9.4\dd9eeb557650c4ad7394df23f0f5cf27a7cfc697\universal-image-loader-1.9.4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="dd9eeb557650c4ad7394df23f0f5cf27a7cfc697">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.4-6e6637bc26f4aab3db011b66ec27f48c9edef110.jar" />
+    </item>
+    <item
+        jar="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\classes-dae90fc9da04521df503c5ff45751fee3790679c.jar" />
+    </item>
+    <item
+        jar="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\classes-0eaade487ce343e606ffa91f2d133a8d4b9f268b.jar" />
+    </item>
+    <item
+        jar="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\exploded-aar\com.google.android.gms\play-services\4.2.42\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e5f81129dfb3d02df80126512bc98278ed2bb40a">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\classes-2f155502c0373232235d935175cd829b160e36de.jar" />
+    </item>
+    <item
         jar="C:\Users\Goodcat\.gradle\caches\modules-2\files-2.1\joda-time\joda-time\2.9\db8dd9d75280b1d1d9587ed0d39b4108d0e655e9\joda-time-2.9-no-tzdb.jar"
         jumboMode="false"
         revision="23.0.1"
@@ -37,11 +51,11 @@
         <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\joda-time-2.9-no-tzdb-5271fc54ded20bf7b1d2040ff0097e1035169468.jar" />
     </item>
     <item
-        jar="C:\Users\Goodcat\.gradle\caches\modules-2\files-2.1\com.nostra13.universalimageloader\universal-image-loader\1.9.4\dd9eeb557650c4ad7394df23f0f5cf27a7cfc697\universal-image-loader-1.9.4.jar"
+        jar="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\exploded-aar\com.android.support\gridlayout-v7\22.2.0\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="dd9eeb557650c4ad7394df23f0f5cf27a7cfc697">
-        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.4-6e6637bc26f4aab3db011b66ec27f48c9edef110.jar" />
+        sha1="4c72b7305d9c42d7729d66694dc984f69896a844">
+        <dex dex="D:\Java\idea_workspase\hw\android\VKclient\application\build\intermediates\pre-dexed\debug\classes-199f1856da4e6b943822c396c21493825f7459a2.jar" />
     </item>
     <item
         jar="D:\Java\Idea\androidSDK\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
