@@ -149,6 +149,11 @@
                         android:id="@+id/likes_cntr" android:layout_gravity="center"/>
             </LinearLayout>
         </LinearLayout>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:id="@+id/wall_audio_wrapper">
+        </LinearLayout>
 
     </LinearLayout>
 

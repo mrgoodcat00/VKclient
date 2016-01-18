@@ -20,7 +20,6 @@ import com.goodcat.vkclient.application.adapter.UserWallPostsAdapter;
 import com.goodcat.vkclient.application.model.user.*;
 import com.goodcat.vkclient.application.service.DownloadImageService;
 import com.goodcat.vkclient.application.service.RequestService;
-import com.goodcat.vkclient.application.service.callbacks.ResponseHomeCallback;
 import com.goodcat.vkclient.application.service.callbacks.ResponseLazyLoad;
 import com.goodcat.vkclient.application.session.Session;
 import com.goodcat.vkclient.application.session.SessionToken;
@@ -49,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d("SERVICE", "Connected");
             requestWorker = (RequestService.RequestWorker) service;
-            requestWorker.getUserWithWallData(new ResponseHomeCallback<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
+            requestWorker.getUserWallPartWithOfset(new ResponseLazyLoad<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
                 @Override
                 public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles, List<UserWallGroupsModel> wGroups) {
                     if (!items.isEmpty() && !wItems.isEmpty()) {
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                         setUserData(items, wItems, wProfiles, wGroups);
                     }
                 }
-            }, st.getUserId().toString());//"14587316"/*"12455497"*/);
+            }, 0, st.getUserId().toString());//"14587316"/*"12455497"*/);
 
            /* requestWorker.getPollServer(new ResponseCallback<LongPollServerModel>() {
                 @Override
@@ -79,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         st = Session.getSession(this);
-        DownloadImageService.init(this);
 
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         swipeLayout.setColorSchemeResources(R.color.colorPrimary,R.color.colorPrimaryDark);
@@ -112,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
 
         //------------------------------------------------GETS -------------------------------------------
         View WrapperHead = View.inflate(MainActivity.this, R.layout.header_part_of_main, null);
-
 
         UserLastSeenModel lastSeeModel = user.get(0).getLastSeen();
         UserCountersModel userCounters = user.get(0).getCounters();
@@ -218,10 +215,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateAdapter(int totalItemCount,List<UserModel> user){
         isLoadingItems = true;
-        requestWorker.getUserWallPart(new ResponseLazyLoad<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
+        requestWorker.getUserWallPartWithOfset(new ResponseLazyLoad<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
             @Override
             public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles, List<UserWallGroupsModel> wGroups) {
-                adapter.updateWallPosts(wItems,wProfiles,wGroups);
+                adapter.updateWallPosts(wItems, wProfiles, wGroups);
                 isLoadingItems = false;
             }
         }, totalItemCount, String.valueOf(user.get(0).getId()));
