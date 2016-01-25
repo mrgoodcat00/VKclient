@@ -11,10 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.goodcat.vkclient.application.R;
 import com.goodcat.vkclient.application.adapter.MessagesAdapter;
 import com.goodcat.vkclient.application.model.messages.DialogModel;
@@ -102,20 +99,35 @@ public class MessagesActivity extends AppCompatActivity {
         adapter = new MessagesAdapter(this,items,userMap);
         messagesList.setAdapter(adapter);
 
+
+
         messagesList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
             }
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                Log.d("setOnScrollListener", " firstVisibleItem:" + (firstVisibleItem+visibleItemCount));
-                Log.d("setOnScrollListener", " totalItemCount:" + (totalItemCount) );
                 if(totalItemCount == firstVisibleItem+visibleItemCount && !messagesAreLoading ) {
                     updateAdapter(totalItemCount,items,ids);
                 }
+
             }
         });
 
+        messagesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 Log.d("MessageActivity"," message clicked "+items.get(position).getMessage().getBody());
+                Intent intent = new Intent(getBaseContext(),MessageActivity.class);
+                if(items.get(position).getMessage().getChat_id() > 0) {
+                    intent.putExtra("dialogId", items.get(position).getMessage().getChat_id());
+                } else {
+                    intent.putExtra("userOfMessageId", items.get(position).getMessage().getUser_id());
+                }
+                startActivity(intent);
+                Log.d("!!!!",""+items.get(position).getMessage().getChat_id());
+            }
+        });
     }
 
     private void updateAdapter(int i, List<DialogModel> dialogsList, List<UserModel> ids){

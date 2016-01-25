@@ -11,6 +11,7 @@ import android.util.Log;
 import com.goodcat.vkclient.application.model.CommonListResponseModel;
 import com.goodcat.vkclient.application.model.longpoll.LongPollServerModel;
 import com.goodcat.vkclient.application.model.messages.DialogModel;
+import com.goodcat.vkclient.application.model.messages.MessagesModel;
 import com.goodcat.vkclient.application.model.music.MusicModel;
 import com.goodcat.vkclient.application.model.photos.PhotoAlbumModel;
 import com.goodcat.vkclient.application.model.photos.PhotoAlbumsModel;
@@ -542,6 +543,68 @@ public class RequestService extends Service {
 
                     final List<UserModel> uIds = getUserByID(stringsIds);
                     final List<DialogModel> responseMessages = privateMessages;
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            userMessages.onResponse(responseMessages,uIds);
+                        }
+                    });
+                }
+            });
+        }
+
+
+        public void getPrivateDialog(final ResponseMessagesWithUserData<MessagesModel,UserModel> userMessages, final int ofset, final int peer_id,final int userId){
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    String token = session.getToken();
+                    List<MessagesModel> privateMessages = new ArrayList<MessagesModel>();
+                    List<String> stringsIds = new ArrayList<String>();
+                    try {
+                        RequestBuilder reqBuilder = new RequestBuilder("messages.getHistory", token, null);
+                        reqBuilder.setFields("offset",ofset);
+                        reqBuilder.setFields("count","10");
+                        reqBuilder.setFields("preview_length","55");
+                        if(userId == 0){
+                            reqBuilder.setFields("peer_id",peer_id);
+                        } else {
+                            reqBuilder.setFields("user_id",userId);
+                        }
+
+                        BufferedReader br = executeHttpRequest(reqBuilder);
+                        String line = null;
+                        StringBuilder st = new StringBuilder();
+                        while ((line = br.readLine()) != null) {
+                            st.append(line + "");
+                        }
+                        Log.d("JSON-messages", st.toString());
+                        if (st.length() > 0) {
+                            JsonParser parser = new JsonParser();
+                            JsonObject jObject = (JsonObject) parser.parse(st.toString()).getAsJsonObject().get("response");
+                            JsonArray items = jObject.getAsJsonArray("items");
+                            Log.d("PrivateMessages", st.toString());
+                            Log.d("JSON-message-items", items.toString());
+
+                            if (items.size() > 0) {
+                                Gson gson = new Gson();
+                                Type fooType = new TypeToken<List<MessagesModel>>() {
+                                }.getType();
+                                List<MessagesModel> commonMessagesModel = gson.fromJson(items.toString(), fooType);
+                                privateMessages = commonMessagesModel;
+
+                                //for(MessagesModel d:privateMessages){
+                                    //stringsIds.add(d.getMessage().getUser_id()+"");
+                                //}
+
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    final List<UserModel> uIds = getUserByID(stringsIds);
+                    final List<MessagesModel> responseMessages = privateMessages;
                     handler.post(new Runnable() {
                         @Override
                         public void run() {

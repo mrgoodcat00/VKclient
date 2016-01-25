@@ -176,16 +176,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
         wallPosts.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                //Log.d("setOnScrollListener"," "+view.toString()+"   scroll state"+scrollState);
             }
             @Override
             public void onScroll(final AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                Log.d("setOnScrollListener", " firstVisibleItem:" + (firstVisibleItem+visibleItemCount));
-                Log.d("setOnScrollListener", " totalItemCount:" + (totalItemCount) );
                 if(totalItemCount == firstVisibleItem+visibleItemCount && !isLoadingItems ) {
                     updateAdapter(totalItemCount-1,user);
                 }
