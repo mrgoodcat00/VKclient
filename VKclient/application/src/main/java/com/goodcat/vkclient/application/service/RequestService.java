@@ -564,7 +564,7 @@ public class RequestService extends Service {
                     try {
                         RequestBuilder reqBuilder = new RequestBuilder("messages.getHistory", token, null);
                         reqBuilder.setFields("offset",ofset);
-                        reqBuilder.setFields("count","10");
+                        reqBuilder.setFields("count","50");
                         reqBuilder.setFields("preview_length","55");
                         if(userId == 0){
                             reqBuilder.setFields("peer_id",peer_id);
@@ -593,9 +593,10 @@ public class RequestService extends Service {
                                 List<MessagesModel> commonMessagesModel = gson.fromJson(items.toString(), fooType);
                                 privateMessages = commonMessagesModel;
 
-                                //for(MessagesModel d:privateMessages){
-                                    //stringsIds.add(d.getMessage().getUser_id()+"");
-                                //}
+                                for(MessagesModel d:privateMessages){
+                                    stringsIds.add(d.getUser_id()+"");
+                                    stringsIds.add(d.getFrom_id()+"");
+                                }
 
                             }
                         }

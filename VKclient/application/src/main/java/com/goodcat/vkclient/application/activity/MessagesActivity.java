@@ -117,15 +117,13 @@ public class MessagesActivity extends AppCompatActivity {
         messagesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                 Log.d("MessageActivity"," message clicked "+items.get(position).getMessage().getBody());
                 Intent intent = new Intent(getBaseContext(),MessageActivity.class);
                 if(items.get(position).getMessage().getChat_id() > 0) {
                     intent.putExtra("dialogId", items.get(position).getMessage().getChat_id());
                 } else {
-                    intent.putExtra("userOfMessageId", items.get(position).getMessage().getUser_id());
+                    intent.putExtra("fromId", items.get(position).getMessage().getUser_id());
                 }
                 startActivity(intent);
-                Log.d("!!!!",""+items.get(position).getMessage().getChat_id());
             }
         });
     }

@@ -11,16 +11,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">-->
 
-        <ListView android:layout_width="wrap_content"
-                  android:layout_height="350dp"
-                  android:id="@+id/user_message" android:focusable="false" android:smoothScrollbar="false"
-                  android:transcriptMode="disabled" android:padding="0dp" android:background="#e5e5e5"/>
+    <ListView android:layout_width="wrap_content"
+              android:layout_height="350dp"
+              android:id="@+id/user_message"
+              android:padding="10dp" android:transcriptMode="alwaysScroll" android:background="#e5e5e5" android:stackFromBottom="true" android:persistentDrawingCache="scrolling"/>
+    <!--android:stackFromBottom="true" android:transcriptMode="alwaysScroll"-->
 
-    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+<!--</android.support.v4.widget.SwipeRefreshLayout>-->
     <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="50dp">
         <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/emotion_smile"
                      android:layout_marginRight="10dp" android:layout_marginLeft="5dp"/>
-        <TextView android:layout_width="180dp" android:layout_height="50dp" android:layout_marginRight="10dp"/>
+        <EditText android:layout_width="180dp" android:layout_height="50dp" android:layout_marginRight="10dp"
+                  android:focusableInTouchMode="false"/>
         <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/send"/>
     </LinearLayout>
 </LinearLayout>

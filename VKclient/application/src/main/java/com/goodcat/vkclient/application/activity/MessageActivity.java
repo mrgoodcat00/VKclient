@@ -33,7 +33,7 @@ public class MessageActivity extends AppCompatActivity {
     private boolean messagesAreLoading = false;
     private RequestService.RequestWorker requestWorker;
     private int chatId = 0;
-    private int messageFromUser = 0;
+    private int fromId = 0;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -45,7 +45,7 @@ public class MessageActivity extends AppCompatActivity {
                 public void onResponse(List<MessagesModel> items, List<UserModel> userIds) {
                     setMessages(items, userIds);
                 }
-            }, 0, chatId, messageFromUser);
+            }, 0, chatId, fromId);
         }
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -55,7 +55,8 @@ public class MessageActivity extends AppCompatActivity {
 
     private void setMessages(List<MessagesModel> items, List<UserModel> userIds) {
         ListView messagesList = (ListView) findViewById(R.id.user_message);
-        ArrayAdapter<MessagesModel> adapter = new DialogMessageAdapter(this,items);
+        ArrayAdapter<MessagesModel> adapter = new DialogMessageAdapter(this,items,userIds);
+        Log.d("users id ", "" + userIds.size());
         messagesList.setAdapter(adapter);
     }
 
@@ -68,7 +69,7 @@ public class MessageActivity extends AppCompatActivity {
 
         Intent intent  =  getIntent();
         chatId = (int) (intent.getLongExtra("dialogId",0)+2000000000);
-        messageFromUser = (int) (intent.getLongExtra("userOfMessageId",0));
+        fromId = (int) (intent.getLongExtra("fromId",0));
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
