@@ -17,10 +17,11 @@ import android.view.View;
 import android.widget.*;
 import com.goodcat.vkclient.application.R;
 import com.goodcat.vkclient.application.adapter.UserWallPostsAdapter;
-import com.goodcat.vkclient.application.model.user.*;
+import com.goodcat.vkclient.application.model.user.UserCountersModel;
+import com.goodcat.vkclient.application.model.user.UserLastSeenModel;
+import com.goodcat.vkclient.application.model.user.UserModel;
 import com.goodcat.vkclient.application.model.user.wall_post.UserWallGroupsModel;
 import com.goodcat.vkclient.application.model.user.wall_post.UserWallPostsModel;
-import com.goodcat.vkclient.application.model.user.wall_post.UserWallProfilesModel;
 import com.goodcat.vkclient.application.service.DownloadImageService;
 import com.goodcat.vkclient.application.service.RequestService;
 import com.goodcat.vkclient.application.service.callbacks.ResponseLazyLoad;
@@ -51,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.d("SERVICE", "Connected");
             requestWorker = (RequestService.RequestWorker) service;
-            requestWorker.getUserWallPartWithOfset(new ResponseLazyLoad<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
+            requestWorker.getUserWallPartWithOfset(new ResponseLazyLoad<UserModel, UserWallPostsModel, UserModel, UserWallGroupsModel>() {
                 @Override
-                public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles, List<UserWallGroupsModel> wGroups) {
+                public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserModel> wProfiles, List<UserWallGroupsModel> wGroups) {
                     if (!items.isEmpty() && !wItems.isEmpty()) {
                         setUserData(items, wItems, wProfiles, wGroups);
                     } else {
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setUserData(final List<UserModel> user, List<UserWallPostsModel> wall, List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups) {
+    private void setUserData(final List<UserModel> user, List<UserWallPostsModel> wall, List<UserModel> wProfiles,List<UserWallGroupsModel> wGroups) {
         actionBar = getSupportActionBar();
         View actionBarView = View.inflate(MainActivity.this, R.layout.old_custom_menu, null);
         TextView title = (TextView) actionBarView.findViewById(R.id.main_header_page_title);
@@ -214,9 +215,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateAdapter(int totalItemCount,List<UserModel> user){
         isLoadingItems = true;
-        requestWorker.getUserWallPartWithOfset(new ResponseLazyLoad<UserModel, UserWallPostsModel, UserWallProfilesModel, UserWallGroupsModel>() {
+        requestWorker.getUserWallPartWithOfset(new ResponseLazyLoad<UserModel, UserWallPostsModel, UserModel, UserWallGroupsModel>() {
             @Override
-            public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserWallProfilesModel> wProfiles, List<UserWallGroupsModel> wGroups) {
+            public void onResponse(List<UserModel> items, List<UserWallPostsModel> wItems, List<UserModel> wProfiles, List<UserWallGroupsModel> wGroups) {
                 adapter.updateWallPosts(wItems, wProfiles, wGroups);
                 isLoadingItems = false;
             }

@@ -13,7 +13,7 @@ import com.goodcat.vkclient.application.R;
 import com.goodcat.vkclient.application.model.user.wall_post.UserResponseWallCopyHistoryModel;
 import com.goodcat.vkclient.application.model.user.wall_post.UserWallGroupsModel;
 import com.goodcat.vkclient.application.model.user.wall_post.UserWallPostsModel;
-import com.goodcat.vkclient.application.model.user.wall_post.UserWallProfilesModel;
+import com.goodcat.vkclient.application.model.user.UserModel;
 import com.goodcat.vkclient.application.model.user.attachments.PhotoAttachmentModel;
 import com.goodcat.vkclient.application.model.user.attachments.UserWallAttachmentsModel;
 import com.goodcat.vkclient.application.model.user.attachments.VideoAttachmentModel;
@@ -30,12 +30,12 @@ import java.util.TimeZone;
 public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
 
     private static String token;
-    private List<UserWallProfilesModel> wProfiles;
+    private List<UserModel> wProfiles;
     private List<UserWallGroupsModel> wGroups;
     private List<UserWallPostsModel> wItems;
     private LayoutInflater inflater;
 
-    public UserWallPostsAdapter(Context context, List<UserWallPostsModel> objects,List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups , String token) {
+    public UserWallPostsAdapter(Context context, List<UserWallPostsModel> objects,List<UserModel> wProfiles,List<UserWallGroupsModel> wGroups , String token) {
         super(context, 0, objects);
         this.token     = token;
         this.wProfiles = wProfiles;
@@ -94,11 +94,11 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
 
         /*-------------------------------- POST OWNER INFO ----------------------------------------*/
         if(singlePost.getOwnerId() == singlePost.getFromId()){
-            UserWallProfilesModel postFromWallOwner = identifyUser(singlePost.getOwnerId());
+            UserModel postFromWallOwner = identifyUser(singlePost.getOwnerId());
             holder.user_name.setText(postFromWallOwner.getFirstName() + " " + postFromWallOwner.getLastName());
             DownloadImageService.loadImage(holder.user_logo, postFromWallOwner.getPhoto50());
         } else {
-            UserWallProfilesModel postFromOtherUser = identifyUser(singlePost.getFromId());
+            UserModel postFromOtherUser = identifyUser(singlePost.getFromId());
             if(postFromOtherUser != null){
                 holder.user_name.setText(postFromOtherUser.getFirstName() + " " + postFromOtherUser.getLastName());
                 DownloadImageService.loadImage( holder.user_logo, postFromOtherUser.getPhoto50());
@@ -149,7 +149,7 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
 
             if(attachmentInsideRepost == null) {
                 if(historyRepost.get(0).getFromId() > 0) {
-                    UserWallProfilesModel postOwner = identifyUser(historyRepost.get(0).getFromId());
+                    UserModel postOwner = identifyUser(historyRepost.get(0).getFromId());
                     holder.repost_starter_user_name.setText(postOwner.getFirstName() + " " + postOwner.getLastName());
                     DownloadImageService.loadImage(holder.repost_user_logo,postOwner.getPhoto50());
                     setPostTime(historyRepost.get(0).getDate(),holder.repost_start_post_time);
@@ -166,7 +166,7 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
             } else {
 
                 if (historyRepost.get(0).getFromId() > 0) {
-                    UserWallProfilesModel postOwner = identifyUser(historyRepost.get(0).getFromId());
+                    UserModel postOwner = identifyUser(historyRepost.get(0).getFromId());
                     holder.repost_starter_user_name.setText(postOwner.getFirstName() + " " + postOwner.getLastName());
                     DownloadImageService.loadImage(holder.repost_user_logo,postOwner.getPhoto50());
                 } else {
@@ -188,11 +188,11 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
         return convertView;
     }
 
-    public void updateWallPosts(List<UserWallPostsModel> wPosts,List<UserWallProfilesModel> wProfiles,List<UserWallGroupsModel> wGroups){
+    public void updateWallPosts(List<UserWallPostsModel> wPosts,List<UserModel> wProfiles,List<UserWallGroupsModel> wGroups){
         for(UserWallPostsModel uwm:wPosts){
             this.wItems.add(uwm);
         }
-        for(UserWallProfilesModel uwpm:wProfiles){
+        for(UserModel uwpm:wProfiles){
             if(!this.wProfiles.contains(uwpm)){
                 this.wProfiles.add(uwpm);
             }
@@ -205,9 +205,9 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
         this.notifyDataSetChanged();
     }
 
-    private UserWallProfilesModel identifyUser(Long id) {
-        UserWallProfilesModel user = null;
-        for (UserWallProfilesModel m : wProfiles) {
+    private UserModel identifyUser(Long id) {
+        UserModel user = null;
+        for (UserModel m : wProfiles) {
             if (m.getId()==id) {
                 user = m;
                 break;

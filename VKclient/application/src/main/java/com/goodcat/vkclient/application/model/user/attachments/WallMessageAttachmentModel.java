@@ -14,7 +14,6 @@ public class WallMessageAttachmentModel {
     private UserWallPostsCommentsCountModel comments;
     private UserWallPostsRepostsCountModel reposts;
     private List<UserWallAttachmentsModel> attachments;
-    //post_source Ч информаци€ о том, как была создана запись;
     private long signer_id;
     private long copy_owner_id;
     private long copy_post_id;

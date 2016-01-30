@@ -1,4 +1,4 @@
-package com.goodcat.vkclient.application.model.user.wall_post;
+package com.goodcat.vkclient.application.model.user.unUsedClasses;
 
 
 import com.google.gson.annotations.SerializedName;
