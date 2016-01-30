@@ -11,10 +11,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">-->
 
-    <ListView android:layout_width="wrap_content"
+    <ListView android:layout_width="fill_parent"
               android:layout_height="350dp"
               android:id="@+id/user_message"
-              android:padding="10dp" android:transcriptMode="alwaysScroll" android:background="#e5e5e5" android:stackFromBottom="true" android:persistentDrawingCache="scrolling"/>
+              android:transcriptMode="normal" android:background="#e5e5e5" android:stackFromBottom="true" android:persistentDrawingCache="scrolling"/>
     <!--android:stackFromBottom="true" android:transcriptMode="alwaysScroll"-->
 
 <!--</android.support.v4.widget.SwipeRefreshLayout>-->

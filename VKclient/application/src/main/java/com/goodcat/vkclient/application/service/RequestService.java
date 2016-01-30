@@ -16,9 +16,9 @@ import com.goodcat.vkclient.application.model.music.MusicModel;
 import com.goodcat.vkclient.application.model.photos.PhotoAlbumModel;
 import com.goodcat.vkclient.application.model.photos.PhotoAlbumsModel;
 import com.goodcat.vkclient.application.model.user.UserModel;
-import com.goodcat.vkclient.application.model.user.UserWallGroupsModel;
-import com.goodcat.vkclient.application.model.user.UserWallPostsModel;
-import com.goodcat.vkclient.application.model.user.UserWallProfilesModel;
+import com.goodcat.vkclient.application.model.user.wall_post.UserWallGroupsModel;
+import com.goodcat.vkclient.application.model.user.wall_post.UserWallPostsModel;
+import com.goodcat.vkclient.application.model.user.wall_post.UserWallProfilesModel;
 import com.goodcat.vkclient.application.service.callbacks.ResponseCallback;
 import com.goodcat.vkclient.application.service.callbacks.ResponseHomeCallback;
 import com.goodcat.vkclient.application.service.callbacks.ResponseLazyLoad;
@@ -39,6 +39,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -566,6 +567,7 @@ public class RequestService extends Service {
                         reqBuilder.setFields("offset",ofset);
                         reqBuilder.setFields("count","50");
                         reqBuilder.setFields("preview_length","55");
+                        reqBuilder.setFields("rev","0");
                         if(userId == 0){
                             reqBuilder.setFields("peer_id",peer_id);
                         } else {
@@ -591,6 +593,7 @@ public class RequestService extends Service {
                                 Type fooType = new TypeToken<List<MessagesModel>>() {
                                 }.getType();
                                 List<MessagesModel> commonMessagesModel = gson.fromJson(items.toString(), fooType);
+                                Collections.reverse(commonMessagesModel);
                                 privateMessages = commonMessagesModel;
 
                                 for(MessagesModel d:privateMessages){

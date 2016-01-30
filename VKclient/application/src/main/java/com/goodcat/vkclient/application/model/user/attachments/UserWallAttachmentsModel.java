@@ -14,6 +14,26 @@ public class UserWallAttachmentsModel {
     @SerializedName("photo")
     private PhotoAttachmentModel photo;
 
+    @SerializedName("wall")
+    private WallMessageAttachmentModel wall;
+
+    /*@SerializedName("posted_photo")
+    private PhotoAttachmentModel posted_photo;
+
+    @SerializedName("audio")
+    private PhotoAttachmentModel audio;*/
+
+
+
+
+
+    /*@SerializedName("wall_reply")
+    private PhotoAttachmentModel wall_reply;
+
+    @SerializedName("sticker")
+    private PhotoAttachmentModel sticker;*/
+
+
     public String getType() {
         return type;
     }
@@ -29,4 +49,9 @@ public class UserWallAttachmentsModel {
     public PhotoAttachmentModel getPhoto() {
         return photo;
     }
+
+    public WallMessageAttachmentModel getWall() {
+        return wall;
+    }
+
 }
