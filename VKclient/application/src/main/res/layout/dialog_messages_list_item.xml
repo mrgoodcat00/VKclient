@@ -5,7 +5,7 @@
               android:layout_height="wrap_content" android:clickable="false" android:focusable="false"
               android:focusableInTouchMode="false"
               android:baselineAligned="false" android:paddingBottom="10dp" android:paddingTop="10dp"
-              android:paddingLeft="10dp" android:paddingRight="10dp">
+              android:paddingLeft="10dp" android:paddingRight="10dp" android:background="#ffffffff">
 
     <ImageButton
             android:layout_width="wrap_content"
@@ -16,19 +16,21 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="160dp"
-            android:layout_height="wrap_content" android:layout_gravity="center"
-            android:id="@+id/dialogContentWrapper" android:gravity="center_vertical|center|center_horizontal">
+            android:layout_height="wrap_content"
+            android:id="@+id/dialogContentWrapper" android:gravity="left"
+            android:layout_gravity="left|center_vertical">
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Text"
                 android:id="@+id/user_text_dialog_message"
-                android:layout_gravity="left" android:visibility="gone"/>
+                android:layout_gravity="left" android:visibility="gone" android:layout_marginBottom="5dp"
+                android:textColor="#ff000000"/>
     </LinearLayout>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date"
             android:id="@+id/date_dialog_message" android:layout_gravity="center"
-            android:layout_weight="1" android:textSize="10sp"/>
+            android:textSize="10sp"/>
 </LinearLayout>

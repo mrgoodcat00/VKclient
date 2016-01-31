@@ -10,13 +10,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.goodcat.vkclient.application.R;
-import com.goodcat.vkclient.application.model.user.wall_post.UserResponseWallCopyHistoryModel;
-import com.goodcat.vkclient.application.model.user.wall_post.UserWallGroupsModel;
-import com.goodcat.vkclient.application.model.user.wall_post.UserWallPostsModel;
 import com.goodcat.vkclient.application.model.user.UserModel;
 import com.goodcat.vkclient.application.model.user.attachments.PhotoAttachmentModel;
 import com.goodcat.vkclient.application.model.user.attachments.UserWallAttachmentsModel;
 import com.goodcat.vkclient.application.model.user.attachments.VideoAttachmentModel;
+import com.goodcat.vkclient.application.model.user.wall_post.UserWallGroupsModel;
+import com.goodcat.vkclient.application.model.user.wall_post.UserWallPostsModel;
 import com.goodcat.vkclient.application.service.DownloadImageService;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -90,7 +89,7 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
         }
         UserWallPostsModel singlePost = wItems.get(position);
         List<UserWallAttachmentsModel> attachments = singlePost.getAttachments();
-        List<UserResponseWallCopyHistoryModel> historyRepost = singlePost.getCopyHistory();
+        List<UserWallPostsModel> historyRepost = singlePost.getCopyHistory();
 
         /*-------------------------------- POST OWNER INFO ----------------------------------------*/
         if(singlePost.getOwnerId() == singlePost.getFromId()){
@@ -239,7 +238,7 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
         timeView.setText(str+"");
     }
 
-    private void printVideoAttachment(List<UserWallAttachmentsModel> attachmentInsideRepost, List<UserResponseWallCopyHistoryModel> historyRepost, ViewWallItemHolder holder){
+    private void printVideoAttachment(List<UserWallAttachmentsModel> attachmentInsideRepost, List<UserWallPostsModel> historyRepost, ViewWallItemHolder holder){
         VideoAttachmentModel video = attachmentInsideRepost.get(0).getVideo();
         holder.post_image.setVisibility(View.VISIBLE);
         if(historyRepost != null) {
@@ -263,7 +262,7 @@ public class UserWallPostsAdapter extends ArrayAdapter<UserWallPostsModel>{
 
     }
 
-    private void printPhotoAttachment(List<UserWallAttachmentsModel> attachmentInsideRepost,List<UserResponseWallCopyHistoryModel> historyRepost, ViewWallItemHolder holder) {
+    private void printPhotoAttachment(List<UserWallAttachmentsModel> attachmentInsideRepost,List<UserWallPostsModel> historyRepost, ViewWallItemHolder holder) {
         PhotoAttachmentModel photo = attachmentInsideRepost.get(0).getPhoto();
         if(historyRepost != null){
             if (historyRepost.get(0).getText() != null ) {

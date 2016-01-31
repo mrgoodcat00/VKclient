@@ -18,6 +18,7 @@ import com.goodcat.vkclient.application.R;
 import com.goodcat.vkclient.application.adapter.DialogMessageAdapter;
 import com.goodcat.vkclient.application.model.messages.MessagesModel;
 import com.goodcat.vkclient.application.model.user.UserModel;
+import com.goodcat.vkclient.application.service.MusicService;
 import com.goodcat.vkclient.application.service.RequestService;
 import com.goodcat.vkclient.application.service.callbacks.ResponseMessagesWithUserData;
 import com.goodcat.vkclient.application.session.Session;
@@ -32,6 +33,7 @@ public class MessageActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeLayout;
     private boolean messagesAreLoading = false;
     private RequestService.RequestWorker requestWorker;
+    private MusicService.MusicWorker musicBinder;
     private int chatId = 0;
     private int fromId = 0;
 
@@ -53,9 +55,21 @@ public class MessageActivity extends AppCompatActivity {
         }
     };
 
+    ServiceConnection musicServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            musicBinder = (MusicService.MusicWorker) service;
+            Log.d("M_ACTIVITY", "Service connected!");
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.d("M_ACTIVITY", "Service disconnected!");
+        }
+    };
+
     private void setMessages(List<MessagesModel> items, List<UserModel> userIds) {
         ListView messagesList = (ListView) findViewById(R.id.user_message);
-        ArrayAdapter<MessagesModel> adapter = new DialogMessageAdapter(this,items,userIds);
+        ArrayAdapter<MessagesModel> adapter = new DialogMessageAdapter(this,items,userIds,musicBinder);
         Log.d("users id ", "" + userIds.size());
         messagesList.setAdapter(adapter);
     }
@@ -95,10 +109,13 @@ public class MessageActivity extends AppCompatActivity {
         super.onStart();
         Log.d("LOGGER", "MessagesActivity is started!");
         bindService(new Intent(MessageActivity.this,RequestService.class),serviceConnection,BIND_AUTO_CREATE);
+        startService(new Intent(MessageActivity.this, MusicService.class));
+        bindService(new Intent(MessageActivity.this,MusicService.class),musicServiceConnection,BIND_AUTO_CREATE);
     }
     @Override
     protected void onStop() {
         super.onStop();
         unbindService(serviceConnection);
+        unbindService(musicServiceConnection);
     }
 }

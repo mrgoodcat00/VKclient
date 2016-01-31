@@ -1,6 +1,6 @@
 package com.goodcat.vkclient.application.model.messages;
 
-import com.goodcat.vkclient.application.model.user.attachments.UserWallAttachmentsModel;
+import com.goodcat.vkclient.application.model.messages.attachments.MessageAttachmentModel;
 import com.google.gson.annotations.SerializedName;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -47,7 +47,7 @@ public class MessagesModel {
     private int deleted;
 
     @SerializedName("attachments")
-    private List<UserWallAttachmentsModel> attachments;
+    private List<MessageAttachmentModel> attachments;
 
 /*------------------------- Additional fields from MultiDialog ------------------*/
 
@@ -92,7 +92,7 @@ public class MessagesModel {
         return date;
     }
 
-    public List<UserWallAttachmentsModel> getAttachments() {
+    public List<MessageAttachmentModel> getAttachments() {
         return attachments;
     }
 

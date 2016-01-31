@@ -15,6 +15,7 @@ import com.goodcat.vkclient.application.model.messages.MessagesModel;
 import com.goodcat.vkclient.application.model.user.UserModel;
 import com.goodcat.vkclient.application.service.MessageAttachment;
 import com.goodcat.vkclient.application.service.DownloadImageService;
+import com.goodcat.vkclient.application.service.MusicService;
 
 import java.util.List;
 
@@ -23,12 +24,14 @@ public class DialogMessageAdapter extends ArrayAdapter<MessagesModel> {
     List<UserModel> dialogUsers;
     List<MessagesModel> messages;
     private Context context;
+    private MusicService.MusicWorker musicBinder;
 
-    public DialogMessageAdapter(Context context,  List<MessagesModel> objects, List<UserModel> userModels) {
+    public DialogMessageAdapter(Context context,  List<MessagesModel> objects, List<UserModel> userModels,MusicService.MusicWorker musicBinder) {
         super(context, 0, objects);
         this.dialogUsers = userModels;
         this.messages = objects;
         this.context = context;
+        this.musicBinder = musicBinder;
     }
 
     @Override
@@ -51,9 +54,7 @@ public class DialogMessageAdapter extends ArrayAdapter<MessagesModel> {
         }
 
         if(message.getAttachments() !=  null) {
-            //Log.d("Mes attachment size", "" + message.getAttachments().size());
-            MessageAttachment attachment = new MessageAttachment(getContext(),contentWrapper,message,dialogUsers);
-            //Log.d("attachment BODY",""+message.getBody());
+            MessageAttachment attachment = new MessageAttachment(getContext(),contentWrapper,message,dialogUsers,musicBinder);
             attachment.printAttachment();
         }
         if(message.getEmoji()==1){

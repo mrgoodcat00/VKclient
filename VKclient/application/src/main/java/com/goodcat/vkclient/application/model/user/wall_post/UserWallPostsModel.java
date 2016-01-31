@@ -55,7 +55,7 @@ public class UserWallPostsModel {
     private UserWallPostsRepostsCountModel reposts;
 
     @SerializedName("copy_history")
-    private List<UserResponseWallCopyHistoryModel> copyHistory;
+    private List<UserWallPostsModel> copyHistory;
 
     public long getId() {
         return id;
@@ -121,7 +121,7 @@ public class UserWallPostsModel {
         return reposts;
     }
 
-    public List<UserResponseWallCopyHistoryModel> getCopyHistory() {
+    public List<UserWallPostsModel> getCopyHistory() {
         return copyHistory;
     }
 
