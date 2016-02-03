@@ -52,18 +52,23 @@ public class DialogMessageAdapter extends ArrayAdapter<MessagesModel> {
                 DownloadImageService.loadImage(userImage, um.getPhoto50());
             }
         }
+        messageDate.setText(message.getDateToString()+"");
 
+        if(message.getEmoji()==1){
+            addSmily(userMessage,message);
+        } else {
+            if(message.getBody().length() > 0) {
+                userMessage.setVisibility(View.VISIBLE);
+                userMessage.setText(message.getBody() + "");
+            } else {
+                userMessage.setVisibility(View.GONE);
+            }
+        }
         if(message.getAttachments() !=  null) {
             MessageAttachment attachment = new MessageAttachment(getContext(),contentWrapper,message,dialogUsers,musicBinder);
             attachment.printAttachment();
         }
-        if(message.getEmoji()==1){
-            addSmily(userMessage,message);
-        } else {
-            userMessage.setVisibility(View.VISIBLE);
-            userMessage.setText(message.getBody() + "");
-        }
-        messageDate.setText(message.getDateToString()+"");
+
 
         return currentView;
 

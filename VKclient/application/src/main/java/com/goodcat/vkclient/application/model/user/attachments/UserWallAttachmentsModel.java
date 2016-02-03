@@ -1,7 +1,8 @@
 package com.goodcat.vkclient.application.model.user.attachments;
 
 
-import com.goodcat.vkclient.application.model.messages.attachments.WallTypeAttachmentModel;
+import com.goodcat.vkclient.application.model.music.MusicModel;
+import com.goodcat.vkclient.application.model.user.wall_post.UserWallPostsModel;
 import com.google.gson.annotations.SerializedName;
 
 public class UserWallAttachmentsModel {
@@ -12,11 +13,12 @@ public class UserWallAttachmentsModel {
     private VideoAttachmentModel video;
     @SerializedName("photo")
     private PhotoAttachmentModel photo;
-
+    @SerializedName("audio")
+    private MusicModel audio;
     @SerializedName("wall")
-    private WallTypeAttachmentModel wall;
+    private UserWallPostsModel wall;
 
-    @SerializedName("posted_photo")
+   /* @SerializedName("posted_photo")
     private WallTypeAttachmentModel posted_photo;
     @SerializedName("audio")
     private WallTypeAttachmentModel audio;
@@ -37,7 +39,7 @@ public class UserWallAttachmentsModel {
     @SerializedName("album")
     private WallTypeAttachmentModel album;
     @SerializedName("photos_list")
-    private WallTypeAttachmentModel photos_list;
+    private WallTypeAttachmentModel photos_list;*/
 
 
     public String getType() {
@@ -56,8 +58,12 @@ public class UserWallAttachmentsModel {
         return photo;
     }
 
-    public WallTypeAttachmentModel getWall() {
+    public UserWallPostsModel getWall() {
         return wall;
+    }
+
+    public MusicModel getAudio() {
+        return audio;
     }
 
 }

@@ -34,8 +34,8 @@ public class MessageAttachmentModel {
     public WallTypeAttachmentModel getWall() {
         return wall;
     }
-    /*
-    @SerializedName("doc")
+
+    /*@SerializedName("doc")
     private WallTypeAttachmentModel doc;
     @SerializedName("wall_reply")
     private WallTypeAttachmentModel wall_reply;

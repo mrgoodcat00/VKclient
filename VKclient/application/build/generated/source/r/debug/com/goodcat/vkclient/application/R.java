@@ -1918,11 +1918,11 @@ containing a value of this type.
         public static final int contentPanel=0x7f0a0045;
         public static final int custom=0x7f0a0049;
         public static final int customPanel=0x7f0a0048;
-        public static final int date_dialog_message=0x7f0a0084;
+        public static final int date_dialog_message=0x7f0a0082;
         public static final int decor_content_parent=0x7f0a0052;
         public static final int default_activity_button=0x7f0a003d;
         public static final int dialog=0x7f0a002f;
-        public static final int dialogContentWrapper=0x7f0a0082;
+        public static final int dialogContentWrapper=0x7f0a0083;
         public static final int disableHome=0x7f0a000c;
         public static final int dropdown=0x7f0a0030;
         public static final int edit_query=0x7f0a0056;
@@ -2065,7 +2065,7 @@ containing a value of this type.
         public static final int user_messages=0x7f0a0069;
         public static final int user_name=0x7f0a006f;
         public static final int user_posted_time=0x7f0a0070;
-        public static final int user_text_dialog_message=0x7f0a0083;
+        public static final int user_text_dialog_message=0x7f0a0084;
         public static final int vertical=0x7f0a0014;
         public static final int wall_audio_wrapper=0x7f0a0080;
         public static final int webView=0x7f0a0063;

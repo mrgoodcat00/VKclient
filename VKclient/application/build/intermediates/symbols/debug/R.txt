@@ -557,11 +557,11 @@ int id comments_icon 0x7f0a007a
 int id contentPanel 0x7f0a0045
 int id custom 0x7f0a0049
 int id customPanel 0x7f0a0048
-int id date_dialog_message 0x7f0a0084
+int id date_dialog_message 0x7f0a0082
 int id decor_content_parent 0x7f0a0052
 int id default_activity_button 0x7f0a003d
 int id dialog 0x7f0a002f
-int id dialogContentWrapper 0x7f0a0082
+int id dialogContentWrapper 0x7f0a0083
 int id disableHome 0x7f0a000c
 int id dropdown 0x7f0a0030
 int id edit_query 0x7f0a0056
@@ -704,7 +704,7 @@ int id user_message 0x7f0a0067
 int id user_messages 0x7f0a0069
 int id user_name 0x7f0a006f
 int id user_posted_time 0x7f0a0070
-int id user_text_dialog_message 0x7f0a0083
+int id user_text_dialog_message 0x7f0a0084
 int id vertical 0x7f0a0014
 int id wall_audio_wrapper 0x7f0a0080
 int id webView 0x7f0a0063

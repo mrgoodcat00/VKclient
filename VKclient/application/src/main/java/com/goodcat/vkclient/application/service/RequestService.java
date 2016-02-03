@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 import com.goodcat.vkclient.application.model.CommonListResponseModel;
+import com.goodcat.vkclient.application.model.group.GroupModel;
 import com.goodcat.vkclient.application.model.longpoll.LongPollServerModel;
 import com.goodcat.vkclient.application.model.messages.DialogModel;
 import com.goodcat.vkclient.application.model.messages.MessagesModel;
@@ -497,7 +498,6 @@ public class RequestService extends Service {
             });
         }
 
-
         public void getPrivateMessagesWithOfset(final ResponseMessagesWithUserData<DialogModel,UserModel> userMessages, final int ofset){
             executor.execute(new Runnable() {
                 @Override
@@ -564,7 +564,7 @@ public class RequestService extends Service {
                     try {
                         RequestBuilder reqBuilder = new RequestBuilder("messages.getHistory", token, null);
                         reqBuilder.setFields("offset",ofset);
-                        reqBuilder.setFields("count","50");
+                        reqBuilder.setFields("count","90");
                         reqBuilder.setFields("preview_length","55");
                         reqBuilder.setFields("rev","0");
                         if(userId == 0){
@@ -655,6 +655,44 @@ public class RequestService extends Service {
                 e.printStackTrace();
             }
             return userInfo;
+        }
+
+        public List<GroupModel> getGroupByID(List<String> groupIds) {
+            String token = session.getToken();
+            List<GroupModel> groupInfo = new ArrayList<GroupModel>();
+            StringBuilder reqString = new StringBuilder();
+            HashSet<String> uniqIds = new HashSet<String>();
+            for (String id : groupIds) { uniqIds.add(id); }
+
+            int counter = 0;
+            try {
+                RequestBuilder reqBuilder = new RequestBuilder("groups.getById", token, null);
+                reqBuilder.setFields("fields", "city,country,place,description,wiki_page,members_count,counters,start_date,finish_date,can_post,can_see_all_posts,activity,status,contacts,links,fixed_post,verified,site,ban_info");
+                for (String gId : uniqIds) {
+                    Log.d("JSON-GroupsInfo", gId);
+                    if(counter < groupIds.size()) {
+                        reqString.append(gId).append(",");
+                    } else {reqString.append(gId);}
+                }
+                reqBuilder.setFields("group_ids", reqString.toString());
+                BufferedReader br = executeHttpRequest(reqBuilder);
+                String line = null;
+                StringBuilder st = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    st.append(line + "");
+                }
+                Log.d("JSON-GroupsInfo", st.toString());
+                if (st.length() > 0) {
+                    Gson gson = new Gson();
+                    Type fooType = new TypeToken<CommonListResponseModel<GroupModel>>() {
+                    }.getType();
+                    CommonListResponseModel groupsListResponse = gson.fromJson(st.toString(), fooType);
+                    groupInfo = groupsListResponse.getResponse();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return groupInfo;
         }
 
         public void getPollServer(final ResponseCallback<LongPollServerModel> server){
